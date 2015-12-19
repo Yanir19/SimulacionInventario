@@ -151,10 +151,43 @@
                     <Component class="javax.swing.JTable" name="TablaDeman">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="0">
-                            <Column editable="true" title="Demanda diaria (unidades)" type="java.lang.Integer"/>
-                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Integer"/>
-                            <Column editable="true" title="Acumulada" type="java.lang.Integer"/>
+                          <Table columnCount="3" rowCount="10">
+                            <Column editable="true" title="Demanda diaria (unidades)" type="java.lang.Integer">
+                              <Data value="25"/>
+                              <Data value="26"/>
+                              <Data value="27"/>
+                              <Data value="28"/>
+                              <Data value="29"/>
+                              <Data value="30"/>
+                              <Data value="31"/>
+                              <Data value="35"/>
+                              <Data value="33"/>
+                              <Data value="24"/>
+                            </Column>
+                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Integer">
+                              <Data value="2"/>
+                              <Data value="4"/>
+                              <Data value="6"/>
+                              <Data value="12"/>
+                              <Data value="20"/>
+                              <Data value="24"/>
+                              <Data value="15"/>
+                              <Data value="10"/>
+                              <Data value="5"/>
+                              <Data value="2"/>
+                            </Column>
+                            <Column editable="true" title="Acumulada" type="java.lang.Integer">
+                              <Data value="2"/>
+                              <Data value="6"/>
+                              <Data value="12"/>
+                              <Data value="24"/>
+                              <Data value="44"/>
+                              <Data value="68"/>
+                              <Data value="83"/>
+                              <Data value="93"/>
+                              <Data value="98"/>
+                              <Data value="null"/>
+                            </Column>
                           </Table>
                         </Property>
                       </Properties>
@@ -260,10 +293,25 @@
                     <Component class="javax.swing.JTable" name="TablaTEn">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="0">
-                            <Column editable="true" title="Tiempo de entrega (unidades)" type="java.lang.Object"/>
-                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object"/>
-                            <Column editable="true" title="Acumulada" type="java.lang.Object"/>
+                          <Table columnCount="3" rowCount="4">
+                            <Column editable="true" title="Tiempo de entrega (unidades)" type="java.lang.Object">
+                              <Data value="1"/>
+                              <Data value="2"/>
+                              <Data value="3"/>
+                              <Data value="4"/>
+                            </Column>
+                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object">
+                              <Data value="20"/>
+                              <Data value="30"/>
+                              <Data value="25"/>
+                              <Data value="25"/>
+                            </Column>
+                            <Column editable="true" title="Acumulada" type="java.lang.Object">
+                              <Data value="20"/>
+                              <Data value="50"/>
+                              <Data value="75"/>
+                              <Data value="100"/>
+                            </Column>
                           </Table>
                         </Property>
                       </Properties>
@@ -368,10 +416,28 @@
                     <Component class="javax.swing.JTable" name="TablaTEs">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="0">
-                            <Column editable="true" title="Tiempo de espera cliente" type="java.lang.Object"/>
-                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object"/>
-                            <Column editable="true" title="Acumulada" type="java.lang.Object"/>
+                          <Table columnCount="3" rowCount="5">
+                            <Column editable="true" title="Tiempo de espera cliente" type="java.lang.Object">
+                              <Data value="0"/>
+                              <Data value="1"/>
+                              <Data value="2"/>
+                              <Data value="3"/>
+                              <Data value="4"/>
+                            </Column>
+                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object">
+                              <Data value="40"/>
+                              <Data value="20"/>
+                              <Data value="15"/>
+                              <Data value="15"/>
+                              <Data value="10"/>
+                            </Column>
+                            <Column editable="true" title="Acumulada" type="java.lang.Object">
+                              <Data value="40"/>
+                              <Data value="60"/>
+                              <Data value="75"/>
+                              <Data value="90"/>
+                              <Data value="100"/>
+                            </Column>
                           </Table>
                         </Property>
                       </Properties>

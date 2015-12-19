@@ -14,8 +14,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -237,7 +235,16 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         TablaDeman.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                { new Integer(25),  new Integer(2),  new Integer(2)},
+                { new Integer(26),  new Integer(4),  new Integer(6)},
+                { new Integer(27),  new Integer(6),  new Integer(12)},
+                { new Integer(28),  new Integer(12),  new Integer(24)},
+                { new Integer(29),  new Integer(20),  new Integer(44)},
+                { new Integer(30),  new Integer(24),  new Integer(68)},
+                { new Integer(31),  new Integer(15),  new Integer(83)},
+                { new Integer(35),  new Integer(10),  new Integer(93)},
+                { new Integer(33),  new Integer(5),  new Integer(98)},
+                { new Integer(24),  new Integer(2), null}
             },
             new String [] {
                 "Demanda diaria (unidades)", "Probabilidad (%)", "Acumulada"
@@ -316,7 +323,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         TablaTEn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {"1", "20", "20"},
+                {"2", "30", "50"},
+                {"3", "25", "75"},
+                {"4", "25", "100"}
             },
             new String [] {
                 "Tiempo de entrega (unidades)", "Probabilidad (%)", "Acumulada"
@@ -386,7 +396,11 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         TablaTEs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-
+                {"0", "40", "40"},
+                {"1", "20", "60"},
+                {"2", "15", "75"},
+                {"3", "15", "90"},
+                {"4", "10", "100"}
             },
             new String [] {
                 "Tiempo de espera cliente", "Probabilidad (%)", "Acumulada"
