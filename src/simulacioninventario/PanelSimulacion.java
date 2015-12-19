@@ -183,18 +183,18 @@ public class PanelSimulacion extends javax.swing.JFrame {
         TmEnLbl = new javax.swing.JLabel();
         ProbTmEnLbl = new javax.swing.JLabel();
         TmEnBtn = new javax.swing.JButton();
-        ProbTmEnTxtField = new javax.swing.JTextField();
-        TmEnTxtField = new javax.swing.JTextField();
         DelTEnBtn = new javax.swing.JButton();
+        ProbTmEnSpin = new javax.swing.JSpinner();
+        TmEnSpin = new javax.swing.JSpinner();
         PanelTmEs = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         TablaTEs = new javax.swing.JTable();
         TmEsLbl = new javax.swing.JLabel();
         ProbTmEsLbl = new javax.swing.JLabel();
         TmEsBtn = new javax.swing.JButton();
-        ProbTmEsTxtField = new javax.swing.JTextField();
-        TmEsTxtField = new javax.swing.JTextField();
         DelTEsBtn = new javax.swing.JButton();
+        ProbTmEsSpin = new javax.swing.JSpinner();
+        TmEsSpin = new javax.swing.JSpinner();
         PanelCosto = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -277,9 +277,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
         PanelDemandaLayout.setHorizontalGroup(
             PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDemandaLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelDemandaLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 448, Short.MAX_VALUE)
                         .addComponent(DelDemBtn)
                         .addGap(18, 18, 18)
                         .addComponent(AcepDemBtn)
@@ -291,14 +292,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addComponent(ProbDemLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProbDemSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 837, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE))
                 .addContainerGap())
         );
         PanelDemandaLayout.setVerticalGroup(
             PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDemandaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DemLbl)
@@ -306,8 +307,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     .addComponent(AcepDemBtn)
                     .addComponent(DelDemBtn)
                     .addComponent(DemSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ProbDemSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(ProbDemSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         SetPanel.add(PanelDemanda);
@@ -335,18 +335,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         });
 
-        ProbTmEnTxtField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProbTmEnTxtFieldActionPerformed(evt);
-            }
-        });
-
-        TmEnTxtField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TmEnTxtFieldActionPerformed(evt);
-            }
-        });
-
         DelTEnBtn.setText("Eliminar");
         DelTEnBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -359,37 +347,37 @@ public class PanelSimulacion extends javax.swing.JFrame {
         PanelTmEnLayout.setHorizontalGroup(
             PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEnLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTmEnLayout.createSequentialGroup()
-                        .addContainerGap(414, Short.MAX_VALUE)
+                    .addGroup(PanelTmEnLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(DelTEnBtn)
                         .addGap(18, 18, 18)
                         .addComponent(TmEnBtn)
                         .addGap(18, 18, 18)
                         .addComponent(TmEnLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TmEnTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(TmEnSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
                         .addComponent(ProbTmEnLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ProbTmEnTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane3))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ProbTmEnSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE))
+                .addContainerGap())
         );
         PanelTmEnLayout.setVerticalGroup(
             PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEnLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ProbTmEnTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TmEnTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TmEnLbl)
                     .addComponent(ProbTmEnLbl)
                     .addComponent(TmEnBtn)
-                    .addComponent(DelTEnBtn))
-                .addContainerGap())
+                    .addComponent(DelTEnBtn)
+                    .addComponent(TmEnSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ProbTmEnSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         SetPanel.add(PanelTmEn);
@@ -417,18 +405,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         });
 
-        ProbTmEsTxtField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ProbTmEsTxtFieldActionPerformed(evt);
-            }
-        });
-
-        TmEsTxtField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TmEsTxtFieldActionPerformed(evt);
-            }
-        });
-
         DelTEsBtn.setText("Eliminar");
         DelTEsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -442,36 +418,37 @@ public class PanelSimulacion extends javax.swing.JFrame {
             PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEsLayout.createSequentialGroup()
                 .addGroup(PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelTmEsLayout.createSequentialGroup()
-                        .addContainerGap(419, Short.MAX_VALUE)
+                    .addGroup(PanelTmEsLayout.createSequentialGroup()
+                        .addContainerGap(425, Short.MAX_VALUE)
                         .addComponent(DelTEsBtn)
                         .addGap(18, 18, 18)
                         .addComponent(TmEsBtn)
                         .addGap(18, 18, 18)
                         .addComponent(TmEsLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TmEsTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(TmEsSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(ProbTmEsLbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ProbTmEsTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ProbTmEsSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelTmEsLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         PanelTmEsLayout.setVerticalGroup(
             PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ProbTmEsTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TmEsTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(TmEsLbl)
                     .addComponent(ProbTmEsLbl)
                     .addComponent(TmEsBtn)
-                    .addComponent(DelTEsBtn))
-                .addContainerGap())
+                    .addComponent(DelTEsBtn)
+                    .addComponent(TmEsSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ProbTmEsSpin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         SetPanel.add(PanelTmEs);
@@ -584,7 +561,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                             .addComponent(RqLbl)
                             .addComponent(RRlbl)))
                     .addComponent(jButton1))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
 
         SetPanel.add(PanelCosto);
@@ -659,7 +636,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addComponent(jLabel12)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel13)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(286, Short.MAX_VALUE))
         );
 
         jPanel6.add(jPanel1);
@@ -690,46 +667,17 @@ public class PanelSimulacion extends javax.swing.JFrame {
         capturar_informacion();
     }//GEN-LAST:event_ArchivoMenuMouseClicked
 
-    private void ProbTmEnTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProbTmEnTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ProbTmEnTxtFieldActionPerformed
-
-    private void TmEnTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEnTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TmEnTxtFieldActionPerformed
-
-    private void ProbTmEsTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProbTmEsTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ProbTmEsTxtFieldActionPerformed
-
-    private void TmEsTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEsTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TmEsTxtFieldActionPerformed
-
-    private void DelTEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelTEnBtnActionPerformed
-        eliminarcolumna(TablaTEn);
-    }//GEN-LAST:event_DelTEnBtnActionPerformed
-
     private void DelTEsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelTEsBtnActionPerformed
         eliminarcolumna(TablaTEs);
     }//GEN-LAST:event_DelTEsBtnActionPerformed
 
-    private void TmEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEnBtnActionPerformed
-        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
-        modelotabTmEn.addRow(new Object[]{TmEnTxtField.getText(),
-                                         ProbTmEnTxtField.getText(),
-                                         generarAcumulada(modelotabTmEn, TablaTEn, Integer.parseInt(ProbTmEnTxtField.getText())) });
-        TmEnTxtField.setText("");
-        ProbTmEnTxtField.setText("");
-    }//GEN-LAST:event_TmEnBtnActionPerformed
-
     private void TmEsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEsBtnActionPerformed
         DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
-        modelotabTmEs.addRow(new Object[]{TmEsTxtField.getText(),
-                                         ProbTmEsTxtField.getText(),
-                                         generarAcumulada(modelotabTmEs, TablaTEs, Integer.parseInt(ProbTmEsTxtField.getText())) });
-        TmEsTxtField.setText("");
-        ProbTmEsTxtField.setText("");
+        modelotabTmEs.addRow(new Object[]{TmEsSpin.getValue(),
+                                         ProbTmEsSpin.getValue(),
+                                         generarAcumulada(modelotabTmEs, TablaTEs, (int) ProbTmEsSpin.getValue()) });
+        TmEsSpin.setValue(0);
+        ProbTmEsSpin.setValue(0);
     }//GEN-LAST:event_TmEsBtnActionPerformed
 
     private void DelDemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelDemBtnActionPerformed
@@ -750,6 +698,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.out.println("Demanda : " + getJoseito (Integer.parseInt(jTextField1.getText()),  TablaDeman));
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void DelTEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelTEnBtnActionPerformed
+        eliminarcolumna(TablaTEn);
+    }//GEN-LAST:event_DelTEnBtnActionPerformed
+
+    private void TmEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEnBtnActionPerformed
+        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
+        modelotabTmEn.addRow(new Object[]{TmEnSpin.getValue(),
+            ProbTmEnSpin.getValue(),
+            generarAcumulada(modelotabTmEn, TablaTEn, (int) ProbTmEnSpin.getValue()) });
+    TmEnSpin.setValue(0);
+    ProbTmEnSpin.setValue(0);
+    }//GEN-LAST:event_TmEnBtnActionPerformed
 
     
     
@@ -848,9 +809,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JLabel ProbDemLbl;
     private javax.swing.JSpinner ProbDemSpin;
     private javax.swing.JLabel ProbTmEnLbl;
-    private javax.swing.JTextField ProbTmEnTxtField;
+    private javax.swing.JSpinner ProbTmEnSpin;
     private javax.swing.JLabel ProbTmEsLbl;
-    private javax.swing.JTextField ProbTmEsTxtField;
+    private javax.swing.JSpinner ProbTmEsSpin;
     private javax.swing.JLabel RCstInvLbl;
     private javax.swing.JLabel RCstOrdLbl;
     private javax.swing.JLabel RCstSEczLbl;
@@ -864,10 +825,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JTable TablaTEs;
     private javax.swing.JButton TmEnBtn;
     private javax.swing.JLabel TmEnLbl;
-    private javax.swing.JTextField TmEnTxtField;
+    private javax.swing.JSpinner TmEnSpin;
     private javax.swing.JButton TmEsBtn;
     private javax.swing.JLabel TmEsLbl;
-    private javax.swing.JTextField TmEsTxtField;
+    private javax.swing.JSpinner TmEsSpin;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
