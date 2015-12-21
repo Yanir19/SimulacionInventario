@@ -770,7 +770,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
         }
     }
     
-    public int getJoseito (int aleatorio, JTable tabla){
+    public static int getJoseito (int aleatorio, JTable tabla){
         
         for(int i = 0; i < tabla.getRowCount();i++){
             
