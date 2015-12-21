@@ -25,14 +25,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
      * Creates new form PanelSimulacion
      */
     
+    Object [][]  demanda = {{25,2,2},{26,4,6},{27,6,12},{28,12,24},{29,20,44},
+    {30,24,68},{31,15,83},{35,10,93},{33,5,98},{24,2,100}};
+    
+    Object [] [] TmEn = {{1,20,20},{2,30,50},{3,25,75},{4,25,100}};
+    
+    Object [] [] TmEs = {{0,40,40}, {1,20,60},{2,15,75},{3,15,90},{4,10,100}};
+    
     DefaultTableModel modelotab; 
     public PanelSimulacion() {
         initComponents();
         
         SetPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        
-        
         
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -117,19 +122,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
                
                switch (i){
                    case 0:
-                       RCstInvLbl.setText(linea.substring(3));
+                       CostInvTxtField.setText(linea.substring(3));
                        break;
                    case 1:
-                       RCstOrdLbl.setText(linea.substring(3));
+                       CostOrdTxtField.setText(linea.substring(3));
                        break;
                    case 2:
-                       RCstSEczLbl.setText(linea.substring(3));
+                       CostCEspTxtField.setText(linea.substring(3));
                        break;
                    case 3:
-                       RCstSSELbl.setText(linea.substring(3));
+                       CostSEspTxtField.setText(linea.substring(3));
                        break;
                    case 4:
-                       InvIniLbl.setText(linea.substring(3));
+                       InvIncTxtField.setText(linea.substring(3));
                        break;
                }
            }
@@ -201,15 +206,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        RCstInvLbl = new javax.swing.JLabel();
-        RCstOrdLbl = new javax.swing.JLabel();
-        RCstSEczLbl = new javax.swing.JLabel();
-        RCstSSELbl = new javax.swing.JLabel();
-        InvIniLbl = new javax.swing.JLabel();
         RqLbl = new javax.swing.JLabel();
         RRlbl = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        CostInvTxtField = new javax.swing.JTextField();
+        CostOrdTxtField = new javax.swing.JTextField();
+        CostCEspTxtField = new javax.swing.JTextField();
+        CostSEspTxtField = new javax.swing.JTextField();
+        InvIncTxtField = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaFinal = new javax.swing.JTable();
@@ -235,16 +239,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         TablaDeman.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                { new Integer(25),  new Integer(2),  new Integer(2)},
-                { new Integer(26),  new Integer(4),  new Integer(6)},
-                { new Integer(27),  new Integer(6),  new Integer(12)},
-                { new Integer(28),  new Integer(12),  new Integer(24)},
-                { new Integer(29),  new Integer(20),  new Integer(44)},
-                { new Integer(30),  new Integer(24),  new Integer(68)},
-                { new Integer(31),  new Integer(15),  new Integer(83)},
-                { new Integer(35),  new Integer(10),  new Integer(93)},
-                { new Integer(33),  new Integer(5),  new Integer(98)},
-                { new Integer(24),  new Integer(2), null}
+
             },
             new String [] {
                 "Demanda diaria (unidades)", "Probabilidad (%)", "Acumulada"
@@ -323,10 +318,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         TablaTEn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "20", "20"},
-                {"2", "30", "50"},
-                {"3", "25", "75"},
-                {"4", "25", "100"}
+
             },
             new String [] {
                 "Tiempo de entrega (unidades)", "Probabilidad (%)", "Acumulada"
@@ -396,11 +388,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         TablaTEs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"0", "40", "40"},
-                {"1", "20", "60"},
-                {"2", "15", "75"},
-                {"3", "15", "90"},
-                {"4", "10", "100"}
+
             },
             new String [] {
                 "Tiempo de espera cliente", "Probabilidad (%)", "Acumulada"
@@ -483,26 +471,32 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         jLabel7.setText("R:");
 
-        RCstInvLbl.setText("jLabel8");
-
-        RCstOrdLbl.setText("jLabel8");
-
-        RCstSEczLbl.setText("jLabel8");
-
-        RCstSSELbl.setText("jLabel8");
-
-        InvIniLbl.setText("jLabel8");
-
         RqLbl.setText("jLabel8");
 
         RRlbl.setText("jLabel8");
 
-        jTextField1.setText("jTextField1");
-
-        jButton1.setText("jButton1");
+        jButton1.setText("Llenar tablas");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        CostInvTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CostInvTxtFieldActionPerformed(evt);
+            }
+        });
+
+        CostCEspTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CostCEspTxtFieldActionPerformed(evt);
+            }
+        });
+
+        CostSEspTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CostSEspTxtFieldActionPerformed(evt);
             }
         });
 
@@ -512,41 +506,43 @@ public class PanelSimulacion extends javax.swing.JFrame {
             PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelCostoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3)
-                    .addGroup(PanelCostoLayout.createSequentialGroup()
-                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(RCstInvLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(RCstOrdLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addComponent(RCstSEczLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelCostoLayout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(InvIniLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelCostoLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(PanelCostoLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CostInvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(PanelCostoLayout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(PanelCostoLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(PanelCostoLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(RqLbl)
+                                .addGap(34, 34, 34)
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(RRlbl))
+                            .addGroup(PanelCostoLayout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(229, 229, 229))
                     .addGroup(PanelCostoLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(RqLbl)
-                        .addGap(34, 34, 34)
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(RRlbl))
-                    .addGroup(PanelCostoLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(RCstSSELbl, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(150, 150, 150))
+                        .addComponent(jButton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         PanelCostoLayout.setVerticalGroup(
             PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -555,27 +551,25 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel4)
-                    .addComponent(RCstInvLbl)
-                    .addComponent(RCstSSELbl)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CostInvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel5)
+                    .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(PanelCostoLayout.createSequentialGroup()
-                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5)
-                            .addComponent(RCstOrdLbl)
-                            .addComponent(InvIniLbl))
-                        .addGap(24, 24, 24)
-                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(RCstSEczLbl)
-                            .addComponent(RqLbl)
-                            .addComponent(RRlbl)))
-                    .addComponent(jButton1))
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(RqLbl)
+                    .addComponent(RRlbl)
+                    .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         SetPanel.add(PanelCosto);
@@ -710,7 +704,22 @@ public class PanelSimulacion extends javax.swing.JFrame {
     }//GEN-LAST:event_AcepDemBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Demanda : " + getJoseito (Integer.parseInt(jTextField1.getText()),  TablaDeman));
+        System.out.println("Tama;o de arreglo : " + demanda.length);
+        DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
+        DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
+        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
+        Object aux [] = new Object[3];
+        
+        for(int i = 0; i < demanda.length ;i++)
+            modelotabDem.addRow(demanda [i]);
+        
+        for(int i = 0; i < TmEs.length ;i++)
+            modelotabTmEs.addRow(TmEs [i]);
+        
+        for(int i = 0; i < TmEn.length ;i++)
+            modelotabTmEn.addRow(TmEn [i]);
+        
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void DelTEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelTEnBtnActionPerformed
@@ -725,6 +734,18 @@ public class PanelSimulacion extends javax.swing.JFrame {
     TmEnSpin.setValue(0);
     ProbTmEnSpin.setValue(0);
     }//GEN-LAST:event_TmEnBtnActionPerformed
+
+    private void CostInvTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CostInvTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CostInvTxtFieldActionPerformed
+
+    private void CostCEspTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CostCEspTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CostCEspTxtFieldActionPerformed
+
+    private void CostSEspTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CostSEspTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CostSEspTxtFieldActionPerformed
 
     
     
@@ -809,12 +830,16 @@ public class PanelSimulacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcepDemBtn;
     private javax.swing.JMenu ArchivoMenu;
+    private javax.swing.JTextField CostCEspTxtField;
+    private javax.swing.JTextField CostInvTxtField;
+    private javax.swing.JTextField CostOrdTxtField;
+    private javax.swing.JTextField CostSEspTxtField;
     private javax.swing.JButton DelDemBtn;
     private javax.swing.JButton DelTEnBtn;
     private javax.swing.JButton DelTEsBtn;
     private javax.swing.JLabel DemLbl;
     private javax.swing.JSpinner DemSpin;
-    private javax.swing.JLabel InvIniLbl;
+    private javax.swing.JTextField InvIncTxtField;
     private javax.swing.JPanel PanelCosto;
     private javax.swing.JPanel PanelDemanda;
     private javax.swing.JTabbedPane PanelSim;
@@ -826,10 +851,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JSpinner ProbTmEnSpin;
     private javax.swing.JLabel ProbTmEsLbl;
     private javax.swing.JSpinner ProbTmEsSpin;
-    private javax.swing.JLabel RCstInvLbl;
-    private javax.swing.JLabel RCstOrdLbl;
-    private javax.swing.JLabel RCstSEczLbl;
-    private javax.swing.JLabel RCstSSELbl;
     private javax.swing.JLabel RRlbl;
     private javax.swing.JLabel RqLbl;
     private javax.swing.JPanel SetPanel;
@@ -868,6 +889,5 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

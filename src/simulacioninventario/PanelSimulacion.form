@@ -151,43 +151,10 @@
                     <Component class="javax.swing.JTable" name="TablaDeman">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="10">
-                            <Column editable="true" title="Demanda diaria (unidades)" type="java.lang.Integer">
-                              <Data value="25"/>
-                              <Data value="26"/>
-                              <Data value="27"/>
-                              <Data value="28"/>
-                              <Data value="29"/>
-                              <Data value="30"/>
-                              <Data value="31"/>
-                              <Data value="35"/>
-                              <Data value="33"/>
-                              <Data value="24"/>
-                            </Column>
-                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Integer">
-                              <Data value="2"/>
-                              <Data value="4"/>
-                              <Data value="6"/>
-                              <Data value="12"/>
-                              <Data value="20"/>
-                              <Data value="24"/>
-                              <Data value="15"/>
-                              <Data value="10"/>
-                              <Data value="5"/>
-                              <Data value="2"/>
-                            </Column>
-                            <Column editable="true" title="Acumulada" type="java.lang.Integer">
-                              <Data value="2"/>
-                              <Data value="6"/>
-                              <Data value="12"/>
-                              <Data value="24"/>
-                              <Data value="44"/>
-                              <Data value="68"/>
-                              <Data value="83"/>
-                              <Data value="93"/>
-                              <Data value="98"/>
-                              <Data value="null"/>
-                            </Column>
+                          <Table columnCount="3" rowCount="0">
+                            <Column editable="true" title="Demanda diaria (unidades)" type="java.lang.Integer"/>
+                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Integer"/>
+                            <Column editable="true" title="Acumulada" type="java.lang.Integer"/>
                           </Table>
                         </Property>
                       </Properties>
@@ -293,25 +260,10 @@
                     <Component class="javax.swing.JTable" name="TablaTEn">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="4">
-                            <Column editable="true" title="Tiempo de entrega (unidades)" type="java.lang.Object">
-                              <Data value="1"/>
-                              <Data value="2"/>
-                              <Data value="3"/>
-                              <Data value="4"/>
-                            </Column>
-                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object">
-                              <Data value="20"/>
-                              <Data value="30"/>
-                              <Data value="25"/>
-                              <Data value="25"/>
-                            </Column>
-                            <Column editable="true" title="Acumulada" type="java.lang.Object">
-                              <Data value="20"/>
-                              <Data value="50"/>
-                              <Data value="75"/>
-                              <Data value="100"/>
-                            </Column>
+                          <Table columnCount="3" rowCount="0">
+                            <Column editable="true" title="Tiempo de entrega (unidades)" type="java.lang.Object"/>
+                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object"/>
+                            <Column editable="true" title="Acumulada" type="java.lang.Object"/>
                           </Table>
                         </Property>
                       </Properties>
@@ -416,28 +368,10 @@
                     <Component class="javax.swing.JTable" name="TablaTEs">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="3" rowCount="5">
-                            <Column editable="true" title="Tiempo de espera cliente" type="java.lang.Object">
-                              <Data value="0"/>
-                              <Data value="1"/>
-                              <Data value="2"/>
-                              <Data value="3"/>
-                              <Data value="4"/>
-                            </Column>
-                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object">
-                              <Data value="40"/>
-                              <Data value="20"/>
-                              <Data value="15"/>
-                              <Data value="15"/>
-                              <Data value="10"/>
-                            </Column>
-                            <Column editable="true" title="Acumulada" type="java.lang.Object">
-                              <Data value="40"/>
-                              <Data value="60"/>
-                              <Data value="75"/>
-                              <Data value="90"/>
-                              <Data value="100"/>
-                            </Column>
+                          <Table columnCount="3" rowCount="0">
+                            <Column editable="true" title="Tiempo de espera cliente" type="java.lang.Object"/>
+                            <Column editable="true" title="Probabilidad (%)" type="java.lang.Object"/>
+                            <Column editable="true" title="Acumulada" type="java.lang.Object"/>
                           </Table>
                         </Property>
                       </Properties>
@@ -488,52 +422,56 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="RCstInvLbl" max="32767" attributes="0"/>
-                                      <Component id="RCstOrdLbl" min="-2" pref="79" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                          </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="RCstSEczLbl" min="-2" pref="63" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="InvIniLbl" min="-2" pref="57" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="CostCEspTxtField" min="-2" pref="41" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="CostInvTxtField" min="-2" pref="46" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="CostOrdTxtField" min="-2" pref="56" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace pref="126" max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="InvIncTxtField" min="-2" pref="40" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="RqLbl" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                                          <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="RRlbl" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="CostSEspTxtField" min="-2" pref="45" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="229" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="RqLbl" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                  <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="RRlbl" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="RCstSSELbl" min="-2" pref="55" max="-2" attributes="0"/>
+                                  <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="66" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -544,32 +482,28 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="RCstInvLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="RCstSSELbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CostInvTxtField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CostSEspTxtField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CostOrdTxtField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="InvIncTxtField" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="RqLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="RRlbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="CostCEspTxtField" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="RCstOrdLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="InvIniLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="RCstSEczLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="RqLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="RRlbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Component id="jButton1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="107" max="32767" attributes="0"/>
+                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace pref="57" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -610,31 +544,6 @@
                     <Property name="text" type="java.lang.String" value="R:"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="RCstInvLbl">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel8"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="RCstOrdLbl">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel8"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="RCstSEczLbl">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel8"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="RCstSSELbl">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel8"/>
-                  </Properties>
-                </Component>
-                <Component class="javax.swing.JLabel" name="InvIniLbl">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jLabel8"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JLabel" name="RqLbl">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="jLabel8"/>
@@ -645,18 +554,32 @@
                     <Property name="text" type="java.lang.String" value="jLabel8"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextField1">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="jTextField1"/>
-                  </Properties>
-                </Component>
                 <Component class="javax.swing.JButton" name="jButton1">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="jButton1"/>
+                    <Property name="text" type="java.lang.String" value="Llenar tablas"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
                   </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="CostInvTxtField">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CostInvTxtFieldActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="CostOrdTxtField">
+                </Component>
+                <Component class="javax.swing.JTextField" name="CostCEspTxtField">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CostCEspTxtFieldActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="CostSEspTxtField">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CostSEspTxtFieldActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JTextField" name="InvIncTxtField">
                 </Component>
               </SubComponents>
             </Container>
