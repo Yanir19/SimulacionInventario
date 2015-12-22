@@ -131,7 +131,7 @@ public class Caso implements Callable{
         Random randomGenerator = new Random();
         
         tablaEventos[DIA][dia] = dia+1;
-        tablaEventos[INV_INICIAL][dia] = this.inventarioInicial;
+        //tablaEventos[INV_INICIAL][dia] = this.inventarioInicial;
         
         if(this.printTable){
             System.out.println("DIA\t|INV_INICIAL\t|NRO_ALT_DEMANDA|DEMANDA\t| INV_FINAL\t| INV_PROMEDIO\t| FALTANTE\t| NRO_ORDEN\t| NRO_ALT_T_ENTREGA\t| T_ENTREGA\t| NRO_ALT_T_ESPERA\t| T_ESPERA ");
@@ -154,11 +154,13 @@ public class Caso implements Callable{
             
             if(dia>0){
                 tablaEventos[INV_INICIAL][dia] = tablaEventos[INV_FINAL][dia-1];
+            }else{
+                tablaEventos[INV_INICIAL][dia] = this.inventarioInicial;
             }
             
             
             // Llegó un pedido?
-            if( dia == diaEntregaPedido ){
+            if( dia == diaEntregaPedido && dia>0){
                 tablaEventos[INV_INICIAL][dia] += this.cantidadPedido;
             }
             
@@ -166,17 +168,17 @@ public class Caso implements Callable{
             ListIterator<clienteEspera> iterator = clientesEspera.listIterator();
             while(iterator.hasNext()){
                 clienteEspera cliente = iterator.next();
-                
                 // Si tiempo de espera del cliente está vencido, se pierde el cliente
-                if ( cliente.diaEspera >= dia ){
+                if ( cliente.diaEspera > dia+1 ){
                     this.costoTotalSinEspera = this.costoTotalSinEspera.add(this.costoFaltanteSinEspera.multiply(BigDecimal.valueOf(cliente.faltante)));
                     iterator.remove();
+                    break;
                 }
                 
                 
                 
                 // Si no está vencido y hay inventario, añadir costos
-                if(tablaEventos[INV_INICIAL][dia] > 0 && cliente.diaEspera < dia){
+                if(tablaEventos[INV_INICIAL][dia] > 0 ){
                     
                     // Hay suficiente inventario suplirlo completamente y quitar el cliente de la cola, sino suplir lo que se pueda
                     if( tablaEventos[INV_INICIAL][dia] >= cliente.faltante ){
@@ -211,7 +213,7 @@ public class Caso implements Callable{
                 tablaEventos[INV_FINAL][dia] = tablaEventos[INV_INICIAL][dia] - tablaEventos[DEMANDA][dia];
             }else{
                 tablaEventos[FALTANTE][dia] = tablaEventos[DEMANDA][dia] - tablaEventos[INV_INICIAL][dia];
-                tablaEventos[INV_INICIAL][dia] = 0;
+                tablaEventos[INV_FINAL][dia] = 0;
                 
                 // Generar número aleatorio de tiempo de espera
                 if(debugMode){
@@ -229,7 +231,8 @@ public class Caso implements Callable{
             }
             
             // Calcular inventario promedio y sumar costos de inventario del día
-            tablaEventos[INV_PROMEDIO][dia] = (tablaEventos[INV_INICIAL][dia] + tablaEventos[INV_FINAL][dia])/2;
+            
+            tablaEventos[INV_PROMEDIO][dia] = (int) Math.ceil(((tablaEventos[INV_INICIAL][dia] + (float )tablaEventos[INV_FINAL][dia])/2));
             this.costoTotalInventario = this.costoTotalInventario.add(this.costoInventario.multiply(BigDecimal.valueOf(tablaEventos[INV_PROMEDIO][dia])));
 
             

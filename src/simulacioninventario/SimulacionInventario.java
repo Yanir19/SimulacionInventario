@@ -40,11 +40,12 @@ public class SimulacionInventario {
     public static void main(String[] args) {
         // TODO code application logic here
         
+            System.out.println("Putada : " +  Math.ceil(3.1));
         // Variables necesarias
         /*
-        ArrayList demandaDiaria = null;
-        ArrayList tEntrega = null;
-        ArrayList tEspera = null;
+        JTable demandaDiaria = null;
+        JTable tEntrega = null;
+        JTable tEspera = null;
         BigDecimal costoInventario = BigDecimal.valueOf(52.0);
         BigDecimal costoOrdenar = BigDecimal.valueOf(100.0);
         BigDecimal costoFaltanteConEspera = BigDecimal.valueOf(20.0);
