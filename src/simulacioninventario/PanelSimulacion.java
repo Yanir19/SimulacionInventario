@@ -32,9 +32,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
     Object [][]  demanda = {{25,2,2},{26,4,6},{27,6,12},{28,12,24},{29,20,44},
     {30,24,68},{31,15,83},{35,10,93},{33,5,98},{34,2,100}};
     
-    Object [] [] TmEn = {{1,5,5},{2,5,10},{3,30,40},{4,60,100}};
+    Object [] [] TmEn = {{1,20,20},{2,30,50},{3,25,75},{4,25,100}};
     
-    Object [] [] TmEs = {{0,3,3}, {1,50,53},{2,40,93},{3,3,96},{4,4,100}};
+    Object [] [] TmEs = {{0,40,40}, {1,20,60},{2,15,75},{3,15,90},{4,10,100}};
     
     DefaultTableModel modelotab; 
     public PanelSimulacion() {
@@ -712,17 +712,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
         Integer cantidadPedido = 100;
         Integer puntoReorden = 75;
         int[] nrosAleatoriosDemanda = {69,37,75,60,54,47,79,96,42,98,15,59,37,25,14};
-        int[] nrosAleatoriosTiempoEntrega = {22,43,29,76,15,15,1,15,1,6,1,6,16};
-        int[] nrosAleatoriosTiempoEspera = {64,6,15,15,15,15,15,15};
+        int[] nrosAleatoriosTiempoEntrega = {22,43,15,29,76};
+        int[] nrosAleatoriosTiempoEspera = {64,6};
         
         Caso caso = new Caso(TablaDeman, TablaTEn, TablaTEs, new BigDecimal(CostInvTxtField.getText()), 
                 new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
                 Integer.parseInt(InvIncTxtField.getText()), puntoReorden, cantidadPedido, 15,
                 nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera
-        );
-        
-        
-        
+        );       
         
         try {
             ResultadoCaso resultado = (ResultadoCaso) caso.call();
@@ -744,6 +741,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 
                 modelotabFinal.addRow(fila);
             }
+            
+            System.out.println("Costo total: " + resultado.costoTotal);
+            System.out.println("Costo inventario: " + resultado.costoTotalInventario);
+            System.out.println("Costo orden: " + resultado.costoTotalOrden);
+            System.out.println("Costo con espera: " + resultado.costoTotalConEspera);
+            System.out.println("Costo sin espera: " + resultado.costoTotalSinEspera);
             
         } catch (Exception ex) {
             Logger.getLogger(PanelSimulacion.class.getName()).log(Level.SEVERE, null, ex);

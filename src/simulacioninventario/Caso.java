@@ -6,6 +6,8 @@
 package simulacioninventario;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -66,6 +68,7 @@ public class Caso implements Callable{
     private BigDecimal costoTotalInventario = BigDecimal.valueOf(0.0);
     private BigDecimal costoTotalOrden = BigDecimal.valueOf(0.0);
     private BigDecimal costoTotal = BigDecimal.valueOf(0.0);
+    private BigDecimal costoDiarioInventario;
 
     public Caso(JTable demandaDiaria, JTable tEntrega, JTable tEspera, 
             BigDecimal costoInventario, BigDecimal costoOrdenar, BigDecimal costoFaltanteConEspera, 
@@ -90,6 +93,9 @@ public class Caso implements Callable{
         this.nrosAleatoriosTiempoEspera = null;
         
         this.debugMode = false;
+        
+        this.costoDiarioInventario = this.costoInventario.divide(BigDecimal.valueOf(365), MathContext.DECIMAL128);
+        
     }
     
     /*
@@ -119,6 +125,10 @@ public class Caso implements Callable{
         this.nrosAleatoriosTiempoEspera = nrosAleatoriosTiempoEspera;
         
         this.debugMode = true;
+        
+        this.costoDiarioInventario = this.costoInventario.divide(BigDecimal.valueOf(365), MathContext.DECIMAL128);
+        
+        //System.out.println("costoDiarioInventario " + this.costoDiarioInventario);
     }
     
     @Override
@@ -226,15 +236,19 @@ public class Caso implements Callable{
                 tablaEventos[T_ESPERA][dia] = PanelSimulacion.getJoseito(tablaEventos[NRO_ALT_T_ESPERA][dia], this.tEspera);
                 
                 // Añadir cliente a la lista de espera
-                clienteEspera clienteNuevo = new clienteEspera(dia + tablaEventos[T_ESPERA][dia], tablaEventos[FALTANTE][dia]);
-                clientesEspera.add(clienteNuevo);
+                if(tablaEventos[T_ESPERA][dia] > 0){
+                    clienteEspera clienteNuevo = new clienteEspera(dia + tablaEventos[T_ESPERA][dia], tablaEventos[FALTANTE][dia]);
+                    clientesEspera.add(clienteNuevo);
+                }else{
+                    this.costoTotalSinEspera = this.costoTotalSinEspera.add(this.costoFaltanteSinEspera.multiply(BigDecimal.valueOf(tablaEventos[FALTANTE][dia])));
+                }
             }
             
             // Calcular inventario promedio y sumar costos de inventario del día
             
             tablaEventos[INV_PROMEDIO][dia] = (int) Math.ceil(((tablaEventos[INV_INICIAL][dia] + (float )tablaEventos[INV_FINAL][dia])/2));
-            this.costoTotalInventario = this.costoTotalInventario.add(this.costoInventario.multiply(BigDecimal.valueOf(tablaEventos[INV_PROMEDIO][dia])));
-
+            //this.costoTotalInventario = this.costoTotalInventario.add(this.costoInventario.multiply(BigDecimal.valueOf(tablaEventos[INV_PROMEDIO][dia])));
+            this.costoTotalInventario = this.costoTotalInventario.add(this.costoDiarioInventario.multiply(BigDecimal.valueOf(tablaEventos[INV_PROMEDIO][dia])));
             
             // Si el inventario al final del día alcanza el punto de reorden y no hay ordenes pendientes hacer pedido
             if ( tablaEventos[INV_FINAL][dia] <= this.puntoReorden && diaEntregaPedido <= dia ){
