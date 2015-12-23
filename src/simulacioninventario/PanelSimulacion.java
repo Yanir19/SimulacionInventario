@@ -40,57 +40,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
     public PanelSimulacion() {
         initComponents();
         
-        SetPanel.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.75;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.fill = GridBagConstraints.BOTH;
-        SetPanel.add(PanelDemanda, gbc);
-        gbc.weightx = 0.0;
-        gbc.weighty = 0.0;
-        
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.75;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.BOTH;
-        SetPanel.add(PanelTmEn, gbc);
-        gbc.weightx = 0.0;
-        gbc.weighty = 0.0;
-        
-        gbc.gridx = 2;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.75;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.fill = GridBagConstraints.BOTH;
-        SetPanel.add(PanelTmEs, gbc);
-        gbc.weightx = 0.0;
-        gbc.weighty = 0.0;
-        
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        gbc.gridheight = 1;
-        gbc.weightx = 1;
-        gbc.weighty = 0.15;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.BOTH;
-        SetPanel.add(PanelCosto, gbc);
-        gbc.weightx = 0.0;
-        gbc.weighty = 0.0;
-        
+       layoutTablas();
     }
 
     public void capturar_informacion (){
@@ -298,14 +248,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProbDemSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1191, Short.MAX_VALUE))
                 .addContainerGap())
         );
         PanelDemandaLayout.setVerticalGroup(
             PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDemandaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DemLbl)
@@ -355,7 +305,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             .addGroup(PanelTmEnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1191, Short.MAX_VALUE)
                     .addGroup(PanelTmEnLayout.createSequentialGroup()
                         .addComponent(DelTEnBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -375,7 +325,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEnLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TmEnLbl)
@@ -425,7 +375,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             .addGroup(PanelTmEsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4)
                     .addGroup(PanelTmEsLayout.createSequentialGroup()
                         .addComponent(DelTEsBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -438,14 +388,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addComponent(ProbTmEsLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProbTmEsSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 800, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         PanelTmEsLayout.setVerticalGroup(
             PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TmEsLbl)
@@ -524,7 +474,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
                                 .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                        .addGap(83, 83, 83)
                         .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(PanelCostoLayout.createSequentialGroup()
                                 .addComponent(jLabel5)
@@ -545,7 +495,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addGap(229, 229, 229))
                     .addGroup(PanelCostoLayout.createSequentialGroup()
                         .addComponent(jButton1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(1108, Short.MAX_VALUE))))
         );
         PanelCostoLayout.setVerticalGroup(
             PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -572,7 +522,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         SetPanel.add(PanelCosto);
@@ -586,7 +536,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Día", "Inv Inc.", "<html>No. aleatorio <br>para la demanda</html>", "Demanda", "<html>Inv. <br> Fina </html>l", "<html> Inv. <br> Prom </html>", "Faltante", "<html> No. <br> Orden </html>", "<html> No. aletario para <br> tiempo de entrega </html>", "Tiempo de entrega", "<html> No. aletario para <br>tiempo de espera </html>", "Tiempo de espera"
+                "Día", "Inv Inc.", "<html>Nro. aleatorio <br>para la demanda</html>", "Demanda", "<html>Inv. <br> Final </html>l", "<html> Inv. <br> Prom </html>", "Faltante", "<html> Nro. <br> Orden </html>", "<html> Nro. aletario para <br> tiempo de entrega </html>", "Tiempo de entrega", "<html> Nro. aletario para <br>tiempo de espera </html>", "Tiempo de espera"
             }
         ) {
             Class[] types = new Class [] {
@@ -640,7 +590,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(jLabel13)
                     .addComponent(RunBtn))
-                .addContainerGap(739, Short.MAX_VALUE))
+                .addContainerGap(1103, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -657,7 +607,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
                 .addComponent(RunBtn)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         jPanel6.add(jPanel1);
@@ -776,10 +726,29 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
         try {
             ResultadoCaso resultado = (ResultadoCaso) caso.call();
+            DefaultTableModel modelotabFinal = (DefaultTableModel) TablaFinal.getModel();
+            Object fila [] = new Object[12];
+            for(int i = 0 ; i< nrosAleatoriosDemanda.length; i++){
+                fila [0] = resultado.tablaEventos[caso.DIA][i];
+                fila [1] = resultado.tablaEventos[caso.INV_INICIAL][i];
+                fila [2] = resultado.tablaEventos[caso.NRO_ALT_DEMANDA][i];
+                fila [3] = resultado.tablaEventos[caso.DEMANDA][i];
+                fila [4] = resultado.tablaEventos[caso.INV_FINAL][i];
+                fila [5] = resultado.tablaEventos[caso.INV_PROMEDIO][i];
+                fila [6] = resultado.tablaEventos[caso.FALTANTE][i];
+                fila [7] = resultado.tablaEventos[caso.NRO_ORDEN][i];
+                fila [8] = resultado.tablaEventos[caso.NRO_ALT_T_ENTREGA][i];
+                fila [9] = resultado.tablaEventos[caso.T_ENTREGA][i];
+                fila [10] = resultado.tablaEventos[caso.NRO_ALT_T_ESPERA][i];
+                fila [11] = resultado.tablaEventos[caso.T_ESPERA][i];
+                
+                modelotabFinal.addRow(fila);
+            }
             
         } catch (Exception ex) {
             Logger.getLogger(PanelSimulacion.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         
         
         
@@ -827,6 +796,69 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
         return 0;        
     }
+    
+    public void layoutTablas() {
+        
+        SetPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.75;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.fill = GridBagConstraints.BOTH;
+        SetPanel.add(PanelDemanda, gbc);
+        gbc.weightx = 0.0;
+        gbc.weighty = 0.0;
+        
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.75;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.BOTH;
+        SetPanel.add(PanelTmEn, gbc);
+        gbc.weightx = 0.0;
+        gbc.weighty = 0.0;
+        
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.75;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.fill = GridBagConstraints.BOTH;
+        SetPanel.add(PanelTmEs, gbc);
+        gbc.weightx = 0.0;
+        gbc.weighty = 0.0;
+        
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        gbc.weightx = 1;
+        gbc.weighty = 0.15;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.BOTH;
+        SetPanel.add(PanelCosto, gbc);
+        gbc.weightx = 0.0;
+        gbc.weighty = 0.0;
+       
+        
+    }
+    
+    public void CostosIniciales() {
+        
+        
+        
+    }
+    
     
     /**
      * @param args the command line arguments
