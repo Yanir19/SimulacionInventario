@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -29,12 +28,11 @@ public class PanelSimulacion extends javax.swing.JFrame {
      * Creates new form PanelSimulacion
      */
     
-    Object [][]  demanda = {{25,2,2},{26,4,6},{27,6,12},{28,12,24},{29,20,44},
-    {30,24,68},{31,15,83},{35,10,93},{33,5,98},{34,2,100}};
+    Object []  demanda = new Object [3] ;
     
-    Object [] [] TmEn = {{1,20,20},{2,30,50},{3,25,75},{4,25,100}};
+    Object []  TmEn = new Object [3];
     
-    Object [] [] TmEs = {{0,40,40}, {1,20,60},{2,15,75},{3,15,90},{4,10,100}};
+    Object [] TmEs = new Object [3];
     
     DefaultTableModel modelotab; 
     public PanelSimulacion() {
@@ -65,12 +63,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
         try {
            // Apertura del fichero y creacion de BufferedReader para poder
            // hacer una lectura comoda (disponer del metodo readLine()).
-           archivo = new File ("C:/Users/Yanir/Desktop/Simulacion.txt");
-           fr = new FileReader (archivo);
+           fr = new FileReader (abre);
            br = new BufferedReader(fr);
 
            // Lectura del fichero
            String linea;
+           int count= 0;
            for (int i = 0; (linea=br.readLine())!=null ; i++){
                
                switch (i){
@@ -88,6 +86,63 @@ public class PanelSimulacion extends javax.swing.JFrame {
                        break;
                    case 4:
                        InvIncTxtField.setText(linea.substring(3));
+                       break;
+                       
+                    case 5:
+                        
+                        DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
+                        demanda = new Object[3];
+                        
+                        while (linea.indexOf(',')>0){
+                            
+                            if(count == 3){
+                                count = 0;
+                                modelotabDem.addRow(demanda);
+                            }
+                            demanda [count] = Integer.parseInt(linea.substring(3, linea.indexOf(',')));
+                            linea  = "   " + linea.substring(linea.indexOf(',')+1);
+                            System.out.println("nueva > " + linea);
+                            count ++;
+                        }   
+                            demanda [count] = Integer.parseInt(linea.substring(3));
+                            modelotabDem.addRow(demanda);
+                       break;
+                       
+                    case 6:
+                        DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
+                        count = 0;
+                        while (linea.indexOf(',')>0){
+                            
+                            if(count == 3){
+                                count = 0;
+                                modelotabTmEs.addRow(TmEs);
+                            }
+                            TmEs [count] = Integer.parseInt(linea.substring(3, linea.indexOf(',')));
+                            linea  = "   " + linea.substring(linea.indexOf(',')+1);
+                            System.out.println("nueva > " + linea);
+                            count ++;
+                        }   
+                            TmEs [count] = Integer.parseInt(linea.substring(3));
+                            modelotabTmEs.addRow(TmEs);
+                       break;
+                       
+                    
+                    case 7:
+                        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
+                        count = 0;
+                        while (linea.indexOf(',')>0){
+                            
+                            if(count == 3){
+                                count = 0;
+                                modelotabTmEn.addRow(TmEn);
+                            }
+                            TmEn [count] = Integer.parseInt(linea.substring(3, linea.indexOf(',')));
+                            linea  = "   " + linea.substring(linea.indexOf(',')+1);
+                            System.out.println("nueva > " + linea);
+                            count ++;
+                        }   
+                            TmEn [count] = Integer.parseInt(linea.substring(3));
+                            modelotabTmEn.addRow(TmEn);
                        break;
                }
            }
@@ -121,7 +176,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jPopupMenu2 = new javax.swing.JPopupMenu();
-        jLabel8 = new javax.swing.JLabel();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         PanelSim = new javax.swing.JTabbedPane();
         SetPanel = new javax.swing.JPanel();
         PanelDemanda = new javax.swing.JPanel();
@@ -157,16 +212,15 @@ public class PanelSimulacion extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        RqLbl = new javax.swing.JLabel();
-        RRlbl = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
         CostInvTxtField = new javax.swing.JTextField();
         CostOrdTxtField = new javax.swing.JTextField();
         CostCEspTxtField = new javax.swing.JTextField();
         CostSEspTxtField = new javax.swing.JTextField();
         InvIncTxtField = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        SimDiasTxtField = new javax.swing.JTextField();
+        NumAleArc = new javax.swing.JRadioButton();
+        NumAle = new javax.swing.JRadioButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaFinal = new javax.swing.JTable();
@@ -177,12 +231,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         RunBtn = new javax.swing.JButton();
+        CstFlteLbl = new javax.swing.JLabel();
+        CstOrdLbl = new javax.swing.JLabel();
+        CstInvLbl = new javax.swing.JLabel();
+        CstTtlLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        ArchivoMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-
-        jLabel8.setText("jLabel8");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -420,21 +476,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         jLabel5.setText("Inventario inicial:");
 
-        jLabel6.setText("q:");
-
-        jLabel7.setText("R:");
-
-        RqLbl.setText("jLabel8");
-
-        RRlbl.setText("jLabel8");
-
-        jButton1.setText("Llenar tablas");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         CostInvTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CostInvTxtFieldActionPerformed(evt);
@@ -453,6 +494,21 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         });
 
+        jLabel14.setText("Tiempo de simualacion (días) :");
+
+        SimDiasTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SimDiasTxtFieldActionPerformed(evt);
+            }
+        });
+
+        buttonGroup2.add(NumAleArc);
+        NumAleArc.setSelected(true);
+        NumAleArc.setText("Utilizar números aleatorios del archivo");
+
+        buttonGroup2.add(NumAle);
+        NumAle.setText("Generar números aleatorios");
+
         javax.swing.GroupLayout PanelCostoLayout = new javax.swing.GroupLayout(PanelCosto);
         PanelCosto.setLayout(PanelCostoLayout);
         PanelCostoLayout.setHorizontalGroup(
@@ -461,41 +517,34 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelCostoLayout.createSequentialGroup()
-                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelCostoLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(PanelCostoLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CostInvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(PanelCostoLayout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(18, 18, 18)
-                                .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(83, 83, 83)
-                        .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(PanelCostoLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(PanelCostoLayout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(RqLbl)
-                                .addGap(34, 34, 34)
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(RRlbl))
-                            .addGroup(PanelCostoLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(229, 229, 229))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(PanelCostoLayout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addContainerGap(1108, Short.MAX_VALUE))))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CostInvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelCostoLayout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelCostoLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(50, 50, 50)
+                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NumAle)
+                    .addGroup(PanelCostoLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelCostoLayout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(SimDiasTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(NumAleArc))
+                .addContainerGap(702, Short.MAX_VALUE))
         );
         PanelCostoLayout.setVerticalGroup(
             PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,25 +552,27 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel4)
                     .addComponent(CostInvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(21, 21, 21)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel5)
                     .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel14)
+                        .addComponent(SimDiasTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(17, 17, 17)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel7)
-                    .addComponent(RqLbl)
-                    .addComponent(RRlbl)
-                    .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NumAleArc))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NumAle))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -577,6 +628,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         });
 
+        CstOrdLbl.setText(" ");
+
+        CstInvLbl.setText(" ");
+
+        CstTtlLbl.setText(" ");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -584,25 +641,45 @@ public class PanelSimulacion extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11)
-                    .addComponent(jLabel12)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CstFlteLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CstOrdLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel13)
-                    .addComponent(RunBtn))
-                .addContainerGap(1103, Short.MAX_VALUE))
+                    .addComponent(RunBtn)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CstTtlLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel11)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CstInvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(1025, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel9)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(CstFlteLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10)
+                    .addComponent(CstOrdLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel11)
+                    .addComponent(CstInvLbl))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(CstTtlLbl))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
@@ -618,13 +695,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         jMenu1.setText("Archivo");
 
-        ArchivoMenu.setText("Buscar archivo ");
-        ArchivoMenu.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                ArchivoMenuMouseClicked(evt);
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setText("Cargar archivo de prueba");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(ArchivoMenu);
+        jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
         jMenuBar1.add(jMenu2);
@@ -633,10 +711,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ArchivoMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ArchivoMenuMouseClicked
-        capturar_informacion();
-    }//GEN-LAST:event_ArchivoMenuMouseClicked
 
     private void DelTEsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelTEsBtnActionPerformed
         eliminarcolumna(TablaTEs);
@@ -665,23 +739,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
         DemSpin.setValue(0);
         ProbDemSpin.setValue(0);
     }//GEN-LAST:event_AcepDemBtnActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
-        DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
-        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
-        
-        for(int i = 0; i < demanda.length ;i++)
-            modelotabDem.addRow(demanda [i]);
-        
-        for(int i = 0; i < TmEs.length ;i++)
-            modelotabTmEs.addRow(TmEs [i]);
-        
-        for(int i = 0; i < TmEn.length ;i++)
-            modelotabTmEn.addRow(TmEn [i]);
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void DelTEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelTEnBtnActionPerformed
         eliminarcolumna(TablaTEn);
@@ -742,11 +799,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 modelotabFinal.addRow(fila);
             }
             
-            System.out.println("Costo total: " + resultado.costoTotal);
-            System.out.println("Costo inventario: " + resultado.costoTotalInventario);
-            System.out.println("Costo orden: " + resultado.costoTotalOrden);
-            System.out.println("Costo con espera: " + resultado.costoTotalConEspera);
-            System.out.println("Costo sin espera: " + resultado.costoTotalSinEspera);
+            CstFlteLbl.setText( resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
+            CstTtlLbl.setText(resultado.costoTotal.toString());
+            CstInvLbl.setText(resultado.costoTotalInventario.toString());
+            CstOrdLbl.setText(resultado.costoTotalOrden.toString());
             
         } catch (Exception ex) {
             Logger.getLogger(PanelSimulacion.class.getName()).log(Level.SEVERE, null, ex);
@@ -756,6 +812,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_RunBtnActionPerformed
+
+    private void SimDiasTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SimDiasTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SimDiasTxtFieldActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        capturar_informacion();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     
     
@@ -856,11 +920,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
     }
     
-    public void CostosIniciales() {
-        
-        
-        
-    }
+    
     
     
     /**
@@ -900,17 +960,22 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcepDemBtn;
-    private javax.swing.JMenu ArchivoMenu;
     private javax.swing.JTextField CostCEspTxtField;
     private javax.swing.JTextField CostInvTxtField;
     private javax.swing.JTextField CostOrdTxtField;
     private javax.swing.JTextField CostSEspTxtField;
+    private javax.swing.JLabel CstFlteLbl;
+    private javax.swing.JLabel CstInvLbl;
+    private javax.swing.JLabel CstOrdLbl;
+    private javax.swing.JLabel CstTtlLbl;
     private javax.swing.JButton DelDemBtn;
     private javax.swing.JButton DelTEnBtn;
     private javax.swing.JButton DelTEsBtn;
     private javax.swing.JLabel DemLbl;
     private javax.swing.JSpinner DemSpin;
     private javax.swing.JTextField InvIncTxtField;
+    private javax.swing.JRadioButton NumAle;
+    private javax.swing.JRadioButton NumAleArc;
     private javax.swing.JPanel PanelCosto;
     private javax.swing.JPanel PanelDemanda;
     private javax.swing.JTabbedPane PanelSim;
@@ -922,10 +987,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JSpinner ProbTmEnSpin;
     private javax.swing.JLabel ProbTmEsLbl;
     private javax.swing.JSpinner ProbTmEsSpin;
-    private javax.swing.JLabel RRlbl;
-    private javax.swing.JLabel RqLbl;
     private javax.swing.JButton RunBtn;
     private javax.swing.JPanel SetPanel;
+    private javax.swing.JTextField SimDiasTxtField;
     private javax.swing.JTable TablaDeman;
     private javax.swing.JTable TablaFinal;
     private javax.swing.JTable TablaTEn;
@@ -936,23 +1000,22 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JButton TmEsBtn;
     private javax.swing.JLabel TmEsLbl;
     private javax.swing.JSpinner TmEsSpin;
-    private javax.swing.JButton jButton1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPopupMenu jPopupMenu1;
