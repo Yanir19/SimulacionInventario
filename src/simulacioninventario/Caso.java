@@ -5,6 +5,7 @@
  */
 package simulacioninventario;
 
+import static java.lang.Math.sqrt;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -19,7 +20,7 @@ import javax.swing.JTable;
  *
  * @author gabo_
  */
-public class Caso implements Callable{
+public class Caso{
     // Constantes
     public static final int DIA = 0;
     public static final int INV_INICIAL = 1;
@@ -70,6 +71,21 @@ public class Caso implements Callable{
     private BigDecimal costoTotal = BigDecimal.valueOf(0.0);
     private BigDecimal costoDiarioInventario;
 
+    public static int calcularQ(BigDecimal costoOrdenar, int demanda, BigDecimal costoInventario, BigDecimal escasez, int diasSimulacion){
+        //System.out.println(costoOrdenar.multiply(new BigDecimal(2*demanda)));
+        //System.out.println(escasez.multiply(costoInventario));
+        Double sqrtResult = sqrt((costoOrdenar.multiply(new BigDecimal(2*demanda*diasSimulacion)).multiply(escasez.add(costoInventario))).divide((escasez.multiply(costoInventario)), RoundingMode.HALF_UP).doubleValue());
+        if(sqrtResult % 1 != 0){
+            sqrtResult += 1;
+        }
+        return sqrtResult.intValue();
+    }
+    
+    public static int calcularPuntoReorden(int l,int demanda, int diasSimulacion){
+        Double resultado = ((double) l/diasSimulacion)*(demanda*diasSimulacion);
+        return resultado.intValue();
+    }
+    
     public Caso(JTable demandaDiaria, JTable tEntrega, JTable tEspera, 
             BigDecimal costoInventario, BigDecimal costoOrdenar, BigDecimal costoFaltanteConEspera, 
             BigDecimal costoFaltanteSinEspera, Integer inventarioInicial, Integer puntoReorden, 
@@ -131,8 +147,7 @@ public class Caso implements Callable{
         //System.out.println("costoDiarioInventario " + this.costoDiarioInventario);
     }
     
-    @Override
-    public Object call() throws Exception {
+    public ResultadoCaso simular() {
         Integer[][] tablaEventos = new Integer[12][this.diasSimulacion];
         int dia = 0;
         int diaEntregaPedido = 0;
@@ -215,7 +230,7 @@ public class Caso implements Callable{
             }
             
             // Obtener demanda de la tabla de probabilidad
-            tablaEventos[DEMANDA][dia] = PanelSimulacion.getJoseito(tablaEventos[NRO_ALT_DEMANDA][dia], this.demandaDiaria);
+            tablaEventos[DEMANDA][dia] = PanelSimulacion.getAltNumber(tablaEventos[NRO_ALT_DEMANDA][dia], this.demandaDiaria);
 
             
             // Si la demanda es menor que el inventario disponible satisfacer la demanda, si no coloca al cliente en espera
@@ -233,7 +248,7 @@ public class Caso implements Callable{
                     tablaEventos[NRO_ALT_T_ESPERA][dia] = randomGenerator.nextInt(100);
                 }
                 // Obtener tiempo de entrega de la tabla de probabilidad
-                tablaEventos[T_ESPERA][dia] = PanelSimulacion.getJoseito(tablaEventos[NRO_ALT_T_ESPERA][dia], this.tEspera);
+                tablaEventos[T_ESPERA][dia] = PanelSimulacion.getAltNumber(tablaEventos[NRO_ALT_T_ESPERA][dia], this.tEspera);
                 
                 // Añadir cliente a la lista de espera
                 if(tablaEventos[T_ESPERA][dia] > 0){
@@ -262,7 +277,7 @@ public class Caso implements Callable{
                     tablaEventos[NRO_ALT_T_ENTREGA][dia] = randomGenerator.nextInt(100);
                 }
                 // Obtener demanda de la tabla de probabilidad
-                tablaEventos[T_ENTREGA][dia] = PanelSimulacion.getJoseito(tablaEventos[NRO_ALT_T_ENTREGA][dia], this.tEntrega);
+                tablaEventos[T_ENTREGA][dia] = PanelSimulacion.getAltNumber(tablaEventos[NRO_ALT_T_ENTREGA][dia], this.tEntrega);
                 
                 diaEntregaPedido = dia + tablaEventos[T_ENTREGA][dia] + 1;
                 

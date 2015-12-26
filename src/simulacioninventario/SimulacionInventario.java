@@ -18,29 +18,13 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author Yanir
  */
 public class SimulacionInventario {
-
-    private static int calcularQ(BigDecimal costoOrdenar, int demanda, BigDecimal costoInventario, BigDecimal escasez, int diasSimulacion){
-        //System.out.println(costoOrdenar.multiply(new BigDecimal(2*demanda)));
-        //System.out.println(escasez.multiply(costoInventario));
-        Double sqrtResult = sqrt((costoOrdenar.multiply(new BigDecimal(2*demanda*diasSimulacion)).multiply(escasez.add(costoInventario))).divide((escasez.multiply(costoInventario)), RoundingMode.HALF_UP).doubleValue());
-        if(sqrtResult % 1 != 0){
-            sqrtResult += 1;
-        }
-        return sqrtResult.intValue();
-    }
-    
-    private static int calcularPuntoReorden(int l,int demanda, int diasSimulacion){
-        Double resultado = ((double) l/diasSimulacion)*(demanda*diasSimulacion);
-        return resultado.intValue();
-    }
-    
+   
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
         
-            System.out.println("Putada : " +  Math.ceil(3.1));
         // Variables necesarias
         /*
         JTable demandaDiaria = null;
@@ -83,11 +67,11 @@ public class SimulacionInventario {
         // Obtener resultado
         // resultado = (ResultadoCaso) caso.call();
         
-          try {
-                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-             } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-                 Logger.getLogger(SimulacionInventario.class.getName()).log(Level.SEVERE, null, ex);
-             }
+        try {
+               UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+           } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+               Logger.getLogger(SimulacionInventario.class.getName()).log(Level.SEVERE, null, ex);
+           }
           
           
         PanelSimulacion ventana = new PanelSimulacion();

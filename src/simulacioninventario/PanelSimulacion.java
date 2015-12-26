@@ -7,12 +7,16 @@ package simulacioninventario;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -550,19 +554,21 @@ public class PanelSimulacion extends javax.swing.JFrame {
             PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelCostoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(CostInvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
-                        .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(InvIncTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(CostInvTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(21, 21, 21)
-                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel14)
-                        .addComponent(SimDiasTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(SimDiasTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(17, 17, 17)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -766,47 +772,221 @@ public class PanelSimulacion extends javax.swing.JFrame {
     }//GEN-LAST:event_CostSEspTxtFieldActionPerformed
 
     private void RunBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunBtnActionPerformed
+        long time_start, time_end;
+        time_start = System.currentTimeMillis();
         Integer cantidadPedido = 100;
         Integer puntoReorden = 75;
         int[] nrosAleatoriosDemanda = {69,37,75,60,54,47,79,96,42,98,15,59,37,25,14};
         int[] nrosAleatoriosTiempoEntrega = {22,43,15,29,76};
         int[] nrosAleatoriosTiempoEspera = {64,6};
+        Caso caso = null;
         
-        Caso caso = new Caso(TablaDeman, TablaTEn, TablaTEs, new BigDecimal(CostInvTxtField.getText()), 
-                new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
-                Integer.parseInt(InvIncTxtField.getText()), puntoReorden, cantidadPedido, 15,
-                nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera
-        );       
+        int cantidadPedidoMin = 0;
+        int cantidadPedidoMax = 0;
+        int puntoReordenMin = 0;
+        int puntoReordenMax = 0;
         
-        try {
-            ResultadoCaso resultado = (ResultadoCaso) caso.call();
-            DefaultTableModel modelotabFinal = (DefaultTableModel) TablaFinal.getModel();
-            Object fila [] = new Object[12];
-            for(int i = 0 ; i< nrosAleatoriosDemanda.length; i++){
-                fila [0] = resultado.tablaEventos[caso.DIA][i];
-                fila [1] = resultado.tablaEventos[caso.INV_INICIAL][i];
-                fila [2] = resultado.tablaEventos[caso.NRO_ALT_DEMANDA][i];
-                fila [3] = resultado.tablaEventos[caso.DEMANDA][i];
-                fila [4] = resultado.tablaEventos[caso.INV_FINAL][i];
-                fila [5] = resultado.tablaEventos[caso.INV_PROMEDIO][i];
-                fila [6] = resultado.tablaEventos[caso.FALTANTE][i];
-                fila [7] = resultado.tablaEventos[caso.NRO_ORDEN][i];
-                fila [8] = resultado.tablaEventos[caso.NRO_ALT_T_ENTREGA][i];
-                fila [9] = resultado.tablaEventos[caso.T_ENTREGA][i];
-                fila [10] = resultado.tablaEventos[caso.NRO_ALT_T_ESPERA][i];
-                fila [11] = resultado.tablaEventos[caso.T_ESPERA][i];
-                
-                modelotabFinal.addRow(fila);
+        int contadorResultados = 0;
+        
+        ResultadoCaso resultado = null;
+        ResultadoCasoSimplificado mejorResultadoSimplificado = null;
+        int diasSimulacion = Integer.parseInt( this.SimDiasTxtField.getText());
+        
+        /*
+        System.out.println("Min demanda: "+(int)this.TablaDeman.getValueAt(0, 0));
+        System.out.println("Max demanda: "+(int)this.TablaDeman.getValueAt(this.TablaDeman.getRowCount()-1, 0));
+        System.out.println("Min t entrega: "+(int)this.TablaTEn.getValueAt(1, 0));
+        System.out.println("Max t entrega: "+(int)this.TablaTEn.getValueAt(this.TablaTEn.getRowCount()-1, 0));     
+        */
+        //return;
+        
+        
+        if(this.NumAle.isEnabled()){
+            int minTEntrega = 1;
+            int maxTEntrega = (int)this.TablaTEn.getValueAt(0, 0);
+            int minDemanda = (int)this.TablaDeman.getValueAt(0, 0);
+            int maxDemanda = (int)this.TablaDeman.getValueAt(0, 0);
+            int totalIteraciones = 0;
+            
+            // Obtener tiempos y demandas mínimas y máximas
+            for (int i = 0; i< this.TablaDeman.getRowCount(); i++){
+                if (minDemanda > (int)this.TablaDeman.getValueAt(i, 0)){
+                    minDemanda = (int)this.TablaDeman.getValueAt(i, 0);
+                } 
+            }
+            for (int i = 0; i< this.TablaDeman.getRowCount(); i++){
+                if (maxDemanda < (int)this.TablaDeman.getValueAt(i, 0)){
+                    maxDemanda = (int)this.TablaDeman.getValueAt(i, 0);
+                } 
+            }
+            for (int i = 0; i< this.TablaTEn.getRowCount(); i++){
+                if ( (int)this.TablaTEn.getValueAt(i, 0) != 0  && minTEntrega > (int)this.TablaTEn.getValueAt(i, 0)){
+                    minTEntrega = (int)this.TablaTEn.getValueAt(i, 0);
+                }
+            }
+            for (int i = 0; i< this.TablaTEn.getRowCount(); i++){
+                if (maxTEntrega < (int)this.TablaTEn.getValueAt(i, 0)){
+                    maxTEntrega = (int)this.TablaTEn.getValueAt(i, 0);
+                } 
             }
             
-            CstFlteLbl.setText( resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
-            CstTtlLbl.setText(resultado.costoTotal.toString());
-            CstInvLbl.setText(resultado.costoTotalInventario.toString());
-            CstOrdLbl.setText(resultado.costoTotalOrden.toString());
+            /*System.out.println("minDemanda; " + minDemanda);
+            System.out.println("maxDemanda; " + maxDemanda);
+            System.out.println("minTEntrega; " + minTEntrega);
+            System.out.println("maxTEntrega; " + maxTEntrega);
+            return;*/
             
-        } catch (Exception ex) {
-            Logger.getLogger(PanelSimulacion.class.getName()).log(Level.SEVERE, null, ex);
+            // Obtener Q y PR mínimos y máximos
+            cantidadPedidoMin = Caso.calcularQ(
+                    new BigDecimal(this.CostOrdTxtField.getText()), 
+                    minDemanda, 
+                    new BigDecimal(this.CostInvTxtField.getText()),
+                    new BigDecimal(this.CostSEspTxtField.getText()), 
+                    diasSimulacion
+            );
+            cantidadPedidoMax = Caso.calcularQ(
+                    new BigDecimal(this.CostOrdTxtField.getText()), 
+                    maxDemanda, 
+                    new BigDecimal(this.CostInvTxtField.getText()),
+                    new BigDecimal(this.CostCEspTxtField.getText()), 
+                    diasSimulacion
+            );
+            
+            puntoReordenMin = Caso.calcularPuntoReorden(
+                    minTEntrega,
+                    minDemanda, 
+                    diasSimulacion
+            );
+            
+            puntoReordenMax = Caso.calcularPuntoReorden(
+                    maxTEntrega,
+                    maxDemanda, 
+                    diasSimulacion
+            );
+            
+            System.out.println("cantidadPedidoMin; " + cantidadPedidoMin);
+            System.out.println("cantidadPedidoMax; " + cantidadPedidoMax);
+            System.out.println("puntoReordenMin; " + puntoReordenMin);
+            System.out.println("puntoReordenMax; " + puntoReordenMax);
+            
+            totalIteraciones = (puntoReordenMax-puntoReordenMin)*(cantidadPedidoMax-cantidadPedidoMin);
+            
+            ResultadoCasoSimplificado[] resultados = new ResultadoCasoSimplificado[totalIteraciones];
+            System.out.println("Cantidad de casos a evaluar:" +resultados.length);
+            
+            
+            // Simulacione sen paralelo
+            /*
+            List<ResultadoCasoSimplificado> casosSimplificados = new ArrayList<ResultadoCasoSimplificado>();
+            List<ResultadoCasoSimplificado> r = new ArrayList<>();
+            
+            for(int i=cantidadPedidoMin; i< cantidadPedidoMax ; i++){
+                for(int j=puntoReordenMin; j< puntoReordenMax ; j++){
+                    casosSimplificados.add( new ResultadoCasoSimplificado(i,j,new BigDecimal(0)));
+                }
+            }
+            
+            r = casosSimplificados
+                .parallelStream()
+                .map(s -> {
+                    Caso casoParalelo = new Caso(TablaDeman, TablaTEn, TablaTEs, new BigDecimal(CostInvTxtField.getText()), 
+                        new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
+                        Integer.parseInt(InvIncTxtField.getText()), s.puntoReorden, s.cantidadPedido,diasSimulacion,
+                        false
+                    );
+                    ResultadoCaso resultadoParalelo = casoParalelo.simular();
+                    s.costoTotal = resultadoParalelo.costoTotal;
+                    return s;
+                }).collect(Collectors.toList());
+            
+            System.out.println("Caso: "+r.get(0).costoTotal);
+            time_end = System.currentTimeMillis();
+            System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
+            return;
+            */
+            
+            // Hacer simulaciones con todas las combinaciones de Q y PR entre los rangos obtenidos
+            for(int i=cantidadPedidoMin; i< cantidadPedidoMax ; i++){
+                for(int j=puntoReordenMin; j< puntoReordenMax ; j++){
+                    caso = new Caso(TablaDeman, TablaTEn, TablaTEs, new BigDecimal(CostInvTxtField.getText()), 
+                        new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
+                        Integer.parseInt(InvIncTxtField.getText()), j, i,diasSimulacion,
+                        false
+                    );
+
+                    resultado = (ResultadoCaso) caso.simular();
+                    
+                    resultados[contadorResultados] = new ResultadoCasoSimplificado(i,j,resultado.costoTotal);
+                    /*
+                    resultados[contadorResultados].cantidadPedido = i;
+                    resultados[contadorResultados].puntoReorden = j;
+                    resultados[contadorResultados].costoTotal = resultado.costoTotal;
+                    */
+                    contadorResultados++;
+                    //System.out.println(resultado.costoTotal);
+                }
+            }
+            
+            // Buscar mejor resultado
+            mejorResultadoSimplificado = resultados[0];
+            int mejorCaso = 0;
+            for(int i=1; i < totalIteraciones ; i++){
+                if( mejorResultadoSimplificado.costoTotal.compareTo( resultados[i].costoTotal ) > 0 ){
+                    mejorResultadoSimplificado = resultados[i];
+                    mejorCaso = i;
+                }
+            }
+            
+            System.out.println("Mejor caso: "+ mejorCaso);
+            System.out.println("Q: "+ mejorResultadoSimplificado.cantidadPedido);
+            System.out.println("R: "+ mejorResultadoSimplificado.puntoReorden);
+            
+            // Generar nuevamente el mejor resultado
+            caso = new Caso(TablaDeman, TablaTEn, TablaTEs, new BigDecimal(CostInvTxtField.getText()), 
+                new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
+                Integer.parseInt(InvIncTxtField.getText()), mejorResultadoSimplificado.puntoReorden, mejorResultadoSimplificado.cantidadPedido,
+                diasSimulacion,false
+            );
+            
+            resultado = (ResultadoCaso) caso.simular();
+ 
+        }else{
+            caso = new Caso(TablaDeman, TablaTEn, TablaTEs, new BigDecimal(CostInvTxtField.getText()), 
+                    new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
+                    Integer.parseInt(InvIncTxtField.getText()), puntoReorden, cantidadPedido, diasSimulacion,
+                    nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera
+            );
+
+            resultado = (ResultadoCaso) caso.simular();
         }
+        
+        DefaultTableModel modelotabFinal = (DefaultTableModel) TablaFinal.getModel();
+        Object fila [] = new Object[12];
+        for(int i = 0 ; i< diasSimulacion; i++){
+            fila [0] = resultado.tablaEventos[Caso.DIA][i];
+            fila [1] = resultado.tablaEventos[Caso.INV_INICIAL][i];
+            fila [2] = resultado.tablaEventos[Caso.NRO_ALT_DEMANDA][i];
+            fila [3] = resultado.tablaEventos[Caso.DEMANDA][i];
+            fila [4] = resultado.tablaEventos[Caso.INV_FINAL][i];
+            fila [5] = resultado.tablaEventos[Caso.INV_PROMEDIO][i];
+            fila [6] = resultado.tablaEventos[Caso.FALTANTE][i];
+            fila [7] = resultado.tablaEventos[Caso.NRO_ORDEN][i];
+            fila [8] = resultado.tablaEventos[Caso.NRO_ALT_T_ENTREGA][i];
+            fila [9] = resultado.tablaEventos[Caso.T_ENTREGA][i];
+            fila [10] = resultado.tablaEventos[Caso.NRO_ALT_T_ESPERA][i];
+            fila [11] = resultado.tablaEventos[Caso.T_ESPERA][i];
+
+            modelotabFinal.addRow(fila);
+        }
+
+        CstFlteLbl.setText( resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
+        CstTtlLbl.setText(resultado.costoTotal.toString());
+        CstInvLbl.setText(resultado.costoTotalInventario.toString());
+        CstOrdLbl.setText(resultado.costoTotalOrden.toString());
+        
+        time_end = System.currentTimeMillis();
+        System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
+
         
         
         
@@ -843,7 +1023,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
         }
     }
     
-    public static int getJoseito (int aleatorio, JTable tabla){
+    public static int getAltNumber (int aleatorio, JTable tabla){
         
         for(int i = 0; i < tabla.getRowCount();i++){
             
