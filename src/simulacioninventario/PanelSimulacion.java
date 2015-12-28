@@ -818,6 +818,15 @@ public class PanelSimulacion extends javax.swing.JFrame {
         time_start = System.currentTimeMillis();
         Integer cantidadPedido = 100;
         Integer puntoReorden = 75;
+<<<<<<< HEAD
+=======
+        int[] nrosAleatoriosDemanda = {69,37,75,60,54,47,79,96,42,98,15,59,37,25,14};
+        int[] nrosAleatoriosTiempoEntrega = {22,43,15,29,76};
+        int[] nrosAleatoriosTiempoEspera = {64,6};
+//        int[] nrosAleatoriosDemanda = {40,60,80,20,10,11,15,25,99,98,63,59,22,25,19};
+//        int[] nrosAleatoriosTiempoEntrega = {85,66,28,71,8,96,12,65,18,31,43,50,1,49,55};
+//        int[] nrosAleatoriosTiempoEspera = {15,6,10,30,55,9,44,64,6,43,29,42,1,33,12};
+>>>>>>> origin/master
         Caso caso = null;
         
         int cantidadPedidoMin = 0;
@@ -839,8 +848,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
         */
         //return;
         
-        
-        if(this.NumAle.isEnabled()){
+        if(this.NumAle.isSelected()){
             int minTEntrega = 1;
             int maxTEntrega = (int)this.TablaTEn.getValueAt(0, 0);
             int minDemanda = (int)this.TablaDeman.getValueAt(0, 0);
