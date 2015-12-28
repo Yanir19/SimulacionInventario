@@ -74,19 +74,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
                
                switch (i){
                    case 0:
-                       CostInvTxtField.setText(linea.substring(linea.indexOf(' ')+1));
+                       CostInvTxtField.setText(linea.substring(linea.indexOf(' ')+1 , linea.indexOf(" /")));
                        break;
                    case 1:
-                       CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')+1));
+                       CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                        break;
                    case 2:
-                       CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')+1));
+                       CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                        break;
                    case 3:
-                       CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')+1));
+                       CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                        break;
                    case 4:
-                       InvIncTxtField.setText(linea.substring(linea.indexOf(' ')+1));
+                       InvIncTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                        break;
                        
                     case 5:
@@ -108,7 +108,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                             
                         }   
                         
-                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1));
+                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                             modelotabDem.addRow(demanda);
                             
                        break;
@@ -127,7 +127,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
                            // System.out.println("nueva > " + linea);
                             count ++;
                         }   
-                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1));
+                        
+                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                             modelotabTmEn.addRow(TmEn);
                        break;
                        
@@ -146,12 +147,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
                          //   System.out.println("nueva > " + linea);
                             count ++;
                         }   
-                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1));
+                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                             modelotabTmEs.addRow(TmEs);
                        break;
                        
                        case 8:
-                           SimDiasTxtField.setText(linea.substring(linea.indexOf(' ')+1));
+                           SimDiasTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                        break;
                        
                        case 9:
@@ -1164,7 +1165,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             System.out.println("linea >" + linea);
         }
         System.out.println("ultima linea >" + linea);
-        lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1)));
+        lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /"))));
         
         int [] arreglo = new int [lista.size()];
         
