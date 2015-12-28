@@ -30,6 +30,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
     Object []  demanda = new Object [3] ;
     Object []  TmEn = new Object [3];
     Object [] TmEs = new Object [3];
+    
     int[] nrosAleatoriosDemanda ;
     int[] nrosAleatoriosTiempoEntrega ;
     int[] nrosAleatoriosTiempoEspera;
@@ -73,83 +74,91 @@ public class PanelSimulacion extends javax.swing.JFrame {
                
                switch (i){
                    case 0:
-                       CostInvTxtField.setText(linea.substring(linea.indexOf(' ')));
+                       CostInvTxtField.setText(linea.substring(linea.indexOf(' ')+1));
                        break;
                    case 1:
-                       CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')));
+                       CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')+1));
                        break;
                    case 2:
-                       CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')));
+                       CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')+1));
                        break;
                    case 3:
-                       CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')));
+                       CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')+1));
                        break;
                    case 4:
-                       InvIncTxtField.setText(linea.substring(linea.indexOf(' ')));
+                       InvIncTxtField.setText(linea.substring(linea.indexOf(' ')+1));
                        break;
                        
                     case 5:
                         
                         DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
-                        demanda = new Object[linea.indexOf(' ')];
-                        
-                        while (linea.indexOf(',')>0){
-                            
-                            if(count == linea.indexOf(' ')){
-                                count = 0;
-                                modelotabDem.addRow(demanda);
-                            }
-                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(',')));
-                            linea  = "   " + linea.substring(linea.indexOf(',')+1);
-                            System.out.println("nueva > " + linea);
-                            count ++;
-                        }   
-                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')));
-                            modelotabDem.addRow(demanda);
-                       break;
-                       
-                    case 6:
-                        DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEn.getModel();
                         count = 0;
                         while (linea.indexOf(',')>0){
                             
-                            if(count == linea.indexOf(' ')){
+                            if(count == 3){
                                 count = 0;
-                                modelotabTmEs.addRow(TmEn);
+                         //       System.out.println("para la tabla va: " + demanda[0] +" " + demanda[1] +" " + demanda[2] );
+                                modelotabDem.addRow(demanda);
                             }
-                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(',')));
-                            linea  = "   " + linea.substring(linea.indexOf(',')+1);
-                            System.out.println("nueva > " + linea);
+                            
+                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
+                            linea  = " " + linea.substring(linea.indexOf(',')+1);
+                        //    System.out.println("nueva > " + linea);
+                            count ++;
+                            
+                        }   
+                        
+                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1));
+                            modelotabDem.addRow(demanda);
+                            
+                       break;
+                       
+                    case 6:
+                        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
+                        count = 0;
+                        while (linea.indexOf(',')>0){
+                            
+                            if(count == 3){
+                                count = 0;
+                                modelotabTmEn.addRow(TmEn);
+                            }
+                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
+                            linea  = " " + linea.substring(linea.indexOf(',')+1);
+                           // System.out.println("nueva > " + linea);
                             count ++;
                         }   
-                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')));
-                            modelotabTmEs.addRow(TmEn);
+                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1));
+                            modelotabTmEn.addRow(TmEn);
                        break;
                        
                     
                     case 7:
-                        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEs.getModel();
+                        DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
                         count = 0;
                         while (linea.indexOf(',')>0){
                             
-                            if(count == linea.indexOf(' ')){
+                            if(count == 3){
                                 count = 0;
-                                modelotabTmEn.addRow(TmEs);
+                                modelotabTmEs.addRow(TmEs);
                             }
-                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(',')));
-                            linea  = "   " + linea.substring(linea.indexOf(',')+1);
-                            System.out.println("nueva > " + linea);
+                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
+                            linea  = " " + linea.substring(linea.indexOf(',')+1);
+                         //   System.out.println("nueva > " + linea);
                             count ++;
                         }   
-                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')));
-                            modelotabTmEn.addRow(TmEs);
+                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1));
+                            modelotabTmEs.addRow(TmEs);
                        break;
                        
                        case 8:
+                           SimDiasTxtField.setText(linea.substring(linea.indexOf(' ')+1));
+                       break;
+                       
+                       case 9:
                            if(NumAleArc.isSelected()){
-                               setAleatorio(linea, this.nrosAleatoriosDemanda);
-                               setAleatorio(br.readLine(), this.nrosAleatoriosTiempoEntrega);
-                               setAleatorio(br.readLine(), this.nrosAleatoriosTiempoEspera);
+                               setAleatorio(linea, 1);
+                               setAleatorio(br.readLine(), 2);
+                               setAleatorio(br.readLine(), 3);
                            }
                                    
                        break;
@@ -818,15 +827,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
         time_start = System.currentTimeMillis();
         Integer cantidadPedido = 100;
         Integer puntoReorden = 75;
-<<<<<<< HEAD
-=======
-        int[] nrosAleatoriosDemanda = {69,37,75,60,54,47,79,96,42,98,15,59,37,25,14};
-        int[] nrosAleatoriosTiempoEntrega = {22,43,15,29,76};
-        int[] nrosAleatoriosTiempoEspera = {64,6};
-//        int[] nrosAleatoriosDemanda = {40,60,80,20,10,11,15,25,99,98,63,59,22,25,19};
-//        int[] nrosAleatoriosTiempoEntrega = {85,66,28,71,8,96,12,65,18,31,43,50,1,49,55};
-//        int[] nrosAleatoriosTiempoEspera = {15,6,10,30,55,9,44,64,6,43,29,42,1,33,12};
->>>>>>> origin/master
         Caso caso = null;
         
         int cantidadPedidoMin = 0;
@@ -1153,24 +1153,48 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
     }
     
-    public void setAleatorio (String linea, int [] arreglo){
+    public void setAleatorio (String linea, int opc){
         
         ArrayList <Integer> lista = new ArrayList <Integer> ();
         
         while (linea.indexOf(',')>0){
             
-            lista.add(Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(','))));
-            linea  = "   " + linea.substring(linea.indexOf(',')+1);
+            lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(','))));
+            linea  = " " + linea.substring(linea.indexOf(',')+1);
+            System.out.println("linea >" + linea);
+        }
+        System.out.println("ultima linea >" + linea);
+        lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1)));
+        
+        int [] arreglo = new int [lista.size()];
+        
+        for(int i= 0; i < lista.size() ; i++){
+            arreglo[i] = (int) lista.get(i);
         }
         
-        lista.add(Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(','))));
-        
-        arreglo = new int [lista.size()];
-        
-        for(int i: lista){
-            arreglo[i] = lista.get(i);
+        switch (opc){
+            case 1:
+                this.nrosAleatoriosDemanda = arreglo;
+                System.out.println("demanda: " );
+                for(int i= 0; i < lista.size() ; i++){
+                    System.out.println(this.nrosAleatoriosDemanda [i]);
+                }
+                break;
+            case 2 :
+                this.nrosAleatoriosTiempoEntrega  = arreglo;
+                System.out.println("entrega: " );
+                for(int i= 0; i < lista.size() ; i++){
+                    System.out.println(this.nrosAleatoriosTiempoEntrega [i]);
+                }
+                break;
+            case 3:
+                this.nrosAleatoriosTiempoEspera = arreglo;
+                System.out.println("espera: " );
+                for(int i= 0; i < lista.size() ; i++){
+                    System.out.println(this.nrosAleatoriosTiempoEspera [i]);
+                }
+                break;
         }
-        
     }
     
     
