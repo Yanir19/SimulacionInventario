@@ -7,16 +7,11 @@ package simulacioninventario;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import static java.util.stream.Collectors.toList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -33,10 +28,11 @@ public class PanelSimulacion extends javax.swing.JFrame {
      */
     
     Object []  demanda = new Object [3] ;
-    
     Object []  TmEn = new Object [3];
-    
     Object [] TmEs = new Object [3];
+    int[] nrosAleatoriosDemanda ;
+    int[] nrosAleatoriosTiempoEntrega ;
+    int[] nrosAleatoriosTiempoEspera;
     
     DefaultTableModel modelotab; 
     public PanelSimulacion() {
@@ -77,76 +73,85 @@ public class PanelSimulacion extends javax.swing.JFrame {
                
                switch (i){
                    case 0:
-                       CostInvTxtField.setText(linea.substring(3));
+                       CostInvTxtField.setText(linea.substring(linea.indexOf(' ')));
                        break;
                    case 1:
-                       CostOrdTxtField.setText(linea.substring(3));
+                       CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')));
                        break;
                    case 2:
-                       CostCEspTxtField.setText(linea.substring(3));
+                       CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')));
                        break;
                    case 3:
-                       CostSEspTxtField.setText(linea.substring(3));
+                       CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')));
                        break;
                    case 4:
-                       InvIncTxtField.setText(linea.substring(3));
+                       InvIncTxtField.setText(linea.substring(linea.indexOf(' ')));
                        break;
                        
                     case 5:
                         
                         DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
-                        demanda = new Object[3];
+                        demanda = new Object[linea.indexOf(' ')];
                         
                         while (linea.indexOf(',')>0){
                             
-                            if(count == 3){
+                            if(count == linea.indexOf(' ')){
                                 count = 0;
                                 modelotabDem.addRow(demanda);
                             }
-                            demanda [count] = Integer.parseInt(linea.substring(3, linea.indexOf(',')));
+                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(',')));
                             linea  = "   " + linea.substring(linea.indexOf(',')+1);
                             System.out.println("nueva > " + linea);
                             count ++;
                         }   
-                            demanda [count] = Integer.parseInt(linea.substring(3));
+                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')));
                             modelotabDem.addRow(demanda);
                        break;
                        
                     case 6:
-                        DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
+                        DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEn.getModel();
                         count = 0;
                         while (linea.indexOf(',')>0){
                             
-                            if(count == 3){
+                            if(count == linea.indexOf(' ')){
                                 count = 0;
-                                modelotabTmEs.addRow(TmEs);
+                                modelotabTmEs.addRow(TmEn);
                             }
-                            TmEs [count] = Integer.parseInt(linea.substring(3, linea.indexOf(',')));
+                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(',')));
                             linea  = "   " + linea.substring(linea.indexOf(',')+1);
                             System.out.println("nueva > " + linea);
                             count ++;
                         }   
-                            TmEs [count] = Integer.parseInt(linea.substring(3));
-                            modelotabTmEs.addRow(TmEs);
+                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')));
+                            modelotabTmEs.addRow(TmEn);
                        break;
                        
                     
                     case 7:
-                        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
+                        DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEs.getModel();
                         count = 0;
                         while (linea.indexOf(',')>0){
                             
-                            if(count == 3){
+                            if(count == linea.indexOf(' ')){
                                 count = 0;
-                                modelotabTmEn.addRow(TmEn);
+                                modelotabTmEn.addRow(TmEs);
                             }
-                            TmEn [count] = Integer.parseInt(linea.substring(3, linea.indexOf(',')));
+                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(',')));
                             linea  = "   " + linea.substring(linea.indexOf(',')+1);
                             System.out.println("nueva > " + linea);
                             count ++;
                         }   
-                            TmEn [count] = Integer.parseInt(linea.substring(3));
-                            modelotabTmEn.addRow(TmEn);
+                            TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')));
+                            modelotabTmEn.addRow(TmEs);
+                       break;
+                       
+                       case 8:
+                           if(NumAleArc.isSelected()){
+                               setAleatorio(linea, this.nrosAleatoriosDemanda);
+                               setAleatorio(br.readLine(), this.nrosAleatoriosTiempoEntrega);
+                               setAleatorio(br.readLine(), this.nrosAleatoriosTiempoEspera);
+                           }
+                                   
                        break;
                }
            }
@@ -239,6 +244,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
         CstOrdLbl = new javax.swing.JLabel();
         CstInvLbl = new javax.swing.JLabel();
         CstTtlLbl = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        QLbl = new javax.swing.JLabel();
+        RLbl = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        TmEjeLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -640,6 +651,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         CstTtlLbl.setText(" ");
 
+        jLabel6.setText("Q*:");
+
+        jLabel7.setText("R:");
+
+        jLabel8.setText("Tiempo de ejecución:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -648,24 +665,37 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
+                        .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstFlteLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstOrdLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(CstInvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(RLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(QLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)))
                     .addComponent(jLabel13)
                     .addComponent(RunBtn)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TmEjeLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CstOrdLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(CstFlteLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstTtlLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstInvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(1025, Short.MAX_VALUE))
+                        .addComponent(CstTtlLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(980, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -687,10 +717,22 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(CstTtlLbl))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(QLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(RLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(TmEjeLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel13)
                 .addGap(18, 18, 18)
                 .addComponent(RunBtn)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         jPanel6.add(jPanel1);
@@ -776,9 +818,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
         time_start = System.currentTimeMillis();
         Integer cantidadPedido = 100;
         Integer puntoReorden = 75;
-        int[] nrosAleatoriosDemanda = {69,37,75,60,54,47,79,96,42,98,15,59,37,25,14};
-        int[] nrosAleatoriosTiempoEntrega = {22,43,15,29,76};
-        int[] nrosAleatoriosTiempoEspera = {64,6};
         Caso caso = null;
         
         int cantidadPedidoMin = 0;
@@ -949,6 +988,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
             );
             
             resultado = (ResultadoCaso) caso.simular();
+            QLbl.setText(String.valueOf(mejorResultadoSimplificado.cantidadPedido));
+            RLbl.setText(String.valueOf(mejorResultadoSimplificado.puntoReorden));
  
         }else{
             caso = new Caso(TablaDeman, TablaTEn, TablaTEs, new BigDecimal(CostInvTxtField.getText()), 
@@ -956,7 +997,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     Integer.parseInt(InvIncTxtField.getText()), puntoReorden, cantidadPedido, diasSimulacion,
                     nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera
             );
-
+            
+            QLbl.setText(String.valueOf(cantidadPedido));
+            RLbl.setText(String.valueOf(puntoReorden));
             resultado = (ResultadoCaso) caso.simular();
         }
         
@@ -984,7 +1027,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
         CstInvLbl.setText(resultado.costoTotalInventario.toString());
         CstOrdLbl.setText(resultado.costoTotalOrden.toString());
         
+        
         time_end = System.currentTimeMillis();
+        TmEjeLbl.setText( String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
         System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
 
         
@@ -1100,7 +1145,25 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
     }
     
-    
+    public void setAleatorio (String linea, int [] arreglo){
+        
+        ArrayList <Integer> lista = new ArrayList <Integer> ();
+        
+        while (linea.indexOf(',')>0){
+            
+            lista.add(Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(','))));
+            linea  = "   " + linea.substring(linea.indexOf(',')+1);
+        }
+        
+        lista.add(Integer.parseInt(linea.substring(linea.indexOf(' '), linea.indexOf(','))));
+        
+        arreglo = new int [lista.size()];
+        
+        for(int i: lista){
+            arreglo[i] = lista.get(i);
+        }
+        
+    }
     
     
     /**
@@ -1167,6 +1230,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JSpinner ProbTmEnSpin;
     private javax.swing.JLabel ProbTmEsLbl;
     private javax.swing.JSpinner ProbTmEsSpin;
+    private javax.swing.JLabel QLbl;
+    private javax.swing.JLabel RLbl;
     private javax.swing.JButton RunBtn;
     private javax.swing.JPanel SetPanel;
     private javax.swing.JTextField SimDiasTxtField;
@@ -1174,6 +1239,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JTable TablaFinal;
     private javax.swing.JTable TablaTEn;
     private javax.swing.JTable TablaTEs;
+    private javax.swing.JLabel TmEjeLbl;
     private javax.swing.JButton TmEnBtn;
     private javax.swing.JLabel TmEnLbl;
     private javax.swing.JSpinner TmEnSpin;
@@ -1191,6 +1257,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
