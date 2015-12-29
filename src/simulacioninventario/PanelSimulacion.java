@@ -1012,36 +1012,38 @@ public class PanelSimulacion extends javax.swing.JFrame {
             resultado = (ResultadoCaso) caso.simular();
         }
         
-        DefaultTableModel modelotabFinal = (DefaultTableModel) TablaFinal.getModel();
-        Object fila [] = new Object[12];
-        for(int i = 0 ; i< diasSimulacion; i++){
-            fila [0] = resultado.tablaEventos[Caso.DIA][i];
-            fila [1] = resultado.tablaEventos[Caso.INV_INICIAL][i];
-            fila [2] = resultado.tablaEventos[Caso.NRO_ALT_DEMANDA][i];
-            fila [3] = resultado.tablaEventos[Caso.DEMANDA][i];
-            fila [4] = resultado.tablaEventos[Caso.INV_FINAL][i];
-            fila [5] = resultado.tablaEventos[Caso.INV_PROMEDIO][i];
-            fila [6] = resultado.tablaEventos[Caso.FALTANTE][i];
-            fila [7] = resultado.tablaEventos[Caso.NRO_ORDEN][i];
-            fila [8] = resultado.tablaEventos[Caso.NRO_ALT_T_ENTREGA][i];
-            fila [9] = resultado.tablaEventos[Caso.T_ENTREGA][i];
-            fila [10] = resultado.tablaEventos[Caso.NRO_ALT_T_ESPERA][i];
-            fila [11] = resultado.tablaEventos[Caso.T_ESPERA][i];
+        if(resultado!=null){
+        
+            DefaultTableModel modelotabFinal = (DefaultTableModel) TablaFinal.getModel();
+            Object fila [] = new Object[12];
+            for(int i = 0 ; i< diasSimulacion; i++){
+                fila [0] = resultado.tablaEventos[Caso.DIA][i];
+                fila [1] = resultado.tablaEventos[Caso.INV_INICIAL][i];
+                fila [2] = resultado.tablaEventos[Caso.NRO_ALT_DEMANDA][i];
+                fila [3] = resultado.tablaEventos[Caso.DEMANDA][i];
+                fila [4] = resultado.tablaEventos[Caso.INV_FINAL][i];
+                fila [5] = resultado.tablaEventos[Caso.INV_PROMEDIO][i];
+                fila [6] = resultado.tablaEventos[Caso.FALTANTE][i];
+                fila [7] = resultado.tablaEventos[Caso.NRO_ORDEN][i];
+                fila [8] = resultado.tablaEventos[Caso.NRO_ALT_T_ENTREGA][i];
+                fila [9] = resultado.tablaEventos[Caso.T_ENTREGA][i];
+                fila [10] = resultado.tablaEventos[Caso.NRO_ALT_T_ESPERA][i];
+                fila [11] = resultado.tablaEventos[Caso.T_ESPERA][i];
 
-            modelotabFinal.addRow(fila);
+                modelotabFinal.addRow(fila);
+            }
+
+            CstFlteLbl.setText( resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
+            CstTtlLbl.setText(resultado.costoTotal.toString());
+            CstInvLbl.setText(resultado.costoTotalInventario.toString());
+            CstOrdLbl.setText(resultado.costoTotalOrden.toString());
+
+
+            time_end = System.currentTimeMillis();
+            TmEjeLbl.setText( String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
+            System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
+
         }
-
-        CstFlteLbl.setText( resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
-        CstTtlLbl.setText(resultado.costoTotal.toString());
-        CstInvLbl.setText(resultado.costoTotalInventario.toString());
-        CstOrdLbl.setText(resultado.costoTotalOrden.toString());
-        
-        
-        time_end = System.currentTimeMillis();
-        TmEjeLbl.setText( String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
-        System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
-
-        
         
         
         

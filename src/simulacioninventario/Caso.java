@@ -5,15 +5,19 @@
  */
 package simulacioninventario;
 
+import static java.awt.SystemColor.text;
 import static java.lang.Math.sqrt;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 import java.util.concurrent.Callable;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 /**
@@ -151,7 +155,7 @@ public class Caso{
         Integer[][] tablaEventos = new Integer[12][this.diasSimulacion];
         int dia = 0;
         int diaEntregaPedido = 0;
-        LinkedList<clienteEspera> clientesEspera = new LinkedList<>();
+        List<clienteEspera> clientesEspera = new ArrayList<>();
         int resto;
         Random randomGenerator = new Random();
         
@@ -194,36 +198,49 @@ public class Caso{
             while(iterator.hasNext()){
                 clienteEspera cliente = iterator.next();
                 // Si tiempo de espera del cliente está vencido, se pierde el cliente
-                if ( cliente.diaEspera > dia+1 ){
+                //System.out.print("Cliente con espera "+cliente.faltante+" entró al bucle - ");
+                if ( (cliente.diaEspera+1) < dia ){
+                    //System.out.println(" se fue.");
+                    //System.out.println("El dia: "+dia+" se fue el cliente con faltante "+cliente.faltante+" con dia: "+cliente.diaEspera+".");
                     this.costoTotalSinEspera = this.costoTotalSinEspera.add(this.costoFaltanteSinEspera.multiply(BigDecimal.valueOf(cliente.faltante)));
                     iterator.remove();
-                    break;
+                    continue;
                 }
                 
+                //System.out.print(" no se fue - ");
                 
                 
                 // Si no está vencido y hay inventario, añadir costos
                 if(tablaEventos[INV_INICIAL][dia] > 0 ){
+                    //System.out.print(" hay inventario - ");
                     
                     // Hay suficiente inventario suplirlo completamente y quitar el cliente de la cola, sino suplir lo que se pueda
                     if( tablaEventos[INV_INICIAL][dia] >= cliente.faltante ){
+                        //System.out.println(" le dieron todo lo que faltaba.");
                         tablaEventos[INV_INICIAL][dia] -= cliente.faltante;
                         this.costoTotalConEspera = this.costoTotalConEspera.add(this.costoFaltanteConEspera.multiply(BigDecimal.valueOf(cliente.faltante)));
                         iterator.remove();
                     }else{
+                        //System.out.println(" le dieron parte de lo que faltaba.");
                         resto = cliente.faltante - tablaEventos[INV_INICIAL][dia];
                         cliente.faltante -= tablaEventos[INV_INICIAL][dia];
                         tablaEventos[INV_INICIAL][dia] = 0;
                         this.costoTotalConEspera = this.costoTotalConEspera.add(this.costoFaltanteConEspera.multiply(BigDecimal.valueOf(resto)));
                     }
                 }else{
-                    break;
+                    //System.out.println(" no hay inventario.");
                 }
             }
             
             // Generar número aleatorio de demanda
             if(debugMode){
-                tablaEventos[NRO_ALT_DEMANDA][dia] = this.nrosAleatoriosDemanda[this.contadorDemanda];
+                try{
+                    tablaEventos[NRO_ALT_DEMANDA][dia] = this.nrosAleatoriosDemanda[this.contadorDemanda];
+                }catch(ArrayIndexOutOfBoundsException exception) {
+                    JOptionPane.showMessageDialog(null, "Insuficientes números aleatorios para la demanda. "
+                            + " Para completar esta simulación añade alguns más.", "Error", JOptionPane.WARNING_MESSAGE);
+                    return null;
+                }
                 this.contadorDemanda++;
             }else{
                 tablaEventos[NRO_ALT_DEMANDA][dia] = randomGenerator.nextInt(100);
@@ -242,7 +259,13 @@ public class Caso{
                 
                 // Generar número aleatorio de tiempo de espera
                 if(debugMode){
-                    tablaEventos[NRO_ALT_T_ESPERA][dia] = this.nrosAleatoriosTiempoEspera[this.contadorTEspera];
+                    try{
+                        tablaEventos[NRO_ALT_T_ESPERA][dia] = this.nrosAleatoriosTiempoEspera[this.contadorTEspera];
+                    }catch(ArrayIndexOutOfBoundsException exception){
+                        JOptionPane.showMessageDialog(null, "Insuficientes números aleatorios para el tiempo de espera. "
+                                + " Para completar esta simulación añade alguns más.", "Error", JOptionPane.WARNING_MESSAGE);
+                        return null;
+                    }
                     this.contadorTEspera++;
                 }else{
                     tablaEventos[NRO_ALT_T_ESPERA][dia] = randomGenerator.nextInt(100);
@@ -271,7 +294,13 @@ public class Caso{
                 
                 // Generar número aleatorio de entrega
                 if(debugMode){
-                    tablaEventos[NRO_ALT_T_ENTREGA][dia] = this.nrosAleatoriosTiempoEntrega[this.contadorTEntrega];
+                    try{
+                        tablaEventos[NRO_ALT_T_ENTREGA][dia] = this.nrosAleatoriosTiempoEntrega[this.contadorTEntrega];
+                    }catch(ArrayIndexOutOfBoundsException exception) {
+                        JOptionPane.showMessageDialog(null, "Insuficientes números aleatorios para el tiempo de entrega. "
+                                + " Para completar esta simulación añade alguns más.", "Error", JOptionPane.WARNING_MESSAGE);
+                        return null;
+                    }
                     this.contadorTEntrega++;
                 }else{
                     tablaEventos[NRO_ALT_T_ENTREGA][dia] = randomGenerator.nextInt(100);
@@ -302,6 +331,11 @@ public class Caso{
                         tablaEventos[T_ESPERA][dia]
                     );
             }
+            /*System.out.print("Cola: ");
+            for(clienteEspera cliente : clientesEspera){
+                System.out.print(cliente.faltante+" -");
+            }
+            System.out.println(";");*/
         }
         
         this.costoTotal = this.costoTotal.add(this.costoTotalSinEspera);
