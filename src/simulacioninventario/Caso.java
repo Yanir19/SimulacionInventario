@@ -40,9 +40,9 @@ public class Caso{
     public static final int T_ESPERA = 11;
     
     // Valores fijos de la simulación
-    private final JTable demandaDiaria;
-    private final JTable tEntrega;
-    private final JTable tEspera;
+    private final int[][] demandaDiaria;
+    private final int[][] tEntrega;
+    private final int[][] tEspera;
     
     private final BigDecimal costoInventario;
     private final BigDecimal costoOrdenar;
@@ -90,7 +90,7 @@ public class Caso{
         return resultado.intValue();
     }
     
-    public Caso(JTable demandaDiaria, JTable tEntrega, JTable tEspera, 
+    public Caso(int[][] demandaDiaria, int[][] tEntrega, int[][] tEspera, 
             BigDecimal costoInventario, BigDecimal costoOrdenar, BigDecimal costoFaltanteConEspera, 
             BigDecimal costoFaltanteSinEspera, Integer inventarioInicial, Integer puntoReorden, 
             Integer cantidadPedido, Integer diasSimulacion, Boolean printTable) {
@@ -121,7 +121,7 @@ public class Caso{
     /*
     * Debug mode constructor. Debe enviarse los arreglos de números aleatorios necesarios para la ejecución de 15 días
     */
-    public Caso(JTable demandaDiaria, JTable tEntrega, JTable tEspera, 
+    public Caso(int[][] demandaDiaria, int[][] tEntrega, int[][] tEspera, 
             BigDecimal costoInventario, BigDecimal costoOrdenar, BigDecimal costoFaltanteConEspera, 
             BigDecimal costoFaltanteSinEspera, Integer inventarioInicial, Integer puntoReorden, 
             Integer cantidadPedido, Integer diasSimulacion, int[] nrosAleatoriosDemanda,
