@@ -74,70 +74,110 @@ public class PanelSimulacion extends javax.swing.JFrame {
                
                switch (i){
                    case 0:
-                       CostInvTxtField.setText(linea.substring(linea.indexOf(' ')+1 , linea.indexOf(" /")));
+                       
+                       try{
+                            CostInvTxtField.setText(linea.substring(linea.indexOf(' ')+1 , linea.indexOf(" /")));
+                        }
+                       catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo de inventario." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
+                       
                    case 1:
-                       CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       
+                       try{
+                            CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo de orden." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
+                       
                    case 2:
-                       CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
-                       break;
+                       
+                       try{
+                            CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo con espera." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
+                        break;
+                        
                    case 3:
-                       CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       
+                        try{
+                            CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo sin espera." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
+                       
                    case 4:
-                       InvIncTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       try{
+                            InvIncTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el inbentario inicial." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
                        
                     case 5:
                         
                         DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
                         count = 0;
-                        while (linea.indexOf(',')>0){
-                            
-                            if(count == 3){
-                                count = 0;
-                         //       System.out.println("para la tabla va: " + demanda[0] +" " + demanda[1] +" " + demanda[2] );
-                                modelotabDem.addRow(demanda);
-                            }
-                            
-                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
-                            linea  = " " + linea.substring(linea.indexOf(',')+1);
-                        //    System.out.println("nueva > " + linea);
-                            count ++;
-                            
-                        }   
                         
-                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
-                            modelotabDem.addRow(demanda);
-                            
+                        try{
+                            while (linea.indexOf(',')>0){
+
+                                if(count == 3){
+                                    count = 0;
+                                    modelotabDem.addRow(demanda);
+                                }
+
+                                demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
+                                linea  = " " + linea.substring(linea.indexOf(',')+1);
+                                count ++;
+
+                            }   
+
+                                demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                                modelotabDem.addRow(demanda);
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir las probabilidades de la demanda." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
                        
                     case 6:
                         DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
                         count = 0;
-                        while (linea.indexOf(',')>0){
-                            
-                            if(count == 3){
-                                count = 0;
-                                modelotabTmEn.addRow(TmEn);
-                            }
-                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
-                            linea  = " " + linea.substring(linea.indexOf(',')+1);
-                           // System.out.println("nueva > " + linea);
-                            count ++;
-                        }   
                         
-                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
-                            modelotabTmEn.addRow(TmEn);
-                       break;
-                       
-                    
+                        try{
+                            while (linea.indexOf(',')>0){
+
+                                if(count == 3){
+                                    count = 0;
+                                    modelotabTmEn.addRow(TmEn);
+                                }
+                                TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
+                                linea  = " " + linea.substring(linea.indexOf(',')+1);
+                               // System.out.println("nueva > " + linea);
+                                count ++;
+                            }   
+
+                                TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                                modelotabTmEn.addRow(TmEn);
+                          
+                           
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir las probabilidades de los tiempos de entrega." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
+                         break;
+                         
+                         
                     case 7:
                         DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
                         count = 0;
-                        while (linea.indexOf(',')>0){
+                        
+                        try{
                             
+                        while (linea.indexOf(',')>0){
                             if(count == 3){
                                 count = 0;
                                 modelotabTmEs.addRow(TmEs);
@@ -149,36 +189,51 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         }   
                             TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                             modelotabTmEs.addRow(TmEs);
+                            
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir las probabilidades de los tiempos de espera." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
+                            
                        break;
                        
                        case 8:
-                           SimDiasTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                            try{
+                                SimDiasTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                            }catch(Exception e){
+                                JOptionPane.showMessageDialog(null, "Error al introducir los dias de simulación." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                            }    
                        break;
                        
                        case 9:
-                           if(NumAleArc.isSelected()){
-                               setAleatorio(linea, 1);
-                               setAleatorio(br.readLine(), 2);
-                               setAleatorio(br.readLine(), 3);
-                           }
-                                   
+                           
+                           try{
+                                if(NumAleArc.isSelected()){
+                                    setAleatorio(linea, 1);
+                                    setAleatorio(br.readLine(), 2);
+                                    setAleatorio(br.readLine(), 3);
+                                }
+                            }catch(Exception e){
+                                JOptionPane.showMessageDialog(null, "Error al introducir los numeros aleatorios" + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                            }
+                           
                        break;
                }
            }
               
         }
         catch(Exception e){
-           e.printStackTrace();
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al intentar abrir el archivo. " + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                           
         }finally{
-           // En el finally cerramos el fichero, para asegurarnos
-           // que se cierra tanto si todo va bien como si salta 
-           // una excepcion.
+            
            try{                    
               if( null != fr ){   
                  fr.close();     
               }                  
            }catch (Exception e2){ 
-              e2.printStackTrace();
+                e2.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al cerrar el archivo." , "Error", JOptionPane.ERROR_MESSAGE );           
            }
         }
     }
@@ -776,9 +831,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     private void TmEsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEsBtnActionPerformed
         DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
-        modelotabTmEs.addRow(new Object[]{TmEsSpin.getValue(),
-                                         ProbTmEsSpin.getValue(),
-                                         generarAcumulada(modelotabTmEs, TablaTEs, (int) ProbTmEsSpin.getValue()) });
+        int acumulado = generarAcumulada(modelotabTmEs, TablaTEs, (int) ProbTmEsSpin.getValue());
+        
+        if (acumulado >0 ){
+            modelotabTmEs.addRow(new Object[]{TmEsSpin.getValue(), ProbTmEsSpin.getValue(),acumulado });
+        }
+        
         TmEsSpin.setValue(0);
         ProbTmEsSpin.setValue(0);
     }//GEN-LAST:event_TmEsBtnActionPerformed
@@ -791,9 +849,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     private void AcepDemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcepDemBtnActionPerformed
         DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
-        modelotabDem.addRow(new Object[]{DemSpin.getValue(),
-                                         ProbDemSpin.getValue(),
-                                         generarAcumulada(modelotabDem, TablaDeman, (int) ProbDemSpin.getValue()) });
+        int acumulado =  generarAcumulada(modelotabDem, TablaDeman, (int) ProbDemSpin.getValue());
+        
+        if (acumulado >0 ){
+            modelotabDem.addRow(new Object[]{DemSpin.getValue(), ProbDemSpin.getValue(), acumulado});
+        }
+        
         DemSpin.setValue(0);
         ProbDemSpin.setValue(0);
     }//GEN-LAST:event_AcepDemBtnActionPerformed
@@ -804,9 +865,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     private void TmEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEnBtnActionPerformed
         DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
-        modelotabTmEn.addRow(new Object[]{TmEnSpin.getValue(),
-            ProbTmEnSpin.getValue(),
-            generarAcumulada(modelotabTmEn, TablaTEn, (int) ProbTmEnSpin.getValue()) });
+        int acumulado = generarAcumulada(modelotabTmEn, TablaTEn, (int) ProbTmEnSpin.getValue());
+        
+        if (acumulado >0 ){        
+            modelotabTmEn.addRow(new Object[]{TmEnSpin.getValue(), ProbTmEnSpin.getValue(), acumulado });
+        }
+        
     TmEnSpin.setValue(0);
     ProbTmEnSpin.setValue(0);
     }//GEN-LAST:event_TmEnBtnActionPerformed
@@ -1063,17 +1127,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
     }
     
-    public int generarAcumulada(DefaultTableModel modelo, JTable tabla, int probablidad){
+    public int generarAcumulada(DefaultTableModel modelo, JTable tabla, int probabilidad){
+        
+        System.out.println("probabilidad " + probabilidad);
         
         if(tabla.getRowCount()>0){
-            if( (int) tabla.getValueAt(tabla.getRowCount()-1, 1) + probablidad <= 100)
-                return (int) tabla.getValueAt(tabla.getRowCount()-1, 2)+ probablidad;
+            if( (int) tabla.getValueAt(tabla.getRowCount()-1, 1) + probabilidad <= 100 &&  (int) (probabilidad *1) <=  100)
+                return (int) tabla.getValueAt(tabla.getRowCount()-1, 2)+ probabilidad;
             else{
                 JOptionPane.showMessageDialog(null, "Con esta probabildiad, el acumulado supera el 100%", "Advetencia", JOptionPane.ERROR_MESSAGE );
                 return 0;
             }
         }else{
-            return probablidad;
+            return probabilidad;
         }
     }
     
