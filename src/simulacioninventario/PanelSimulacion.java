@@ -1045,38 +1045,23 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
         if(this.NumAle.isSelected()){
             int minTEntrega = 1;
-            int maxTEntrega = (int)this.TablaTEn.getValueAt(0, 0);
-            int minDemanda = (int)this.TablaDeman.getValueAt(0, 0);
-            int maxDemanda = (int)this.TablaDeman.getValueAt(0, 0);
+            int maxTEntrega = arregloTablaTEn[0][0];
+            int minDemanda = arregloTablaDeman[0][0];
+            int maxDemanda = arregloTablaDeman[0][0];
             int totalIteraciones = 0;
             
             // Obtener tiempos y demandas mínimas y máximas
-            for (int i = 0; i< this.TablaDeman.getRowCount(); i++){
-                if (minDemanda > (int)this.TablaDeman.getValueAt(i, 0)){
-                    minDemanda = (int)this.TablaDeman.getValueAt(i, 0);
-                } 
-            }
-            for (int i = 0; i< this.TablaDeman.getRowCount(); i++){
-                if (maxDemanda < (int)this.TablaDeman.getValueAt(i, 0)){
-                    maxDemanda = (int)this.TablaDeman.getValueAt(i, 0);
-                } 
-            }
-            for (int i = 0; i< this.TablaTEn.getRowCount(); i++){
-                if ( (int)this.TablaTEn.getValueAt(i, 0) != 0  && minTEntrega > (int)this.TablaTEn.getValueAt(i, 0)){
-                    minTEntrega = (int)this.TablaTEn.getValueAt(i, 0);
-                }
-            }
-            for (int i = 0; i< this.TablaTEn.getRowCount(); i++){
-                if (maxTEntrega < (int)this.TablaTEn.getValueAt(i, 0)){
-                    maxTEntrega = (int)this.TablaTEn.getValueAt(i, 0);
-                } 
-            }
+            minDemanda = PanelSimulacion.getMinValue(arregloTablaDeman, Boolean.FALSE,minDemanda);
+            maxDemanda = PanelSimulacion.getMaxValue(arregloTablaDeman,maxDemanda);
+            minTEntrega = PanelSimulacion.getMinValue(arregloTablaTEn, Boolean.TRUE,minTEntrega);
+            maxTEntrega = PanelSimulacion.getMaxValue(arregloTablaTEn,maxTEntrega);
             
-            /*System.out.println("minDemanda; " + minDemanda);
+            /*
+            System.out.println("minDemanda; " + minDemanda);
             System.out.println("maxDemanda; " + maxDemanda);
             System.out.println("minTEntrega; " + minTEntrega);
             System.out.println("maxTEntrega; " + maxTEntrega);
-            return;*/
+            */
             
             // Obtener Q y PR mínimos y máximos
             cantidadPedidoMin = Caso.calcularQ(
@@ -1316,6 +1301,38 @@ public class PanelSimulacion extends javax.swing.JFrame {
         return 0;        
     }
     */
+    
+    public static int getMinValue(int [][]tabla, Boolean returnZero, int initValue){
+        int min = initValue;
+        
+        if(returnZero){
+            for (int i = 0 ; i < tabla[0].length ; i++){
+                if (min > tabla[0][i]) {
+                    min = tabla[0][i];
+                } 
+            }
+        }else{
+            for (int i = 0 ; i < tabla[0].length ; i++){
+                if (min > tabla[0][i] && tabla[0][i] != 0) {
+                    min = tabla[0][i];
+                } 
+            }
+        }
+        
+        return min;
+    }
+    
+    public static int getMaxValue(int [][]tabla, int initValue){
+        int max = initValue;
+        
+        for (int i = 0 ; i < tabla[0].length ; i++){
+            if (max < tabla[0][i]) {
+                max = tabla[0][i];
+            } 
+        }
+        
+        return max;
+    }
     
     public static int getAltNumber (int aleatorio, int[][] tabla){
         if(aleatorio < tabla[1][0]){
