@@ -37,10 +37,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
     int[] nrosAleatoriosTiempoEntrega ;
     int[] nrosAleatoriosTiempoEspera;
     
+    DefaultTableModel modelotab1; 
+    DefaultTableModel modelotab2;
+    DefaultTableModel modelotab3; 
     DefaultTableModel modelotab; 
     public PanelSimulacion() {
         initComponents();
-        
        layoutTablas();
     }
 
@@ -48,21 +50,33 @@ public class PanelSimulacion extends javax.swing.JFrame {
     File archivo = null;
     FileReader fr = null;
     BufferedReader br = null;
+    DefaultTableModel modelo;
+    
+   
     
 
-      /**llamamos el metodo que permite cargar la ventana*/
-      JFileChooser file=new JFileChooser();
-      file.showOpenDialog(this);
-      /**abrimos el archivo seleccionado*/
-      File abre=file.getSelectedFile();
+    /**llamamos el metodo que permite cargar la ventana*/
+    JFileChooser file=new JFileChooser();
+    file.showOpenDialog(this);
+    /**abrimos el archivo seleccionado*/
+    File abre=file.getSelectedFile();
 
-      /**recorremos el archivo, lo leemos para plasmarlo
-      *en el area de texto*/
       
+    modelo = (DefaultTableModel) TablaDeman.getModel();
+    int rowCount = modelo.getRowCount();
+    limpiar_tabla(modelo, rowCount);
+    TablaDeman.repaint();
+    modelo = (DefaultTableModel) TablaTEn.getModel();
+    rowCount = modelo.getRowCount();
+    limpiar_tabla(modelo, rowCount);
+
+    modelo = (DefaultTableModel) TablaTEs.getModel();
+    rowCount = modelo.getRowCount();
+    limpiar_tabla(modelo, rowCount);
       
     if(abre!=null)
     {     
- 
+        
         try {
            // Apertura del fichero y creacion de BufferedReader para poder
            // hacer una lectura comoda (disponer del metodo readLine()).
@@ -76,70 +90,110 @@ public class PanelSimulacion extends javax.swing.JFrame {
                
                switch (i){
                    case 0:
-                       CostInvTxtField.setText(linea.substring(linea.indexOf(' ')+1 , linea.indexOf(" /")));
+                       
+                       try{
+                            CostInvTxtField.setText(linea.substring(linea.indexOf(' ')+1 , linea.indexOf(" /")));
+                        }
+                       catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo de inventario." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
+                       
                    case 1:
-                       CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       
+                       try{
+                            CostOrdTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo de orden." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
+                       
                    case 2:
-                       CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
-                       break;
+                       
+                       try{
+                            CostCEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo con espera." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
+                        break;
+                        
                    case 3:
-                       CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       
+                        try{
+                            CostSEspTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el costo sin espera." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
+                       
                    case 4:
-                       InvIncTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                       try{
+                            InvIncTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir el inbentario inicial." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
                        
                     case 5:
                         
                         DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
                         count = 0;
-                        while (linea.indexOf(',')>0){
-                            
-                            if(count == 3){
-                                count = 0;
-                         //       System.out.println("para la tabla va: " + demanda[0] +" " + demanda[1] +" " + demanda[2] );
-                                modelotabDem.addRow(demanda);
-                            }
-                            
-                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
-                            linea  = " " + linea.substring(linea.indexOf(',')+1);
-                        //    System.out.println("nueva > " + linea);
-                            count ++;
-                            
-                        }   
                         
-                            demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
-                            modelotabDem.addRow(demanda);
-                            
+                        try{
+                            while (linea.indexOf(',')>0){
+
+                                if(count == 3){
+                                    count = 0;
+                                    modelotabDem.addRow(demanda);
+                                }
+
+                                demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
+                                linea  = " " + linea.substring(linea.indexOf(',')+1);
+                                count ++;
+
+                            }   
+
+                                demanda [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                                modelotabDem.addRow(demanda);
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir las probabilidades de la demanda." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
                        break;
                        
                     case 6:
                         DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
                         count = 0;
-                        while (linea.indexOf(',')>0){
-                            
-                            if(count == 3){
-                                count = 0;
-                                modelotabTmEn.addRow(TmEn);
-                            }
-                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
-                            linea  = " " + linea.substring(linea.indexOf(',')+1);
-                           // System.out.println("nueva > " + linea);
-                            count ++;
-                        }   
                         
-                            TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
-                            modelotabTmEn.addRow(TmEn);
-                       break;
-                       
-                    
+                        try{
+                            while (linea.indexOf(',')>0){
+
+                                if(count == 3){
+                                    count = 0;
+                                    modelotabTmEn.addRow(TmEn);
+                                }
+                                TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
+                                linea  = " " + linea.substring(linea.indexOf(',')+1);
+                               // System.out.println("nueva > " + linea);
+                                count ++;
+                            }   
+
+                                TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                                modelotabTmEn.addRow(TmEn);
+                          
+                           
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir las probabilidades de los tiempos de entrega." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
+                         break;
+                         
+                         
                     case 7:
                         DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
                         count = 0;
-                        while (linea.indexOf(',')>0){
+                        
+                        try{
                             
+                        while (linea.indexOf(',')>0){
                             if(count == 3){
                                 count = 0;
                                 modelotabTmEs.addRow(TmEs);
@@ -151,36 +205,67 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         }   
                             TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                             modelotabTmEs.addRow(TmEs);
+                            
+                        }catch(Exception e){
+                            JOptionPane.showMessageDialog(null, "Error al introducir las probabilidades de los tiempos de espera." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                        }
+                            
                        break;
                        
                        case 8:
-                           SimDiasTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                            try{
+                                SimDiasTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                            }catch(Exception e){
+                                JOptionPane.showMessageDialog(null, "Error al introducir los dias de simulación." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                            }    
                        break;
                        
                        case 9:
-                           if(NumAleArc.isSelected()){
-                               setAleatorio(linea, 1);
-                               setAleatorio(br.readLine(), 2);
-                               setAleatorio(br.readLine(), 3);
-                           }
-                                   
+                            try{
+                                QTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                            }catch(Exception e){
+                                JOptionPane.showMessageDialog(null, "Error al introducir la Q*. " + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                            }    
+                       break;
+                       
+                       case 10:
+                            try{
+                                RTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
+                            }catch(Exception e){
+                                JOptionPane.showMessageDialog(null, "Error al introducir la R." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                            }    
+                       break;
+                       
+                       case 11:
+                           
+                           try{
+                                if(NumAleArc.isSelected()){
+                                    setAleatorio(linea, 1);
+                                    setAleatorio(br.readLine(), 2);
+                                    setAleatorio(br.readLine(), 3);
+                                }
+                            }catch(Exception e){
+                                JOptionPane.showMessageDialog(null, "Error al introducir los numeros aleatorios" + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                            }
+                           
                        break;
                }
            }
               
         }
         catch(Exception e){
-           e.printStackTrace();
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al intentar abrir el archivo. " + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
+                           
         }finally{
-           // En el finally cerramos el fichero, para asegurarnos
-           // que se cierra tanto si todo va bien como si salta 
-           // una excepcion.
+            
            try{                    
               if( null != fr ){   
                  fr.close();     
               }                  
            }catch (Exception e2){ 
-              e2.printStackTrace();
+                e2.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al cerrar el archivo." , "Error", JOptionPane.ERROR_MESSAGE );           
            }
         }
     }
@@ -198,6 +283,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
         jPopupMenu1 = new javax.swing.JPopupMenu();
         jPopupMenu2 = new javax.swing.JPopupMenu();
         buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         PanelSim = new javax.swing.JTabbedPane();
         SetPanel = new javax.swing.JPanel();
         PanelDemanda = new javax.swing.JPanel();
@@ -240,28 +326,32 @@ public class PanelSimulacion extends javax.swing.JFrame {
         InvIncTxtField = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         SimDiasTxtField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        QTxtField = new javax.swing.JTextField();
+        RTxtField = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
         NumAleArc = new javax.swing.JRadioButton();
         NumAle = new javax.swing.JRadioButton();
+        jPanel3 = new javax.swing.JPanel();
+        MonoRBtn = new javax.swing.JRadioButton();
+        MultiRBtn = new javax.swing.JRadioButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaFinal = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        CostFaltLbl = new javax.swing.JLabel();
+        CostOrdLbl = new javax.swing.JLabel();
+        CostInv = new javax.swing.JLabel();
+        CostTtlLbl = new javax.swing.JLabel();
         RunBtn = new javax.swing.JButton();
-        CstFlteLbl = new javax.swing.JLabel();
-        CstOrdLbl = new javax.swing.JLabel();
-        CstInvLbl = new javax.swing.JLabel();
-        CstTtlLbl = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         QLbl = new javax.swing.JLabel();
         RLbl = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        TmEjeLbl = new javax.swing.JLabel();
+        TmEjecLbl = new javax.swing.JLabel();
+        QminLbl = new javax.swing.JLabel();
+        QmaxLbl = new javax.swing.JLabel();
+        RminLbl = new javax.swing.JLabel();
+        RmaxLbl = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -331,14 +421,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProbDemSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1191, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1203, Short.MAX_VALUE))
                 .addContainerGap())
         );
         PanelDemandaLayout.setVerticalGroup(
             PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDemandaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DemLbl)
@@ -388,7 +478,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             .addGroup(PanelTmEnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1191, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1203, Short.MAX_VALUE)
                     .addGroup(PanelTmEnLayout.createSequentialGroup()
                         .addComponent(DelTEnBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -408,7 +498,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEnLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TmEnLbl)
@@ -471,14 +561,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addComponent(ProbTmEsLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProbTmEsSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 800, Short.MAX_VALUE)))
+                        .addGap(0, 812, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         PanelTmEsLayout.setVerticalGroup(
             PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TmEsLbl)
@@ -529,12 +619,72 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Q*:");
+
+        jLabel7.setText("R:");
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Generación de números aleatorios"));
+
         buttonGroup2.add(NumAleArc);
         NumAleArc.setSelected(true);
         NumAleArc.setText("Utilizar números aleatorios del archivo");
 
         buttonGroup2.add(NumAle);
         NumAle.setText("Generar números aleatorios");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NumAleArc)
+                    .addComponent(NumAle))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(NumAleArc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(NumAle))
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Modo de procesamiento"));
+
+        buttonGroup1.add(MonoRBtn);
+        MonoRBtn.setSelected(true);
+        MonoRBtn.setText("Mono-hilo");
+
+        buttonGroup1.add(MultiRBtn);
+        MultiRBtn.setText("Multi-hilo");
+        MultiRBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MultiRBtnActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(MonoRBtn)
+                    .addComponent(MultiRBtn))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(MonoRBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MultiRBtn)
+                .addGap(0, 13, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout PanelCostoLayout = new javax.swing.GroupLayout(PanelCosto);
         PanelCosto.setLayout(PanelCostoLayout);
@@ -561,7 +711,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(50, 50, 50)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(NumAle)
                     .addGroup(PanelCostoLayout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -570,13 +719,25 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(SimDiasTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(NumAleArc))
-                .addContainerGap(702, Short.MAX_VALUE))
+                    .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(PanelCostoLayout.createSequentialGroup()
+                            .addComponent(jLabel7)
+                            .addGap(18, 18, 18)
+                            .addComponent(RTxtField))
+                        .addGroup(PanelCostoLayout.createSequentialGroup()
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(QTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(465, Short.MAX_VALUE))
         );
         PanelCostoLayout.setVerticalGroup(
             PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelCostoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(11, 11, 11)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel5)
@@ -592,17 +753,24 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel2)
                         .addComponent(CostOrdTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(17, 17, 17)
+                .addGap(18, 18, 18)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(CostCEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NumAleArc))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel6)
+                    .addComponent(QTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(NumAle))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel7)
+                    .addComponent(RTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
+            .addGroup(PanelCostoLayout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         SetPanel.add(PanelCosto);
@@ -640,15 +808,13 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Resultados finales"));
 
-        jLabel9.setText("Costo de faltante:");
+        CostFaltLbl.setText("Costo de faltante:");
 
-        jLabel10.setText("Costo de orden:");
+        CostOrdLbl.setText("Costo de orden:");
 
-        jLabel11.setText("Costo de inventario:");
+        CostInv.setText("Costo de inventario:");
 
-        jLabel12.setText("Costo total:");
-
-        jLabel13.setText("Mensaje:");
+        CostTtlLbl.setText("Costo total:");
 
         RunBtn.setText("Run");
         RunBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -657,17 +823,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         });
 
-        CstOrdLbl.setText(" ");
+        QLbl.setText("Q*:");
 
-        CstInvLbl.setText(" ");
+        RLbl.setText("R:");
 
-        CstTtlLbl.setText(" ");
+        TmEjecLbl.setText("Tiempo de ejecución:");
 
-        jLabel6.setText("Q*:");
+        QminLbl.setText("Q mínima:");
 
-        jLabel7.setText("R:");
+        QmaxLbl.setText("Q máxima: ");
 
-        jLabel8.setText("Tiempo de ejecución:");
+        RminLbl.setText("R mínimo:");
+
+        RmaxLbl.setText("R máximo:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -677,74 +845,58 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstInvLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(RLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(QLbl, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)))
-                    .addComponent(jLabel13)
-                    .addComponent(RunBtn)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(CostFaltLbl)
+                            .addComponent(TmEjecLbl)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(QmaxLbl)
+                                    .addComponent(QminLbl)
+                                    .addComponent(QLbl))
+                                .addGap(87, 87, 87)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(RmaxLbl)
+                                    .addComponent(RminLbl)
+                                    .addComponent(RLbl)))
+                            .addComponent(CostOrdLbl)
+                            .addComponent(CostInv)
+                            .addComponent(CostTtlLbl))
+                        .addContainerGap(1022, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TmEjeLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstOrdLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstFlteLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CstTtlLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(980, Short.MAX_VALUE))
+                        .addComponent(RunBtn)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(CstFlteLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel10)
-                    .addComponent(CstOrdLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(CstInvLbl))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(CstTtlLbl))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(QLbl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(RLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(TmEjeLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel13)
-                .addGap(18, 18, 18)
                 .addComponent(RunBtn)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(CostFaltLbl)
+                .addGap(18, 18, 18)
+                .addComponent(CostOrdLbl)
+                .addGap(18, 18, 18)
+                .addComponent(CostInv)
+                .addGap(18, 18, 18)
+                .addComponent(CostTtlLbl)
+                .addGap(18, 18, 18)
+                .addComponent(TmEjecLbl)
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(QminLbl)
+                        .addGap(18, 18, 18)
+                        .addComponent(QmaxLbl)
+                        .addGap(32, 32, 32))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(RminLbl)
+                        .addGap(18, 18, 18)
+                        .addComponent(RmaxLbl)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(RLbl)
+                            .addComponent(QLbl))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel6.add(jPanel1);
@@ -778,9 +930,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     private void TmEsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEsBtnActionPerformed
         DefaultTableModel modelotabTmEs = (DefaultTableModel) TablaTEs.getModel();
-        modelotabTmEs.addRow(new Object[]{TmEsSpin.getValue(),
-                                         ProbTmEsSpin.getValue(),
-                                         generarAcumulada(modelotabTmEs, TablaTEs, (int) ProbTmEsSpin.getValue()) });
+        int acumulado = generarAcumulada(modelotabTmEs, TablaTEs, (int) ProbTmEsSpin.getValue());
+        
+        if (acumulado >0 ){
+            modelotabTmEs.addRow(new Object[]{TmEsSpin.getValue(), ProbTmEsSpin.getValue(),acumulado });
+        }
+        
         TmEsSpin.setValue(0);
         ProbTmEsSpin.setValue(0);
     }//GEN-LAST:event_TmEsBtnActionPerformed
@@ -793,9 +948,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     private void AcepDemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcepDemBtnActionPerformed
         DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
-        modelotabDem.addRow(new Object[]{DemSpin.getValue(),
-                                         ProbDemSpin.getValue(),
-                                         generarAcumulada(modelotabDem, TablaDeman, (int) ProbDemSpin.getValue()) });
+        int acumulado =  generarAcumulada(modelotabDem, TablaDeman, (int) ProbDemSpin.getValue());
+        
+        if (acumulado >0 ){
+            modelotabDem.addRow(new Object[]{DemSpin.getValue(), ProbDemSpin.getValue(), acumulado});
+        }
+        
         DemSpin.setValue(0);
         ProbDemSpin.setValue(0);
     }//GEN-LAST:event_AcepDemBtnActionPerformed
@@ -806,9 +964,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     private void TmEnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmEnBtnActionPerformed
         DefaultTableModel modelotabTmEn = (DefaultTableModel) TablaTEn.getModel();
-        modelotabTmEn.addRow(new Object[]{TmEnSpin.getValue(),
-            ProbTmEnSpin.getValue(),
-            generarAcumulada(modelotabTmEn, TablaTEn, (int) ProbTmEnSpin.getValue()) });
+        int acumulado = generarAcumulada(modelotabTmEn, TablaTEn, (int) ProbTmEnSpin.getValue());
+        
+        if (acumulado >0 ){        
+            modelotabTmEn.addRow(new Object[]{TmEnSpin.getValue(), ProbTmEnSpin.getValue(), acumulado });
+        }
+        
     TmEnSpin.setValue(0);
     ProbTmEnSpin.setValue(0);
     }//GEN-LAST:event_TmEnBtnActionPerformed
@@ -826,11 +987,18 @@ public class PanelSimulacion extends javax.swing.JFrame {
     }//GEN-LAST:event_CostSEspTxtFieldActionPerformed
 
     private void RunBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunBtnActionPerformed
-        boolean paralelo = true;
+       
+        boolean paralelo;
+        if(MonoRBtn.isSelected())
+            paralelo = false;
+        else{
+            paralelo = true;
+        }
         long time_start, time_end;
         time_start = System.currentTimeMillis();
-        Integer cantidadPedido = 100;
-        Integer puntoReorden = 75;
+        limpiar_tabla((DefaultTableModel) TablaFinal.getModel(), TablaFinal.getModel().getRowCount());
+        Integer cantidadPedido = Integer.parseInt(QTxtField.getText());
+        Integer puntoReorden = Integer.parseInt(RTxtField.getText());
         Caso caso = null;
         
         int cantidadPedidoMin = 0;
@@ -943,6 +1111,11 @@ public class PanelSimulacion extends javax.swing.JFrame {
             System.out.println("puntoReordenMin; " + puntoReordenMin);
             System.out.println("puntoReordenMax; " + puntoReordenMax);
             
+            QminLbl.setText("Q mínima: " + cantidadPedidoMin);
+            QmaxLbl.setText("Q máxima: " + cantidadPedidoMax);
+            RminLbl.setText("R mínima: " + puntoReordenMin);
+            RmaxLbl.setText("R máxima: " + puntoReordenMax);
+            
             totalIteraciones = (puntoReordenMax-puntoReordenMin)*(cantidadPedidoMax-cantidadPedidoMin);
             
             //ResultadoCasoSimplificado[] resultados = new ResultadoCasoSimplificado[totalIteraciones];
@@ -1033,8 +1206,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
             );
             
             resultado = (ResultadoCaso) caso.simular();
-            QLbl.setText(String.valueOf(mejorResultadoSimplificado.cantidadPedido));
-            RLbl.setText(String.valueOf(mejorResultadoSimplificado.puntoReorden));
+            QLbl.setText("Q*: " + String.valueOf(mejorResultadoSimplificado.cantidadPedido));
+            RLbl.setText("R: " + String.valueOf(mejorResultadoSimplificado.puntoReorden));
  
         }else{
             caso = new Caso(arregloTablaDeman, arregloTablaTEn, arregloTablaTEs, new BigDecimal(CostInvTxtField.getText()), 
@@ -1043,8 +1216,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera
             );
             
-            QLbl.setText(String.valueOf(cantidadPedido));
-            RLbl.setText(String.valueOf(puntoReorden));
+            QLbl.setText("Q*: " + String.valueOf(cantidadPedido));
+            RLbl.setText("R: " + String.valueOf(puntoReorden));
+            
             resultado = (ResultadoCaso) caso.simular();
         }
         
@@ -1069,14 +1243,13 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 modelotabFinal.addRow(fila);
             }
 
-            CstFlteLbl.setText( resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
-            CstTtlLbl.setText(resultado.costoTotal.toString());
-            CstInvLbl.setText(resultado.costoTotalInventario.toString());
-            CstOrdLbl.setText(resultado.costoTotalOrden.toString());
-
+            CostFaltLbl.setText("Costo de faltante: " + resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
+            CostTtlLbl.setText("Costo total: " + resultado.costoTotal.toString());
+            CostInv.setText("Costo de inventario: " + resultado.costoTotalInventario.toString());
+            CostOrdLbl.setText("Costo de orden: " + resultado.costoTotalOrden.toString());
 
             time_end = System.currentTimeMillis();
-            TmEjeLbl.setText( String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
+            TmEjecLbl.setText("Tiempo de ejecución: " + String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
             System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
 
         }
@@ -1093,6 +1266,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
         capturar_informacion();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void MultiRBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MultiRBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_MultiRBtnActionPerformed
+
     
     
     public  void eliminarcolumna(JTable tabla){
@@ -1101,17 +1278,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
         
     }
     
-    public int generarAcumulada(DefaultTableModel modelo, JTable tabla, int probablidad){
+    public int generarAcumulada(DefaultTableModel modelo, JTable tabla, int probabilidad){
+        
+        System.out.println("probabilidad " + probabilidad);
         
         if(tabla.getRowCount()>0){
-            if( (int) tabla.getValueAt(tabla.getRowCount()-1, 1) + probablidad <= 100)
-                return (int) tabla.getValueAt(tabla.getRowCount()-1, 2)+ probablidad;
+            if( (int) tabla.getValueAt(tabla.getRowCount()-1, 1) + probabilidad <= 100 &&  (int) (probabilidad *1) <=  100)
+                return (int) tabla.getValueAt(tabla.getRowCount()-1, 2)+ probabilidad;
             else{
                 JOptionPane.showMessageDialog(null, "Con esta probabildiad, el acumulado supera el 100%", "Advetencia", JOptionPane.ERROR_MESSAGE );
                 return 0;
             }
         }else{
-            return probablidad;
+            return probabilidad;
         }
     }
     
@@ -1251,6 +1430,12 @@ public class PanelSimulacion extends javax.swing.JFrame {
     }
     
     
+    private void limpiar_tabla (DefaultTableModel modelo , int count){
+        for (int i = count - 1; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1289,19 +1474,21 @@ public class PanelSimulacion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcepDemBtn;
     private javax.swing.JTextField CostCEspTxtField;
+    private javax.swing.JLabel CostFaltLbl;
+    private javax.swing.JLabel CostInv;
     private javax.swing.JTextField CostInvTxtField;
+    private javax.swing.JLabel CostOrdLbl;
     private javax.swing.JTextField CostOrdTxtField;
     private javax.swing.JTextField CostSEspTxtField;
-    private javax.swing.JLabel CstFlteLbl;
-    private javax.swing.JLabel CstInvLbl;
-    private javax.swing.JLabel CstOrdLbl;
-    private javax.swing.JLabel CstTtlLbl;
+    private javax.swing.JLabel CostTtlLbl;
     private javax.swing.JButton DelDemBtn;
     private javax.swing.JButton DelTEnBtn;
     private javax.swing.JButton DelTEsBtn;
     private javax.swing.JLabel DemLbl;
     private javax.swing.JSpinner DemSpin;
     private javax.swing.JTextField InvIncTxtField;
+    private javax.swing.JRadioButton MonoRBtn;
+    private javax.swing.JRadioButton MultiRBtn;
     private javax.swing.JRadioButton NumAle;
     private javax.swing.JRadioButton NumAleArc;
     private javax.swing.JPanel PanelCosto;
@@ -1316,7 +1503,13 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JLabel ProbTmEsLbl;
     private javax.swing.JSpinner ProbTmEsSpin;
     private javax.swing.JLabel QLbl;
+    private javax.swing.JTextField QTxtField;
+    private javax.swing.JLabel QmaxLbl;
+    private javax.swing.JLabel QminLbl;
     private javax.swing.JLabel RLbl;
+    private javax.swing.JTextField RTxtField;
+    private javax.swing.JLabel RmaxLbl;
+    private javax.swing.JLabel RminLbl;
     private javax.swing.JButton RunBtn;
     private javax.swing.JPanel SetPanel;
     private javax.swing.JTextField SimDiasTxtField;
@@ -1324,19 +1517,16 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JTable TablaFinal;
     private javax.swing.JTable TablaTEn;
     private javax.swing.JTable TablaTEs;
-    private javax.swing.JLabel TmEjeLbl;
+    private javax.swing.JLabel TmEjecLbl;
     private javax.swing.JButton TmEnBtn;
     private javax.swing.JLabel TmEnLbl;
     private javax.swing.JSpinner TmEnSpin;
     private javax.swing.JButton TmEsBtn;
     private javax.swing.JLabel TmEsLbl;
     private javax.swing.JSpinner TmEsSpin;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -1344,13 +1534,13 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
