@@ -3,27 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package simulacioninventario;
+package Logica;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 import junit.framework.TestCase;
-import junit.framework.Assert;
 
 /**
  *
  * @author gabo_
  */
-public class CasoTest extends TestCase {
-    private int[][] demandaDiaria;
-    private int[][] tEntrega;
-    private int[][] tEspera;
+public class SimulacionTest extends TestCase {
+    private int[][] arregloTablaDeman;
+    private int[][] arregloTablaTEn;
+    private int[][] arregloTablaTEs;
     private int[] nrosAleatoriosDemanda;
-    private int contadorDemanda = 0;
     private int[] nrosAleatoriosTiempoEntrega;
-    private int contadorTEntrega = 0;
     private int[] nrosAleatoriosTiempoEspera;
-    private int contadorTEspera = 0;
     
     private BigDecimal costoInventario;
     private BigDecimal costoOrdenar;
@@ -38,25 +34,25 @@ public class CasoTest extends TestCase {
     
     private Integer[][] expectedTable;
     
-    public CasoTest(String testName) {
+    public SimulacionTest(String testName) {
         super(testName);
     }
     
     @Override
     protected void setUp() throws Exception {
-        demandaDiaria = new int[][]{ 
+        arregloTablaDeman = new int[][]{ 
             {25,26,27,28,29,30,31,35,33,34},
             //{2,4,6,12,20,24,15,10,5,2},
             {2,6,12,24,44,68,83,93,98,100}
         };
         
-        tEntrega = new int[][]{ 
+        arregloTablaTEn = new int[][]{ 
             {1,2,3,4},
             //{5,5,30,60},
             {5,10,40,100}
         };
                 
-        tEspera = new int[][]{
+        arregloTablaTEs = new int[][]{
             {0,1,2,3,4},
             //{3,50,40,3,4},
             {3,53,93,96,100}
@@ -102,68 +98,62 @@ public class CasoTest extends TestCase {
     }
 
     /**
-     * Test of calcularQ method, of class Caso.
+     * Test of calcularQ method, of class SimulacionTest.
      */
     public void testCalcularQ() {
         System.out.println("testCalcularQ");
         
-        int minDemanda = demandaDiaria[0][0];
-        int maxDemanda = demandaDiaria[0][0];
+        int minDemanda = arregloTablaDeman[0][0];
+        int maxDemanda = arregloTablaDeman[0][0];
 
         // Obtener tiempos y demandas mínimas y máximas
-        minDemanda = PanelSimulacion.getMinValue(demandaDiaria, Boolean.FALSE,minDemanda);
-        maxDemanda = PanelSimulacion.getMaxValue(demandaDiaria,maxDemanda);
+        minDemanda = Simulador.getMinValue(arregloTablaDeman, Boolean.FALSE,minDemanda);
+        maxDemanda = Simulador.getMaxValue(arregloTablaDeman,maxDemanda);
         
-        int min = Caso.calcularQ(costoOrdenar, minDemanda, costoInventario, costoFaltanteSinEspera, diasSimulacion);
-        int max = Caso.calcularQ(costoOrdenar, maxDemanda, costoInventario, costoFaltanteConEspera, diasSimulacion);
+        int min = Simulador.calcularQ(costoOrdenar, minDemanda, costoInventario, costoFaltanteSinEspera, diasSimulacion);
+        int max = Simulador.calcularQ(costoOrdenar, maxDemanda, costoInventario, costoFaltanteConEspera, diasSimulacion);
         assertEquals(268, min);
         assertEquals(421, max);
     }
 
     /**
-     * Test of calcularPuntoReorden method, of class Caso.
+     * Test of calcularPuntoReorden method, of class SimulacionTest.
      */
     public void testCalcularPuntoReorden() {
         System.out.println("testCalcularPuntoReorden");
         
         int minTEntrega = 1;
-        int maxTEntrega = tEntrega[0][0];
-        int minDemanda = demandaDiaria[0][0];
-        int maxDemanda = demandaDiaria[0][0];
+        int maxTEntrega = arregloTablaTEn[0][0];
+        int minDemanda = arregloTablaDeman[0][0];
+        int maxDemanda = arregloTablaDeman[0][0];
 
         // Obtener tiempos y demandas mínimas y máximas
-        minDemanda = PanelSimulacion.getMinValue(demandaDiaria, Boolean.FALSE,minDemanda);
-        maxDemanda = PanelSimulacion.getMaxValue(demandaDiaria,maxDemanda);
-        minTEntrega = PanelSimulacion.getMinValue(tEntrega, Boolean.TRUE,minTEntrega);
-        maxTEntrega = PanelSimulacion.getMaxValue(tEntrega,maxTEntrega);
+        minDemanda = Simulador.getMinValue(arregloTablaDeman, Boolean.FALSE,minDemanda);
+        maxDemanda = Simulador.getMaxValue(arregloTablaDeman,maxDemanda);
+        minTEntrega = Simulador.getMinValue(arregloTablaTEn, Boolean.TRUE,minTEntrega);
+        maxTEntrega = Simulador.getMaxValue(arregloTablaTEn,maxTEntrega);
         
         
-        int min = Caso.calcularPuntoReorden(minTEntrega,minDemanda,diasSimulacion);
-        int max = Caso.calcularPuntoReorden(maxTEntrega,maxDemanda,diasSimulacion);
+        int min = Simulador.calcularPuntoReorden(minTEntrega,minDemanda,diasSimulacion);
+        int max = Simulador.calcularPuntoReorden(maxTEntrega,maxDemanda,diasSimulacion);
         assertEquals(25, min);
         assertEquals(140, max);
     }
 
     /**
-     * Test of simular method, of class Caso.
+     * Test of simular method, of class SimulacionTest.
      */
     public void testSimular() {
         System.out.println("testSimular");
 
-        Caso caso = new Caso(demandaDiaria, tEntrega, tEspera, costoInventario, 
-                costoOrdenar, costoFaltanteConEspera, costoFaltanteSinEspera, 
-                inventarioInicial, puntoReorden, cantidadPedido, 15,
-                nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera
-        );
+        Simulacion caso = new Simulacion( this.arregloTablaDeman, this.arregloTablaTEn, this.arregloTablaTEs, this.costoInventario, 
+                    this.costoOrdenar, this.costoFaltanteConEspera, this.costoFaltanteSinEspera, 
+                   this.inventarioInicial, puntoReorden, cantidadPedido, 15,
+                    nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera, false
+            );
         
-        ResultadoCaso resultado = caso.simular();
-        
-        /*System.out.println(resultado.costoTotal);
-        System.out.println(resultado.costoTotalOrden);
-        System.out.println(resultado.costoTotalInventario);
-        System.out.println(resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera));
-        */
-        
+        Resultado resultado = caso.simular();
+
         assertEquals("8880.0", resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
         assertEquals("300.0", resultado.costoTotalOrden.toString());
         assertEquals("10.5424657534246575342465753424657516", resultado.costoTotalInventario.toString());
