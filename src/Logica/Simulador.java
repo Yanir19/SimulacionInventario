@@ -150,10 +150,10 @@ public class Simulador {
                 this.diasSimulacion
         );
 
-        System.out.println("cantidadPedidoMin; " + cantidadPedidoMin);
+        /*System.out.println("cantidadPedidoMin; " + cantidadPedidoMin);
         System.out.println("cantidadPedidoMax; " + cantidadPedidoMax);
         System.out.println("puntoReordenMin; " + puntoReordenMin);
-        System.out.println("puntoReordenMax; " + puntoReordenMax);
+        System.out.println("puntoReordenMax; " + puntoReordenMax);*/
         
         totalIteraciones = (puntoReordenMax-puntoReordenMin)*(cantidadPedidoMax-cantidadPedidoMin);
 
@@ -217,9 +217,10 @@ public class Simulador {
 
         }
 
+        /*
         System.out.println("Mejor caso: "+ mejorCaso);
         System.out.println("Q: "+ mejorResultadoSimplificado.cantidadPedido);
-        System.out.println("R: "+ mejorResultadoSimplificado.puntoReorden);
+        System.out.println("R: "+ mejorResultadoSimplificado.puntoReorden);*/
 
         // Generar nuevamente el mejor resultado
         caso = new Simulacion(arregloTablaDeman, arregloTablaTEn, arregloTablaTEs, this.costoInventario, 

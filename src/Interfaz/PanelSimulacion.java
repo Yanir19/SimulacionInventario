@@ -1015,21 +1015,21 @@ public class PanelSimulacion extends javax.swing.JFrame {
         for (int i=0; i<TablaDeman.getRowCount(); i++){
             arregloTablaDeman[0][i] = (int)TablaDeman.getValueAt(i, 0);
             arregloTablaDeman[1][i] = (int)TablaDeman.getValueAt(i, 2);
-            System.out.println("Demanda: "+arregloTablaDeman[0][i]+" "+arregloTablaDeman[1][i]);
+//            System.out.println("Demanda: "+arregloTablaDeman[0][i]+" "+arregloTablaDeman[1][i]);
         }
 
         arregloTablaTEn = new int[2][TablaTEn.getRowCount()];
         for (int i=0; i<TablaTEn.getRowCount(); i++){
             arregloTablaTEn[0][i] = (int)TablaTEn.getValueAt(i, 0);
             arregloTablaTEn[1][i] = (int)TablaTEn.getValueAt(i, 2);
-            System.out.println("TEntrega: "+arregloTablaTEn[0][i]+" "+arregloTablaTEn[1][i]);
+//            System.out.println("TEntrega: "+arregloTablaTEn[0][i]+" "+arregloTablaTEn[1][i]);
         }
 
         arregloTablaTEs = new int[2][TablaTEs.getRowCount()];
         for (int i=0; i<TablaTEs.getRowCount(); i++){
             arregloTablaTEs[0][i] = (int)TablaTEs.getValueAt(i, 0);
             arregloTablaTEs[1][i] = (int)TablaTEs.getValueAt(i, 2);
-            System.out.println("TEspera: "+arregloTablaTEs[0][i]+" "+arregloTablaTEs[1][i]);
+//        System.out.println("TEspera: "+arregloTablaTEs[0][i]+" "+arregloTablaTEs[1][i]);
         }
         
         diasSimulacion = Integer.parseInt( this.SimDiasTxtField.getText());
@@ -1096,7 +1096,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
             time_end = System.currentTimeMillis();
             TmEjecLbl.setText("Tiempo de ejecución: " + String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
-            System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
+//            System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
 
         }
         
@@ -1126,7 +1126,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
     
     public int generarAcumulada(DefaultTableModel modelo, JTable tabla, int probabilidad){
         
-        System.out.println("probabilidad " + probabilidad);
+//        System.out.println("probabilidad " + probabilidad);
         
         if(tabla.getRowCount()>0){
             if( (int) tabla.getValueAt(tabla.getRowCount()-1, 1) + probabilidad <= 100 &&  (int) (probabilidad *1) <=  100)
@@ -1204,9 +1204,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
             
             lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(','))));
             linea  = " " + linea.substring(linea.indexOf(',')+1);
-            System.out.println("linea >" + linea);
+//            System.out.println("linea >" + linea);
         }
-        System.out.println("ultima linea >" + linea);
+//        System.out.println("ultima linea >" + linea);
         lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /"))));
         
         int [] arreglo = new int [lista.size()];
@@ -1218,24 +1218,24 @@ public class PanelSimulacion extends javax.swing.JFrame {
         switch (opc){
             case 1:
                 this.nrosAleatoriosDemanda = arreglo;
-                System.out.println("demanda: " );
+                /*System.out.println("demanda: " );
                 for(int i= 0; i < lista.size() ; i++){
                     System.out.println(this.nrosAleatoriosDemanda [i]);
-                }
+                }*/
                 break;
             case 2 :
                 this.nrosAleatoriosTiempoEntrega  = arreglo;
-                System.out.println("entrega: " );
+                /*System.out.println("entrega: " );
                 for(int i= 0; i < lista.size() ; i++){
                     System.out.println(this.nrosAleatoriosTiempoEntrega [i]);
-                }
+                }*/
                 break;
             case 3:
                 this.nrosAleatoriosTiempoEspera = arreglo;
-                System.out.println("espera: " );
+                /*System.out.println("espera: " );
                 for(int i= 0; i < lista.size() ; i++){
                     System.out.println(this.nrosAleatoriosTiempoEspera [i]);
-                }
+                }*/
                 break;
         }
     }
