@@ -108,7 +108,8 @@ public class Simulador {
         Resultado resultado;
         ResultadoParcial mejorResultadoSimplificado;
         int contadorResultados = 0;
-        
+        BigDecimal escasezMenor = BigDecimal.ZERO;
+        BigDecimal escasezMayor = BigDecimal.ZERO;
         
         int minTEntrega = 1;
         int maxTEntrega = arregloTablaTEn[0][0];
@@ -122,19 +123,28 @@ public class Simulador {
         minTEntrega = getMinValue(arregloTablaTEn, Boolean.TRUE,minTEntrega);
         maxTEntrega = getMaxValue(arregloTablaTEn,maxTEntrega);
 
+        // Determinar cual de los costos de escasez es menor.
+        if (this.costoFaltanteSinEspera.compareTo(this.costoFaltanteConEspera) > 1){
+            escasezMenor = this.costoFaltanteSinEspera;
+            escasezMayor = this.costoFaltanteConEspera;
+        }else{
+            escasezMenor = this.costoFaltanteConEspera;
+            escasezMayor = this.costoFaltanteSinEspera;
+        }
+        
         // Obtener Q y PR mínimos y máximos
         cantidadPedidoMin = Simulador.calcularQ(
                 this.costoOrdenar,
                 minDemanda, 
                 this.costoInventario,
-                this.costoFaltanteSinEspera, 
+                escasezMayor, 
                 this.diasSimulacion
         );
         cantidadPedidoMax = Simulador.calcularQ(
                 this.costoOrdenar, 
                 maxDemanda, 
                 this.costoInventario,
-                this.costoFaltanteConEspera, 
+                escasezMenor, 
                 this.diasSimulacion
         );
 

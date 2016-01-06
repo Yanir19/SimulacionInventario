@@ -149,6 +149,7 @@ public class Simulacion{
         List<clienteEspera> clientesEspera = new ArrayList<>();
         int resto;
         Random randomGenerator = new Random();
+        randomGenerator.setSeed(100);        
         
         tablaEventos[DIA][dia] = dia+1;
         
@@ -226,7 +227,7 @@ public class Simulacion{
                 }
                 this.contadorDemanda++;
             }else{
-                tablaEventos[NRO_ALT_DEMANDA][dia] = randomGenerator.nextInt(100);
+                tablaEventos[NRO_ALT_DEMANDA][dia] = (int)(randomGenerator.nextDouble()*100);
             }
             
             // Obtener demanda de la tabla de probabilidad
@@ -251,7 +252,7 @@ public class Simulacion{
                     }
                     this.contadorTEspera++;
                 }else{
-                    tablaEventos[NRO_ALT_T_ESPERA][dia] = randomGenerator.nextInt(100);
+                    tablaEventos[NRO_ALT_T_ESPERA][dia] = (int)(randomGenerator.nextDouble()*100);
                 }
                 // Obtener tiempo de entrega de la tabla de probabilidad
                 tablaEventos[T_ESPERA][dia] = Simulacion.getAltNumber(tablaEventos[NRO_ALT_T_ESPERA][dia], this.arregloTablaTEs);
@@ -284,7 +285,7 @@ public class Simulacion{
                     }
                     this.contadorTEntrega++;
                 }else{
-                    tablaEventos[NRO_ALT_T_ENTREGA][dia] = randomGenerator.nextInt(100);
+                    tablaEventos[NRO_ALT_T_ENTREGA][dia] = (int)(randomGenerator.nextDouble()*100);
                 }
                 // Obtener demanda de la tabla de probabilidad
                 tablaEventos[T_ENTREGA][dia] = Simulacion.getAltNumber(tablaEventos[NRO_ALT_T_ENTREGA][dia], this.arregloTablaTEn);
