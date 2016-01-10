@@ -1084,144 +1084,144 @@ public class PanelSimulacion extends javax.swing.JFrame {
             @Override
             public void run(){
         
-        boolean ejecutarParalelo;
-        int[][] arregloTablaDeman;
-        int[][] arregloTablaTEn;
-        int[][] arregloTablaTEs;
-        int diasSimulacion;
-        long time_start, time_end;
-        Simulacion caso;
-        Resultado resultado;       
-        DecimalFormat decimales = new DecimalFormat("0.000");  
-        // Iniciar contador de tiempo
-        time_start = System.currentTimeMillis();
-        
-        // Determinar si la ejecución sera en paralelo o secuencial
-        ejecutarParalelo = !MonoRBtn.isSelected();
-        
-        limpiar_tabla((DefaultTableModel) TablaFinal.getModel(), TablaFinal.getModel().getRowCount());
-        limpiar_tabla((DefaultTableModel) jTable2.getModel(), jTable2.getModel().getRowCount());
-        Integer cantidadPedido = Integer.parseInt(QTxtField.getText());
-        Integer puntoReorden = Integer.parseInt(RTxtField.getText());
-        
-        // Obtener arreglos de tablas de probabilidad TablaDeman, TablaTEn, TablaTEs
-        arregloTablaDeman = new int[2][TablaDeman.getRowCount()];
-        for (int i=0; i<TablaDeman.getRowCount(); i++){
-            arregloTablaDeman[0][i] = (int)TablaDeman.getValueAt(i, 0);
-            arregloTablaDeman[1][i] = (int)TablaDeman.getValueAt(i, 2);
-//            System.out.println("Demanda: "+arregloTablaDeman[0][i]+" "+arregloTablaDeman[1][i]);
-        }
+                boolean ejecutarParalelo;
+                int[][] arregloTablaDeman;
+                int[][] arregloTablaTEn;
+                int[][] arregloTablaTEs;
+                int diasSimulacion;
+                long time_start, time_end;
+                Simulacion caso;
+                Resultado resultado;       
+                DecimalFormat decimales = new DecimalFormat("0.000");  
+                // Iniciar contador de tiempo
+                time_start = System.currentTimeMillis();
 
-        arregloTablaTEn = new int[2][TablaTEn.getRowCount()];
-        for (int i=0; i<TablaTEn.getRowCount(); i++){
-            arregloTablaTEn[0][i] = (int)TablaTEn.getValueAt(i, 0);
-            arregloTablaTEn[1][i] = (int)TablaTEn.getValueAt(i, 2);
-//            System.out.println("TEntrega: "+arregloTablaTEn[0][i]+" "+arregloTablaTEn[1][i]);
-        }
+                // Determinar si la ejecución sera en paralelo o secuencial
+                ejecutarParalelo = !MonoRBtn.isSelected();
 
-        arregloTablaTEs = new int[2][TablaTEs.getRowCount()];
-        for (int i=0; i<TablaTEs.getRowCount(); i++){
-            arregloTablaTEs[0][i] = (int)TablaTEs.getValueAt(i, 0);
-            arregloTablaTEs[1][i] = (int)TablaTEs.getValueAt(i, 2);
-//        System.out.println("TEspera: "+arregloTablaTEs[0][i]+" "+arregloTablaTEs[1][i]);
-        }
-        
-        diasSimulacion = Integer.parseInt( SimDiasTxtField.getText());
-        
-        // Ejecutar simulación completa, sino, ejecutar simulación de prueba
-        if(NumAle.isSelected()){
-            Simulador simulador = new Simulador(
-                    ejecutarParalelo, arregloTablaDeman, arregloTablaTEn,
-                    arregloTablaTEs, diasSimulacion, Integer.parseInt(InvIncTxtField.getText()),
-                    new BigDecimal(CostInvTxtField.getText()), new BigDecimal(CostOrdTxtField.getText()), 
-                    new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()),
-                    jProgressBar1
-            );
-            
-            //Correr simulaciones
-            resultado = simulador.iterar();
-            if(ejecutarParalelo){
-                resultados_paralelo = simulador.getResultados_paralelo();
-                Object fila [] = new Object[3];
-                DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-                for (ResultadoParcial r : resultados_paralelo ){
-                    fila [0] = r.cantidadPedido;
-                    fila [1] = r.puntoReorden;
-                    fila [2] = decimales.format(r.costoTotal);
-                    modelo.addRow(fila);
+                limpiar_tabla((DefaultTableModel) TablaFinal.getModel(), TablaFinal.getModel().getRowCount());
+                limpiar_tabla((DefaultTableModel) jTable2.getModel(), jTable2.getModel().getRowCount());
+                Integer cantidadPedido = Integer.parseInt(QTxtField.getText());
+                Integer puntoReorden = Integer.parseInt(RTxtField.getText());
+
+                // Obtener arreglos de tablas de probabilidad TablaDeman, TablaTEn, TablaTEs
+                arregloTablaDeman = new int[2][TablaDeman.getRowCount()];
+                for (int i=0; i<TablaDeman.getRowCount(); i++){
+                    arregloTablaDeman[0][i] = (int)TablaDeman.getValueAt(i, 0);
+                    arregloTablaDeman[1][i] = (int)TablaDeman.getValueAt(i, 2);
+        //            System.out.println("Demanda: "+arregloTablaDeman[0][i]+" "+arregloTablaDeman[1][i]);
                 }
-            }
-            else{
-                
-                resultados_serial = simulador.getResultados_serial();
-                Object fila [] = new Object[3];
-                DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-                
-                for (ResultadoParcial resultados_serial1 : resultados_serial) {
-                    fila [0] = resultados_serial1.cantidadPedido;
-                    fila [1] = resultados_serial1.puntoReorden;
-                    fila [2] = decimales.format(resultados_serial1.costoTotal);
-                    modelo.addRow(fila);
+
+                arregloTablaTEn = new int[2][TablaTEn.getRowCount()];
+                for (int i=0; i<TablaTEn.getRowCount(); i++){
+                    arregloTablaTEn[0][i] = (int)TablaTEn.getValueAt(i, 0);
+                    arregloTablaTEn[1][i] = (int)TablaTEn.getValueAt(i, 2);
+        //            System.out.println("TEntrega: "+arregloTablaTEn[0][i]+" "+arregloTablaTEn[1][i]);
                 }
-                
-            }
-                
-            int totalIteraciones = simulador.getTotalSimulaciones();
-            TotalSim.setText("Total de simulaciones realizadas: " + totalIteraciones);
-            QminLbl.setText("Q mínima: " + simulador.getCantidadPedidoMin());
-            QmaxLbl.setText("Q máxima: " + simulador.getCantidadPedidoMax());
-            RminLbl.setText("R mínima: " + simulador.getPuntoReordenMin());
-            RmaxLbl.setText("R máxima: " + simulador.getPuntoReordenMax());
-            QLbl.setText("Q*: " + String.valueOf(resultado.cantidadPedido));
-            RLbl.setText("R: " + String.valueOf(resultado.puntoReorden));
-            
-        }else{
-            jProgressBar1.setMaximum(100);
-            caso = new Simulacion(arregloTablaDeman, arregloTablaTEn, arregloTablaTEs, new BigDecimal(CostInvTxtField.getText()), 
-                    new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
-                    Integer.parseInt(InvIncTxtField.getText()), puntoReorden, cantidadPedido, diasSimulacion,
-                    nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera, false
-            );
-            
-            QLbl.setText("Q*: " + String.valueOf(cantidadPedido));
-            RLbl.setText("R: " + String.valueOf(puntoReorden));
-            
-            resultado = (Resultado) caso.simular();
-            jProgressBar1.setValue(100);
-        }
-        
-        if(resultado!=null){
-        
-            DefaultTableModel modelotabFinal = (DefaultTableModel) TablaFinal.getModel();
-            Object fila [] = new Object[12];
-            for(int i = 0 ; i< diasSimulacion; i++){
-                fila [0] = resultado.tablaEventos[Simulacion.DIA][i];
-                fila [1] = resultado.tablaEventos[Simulacion.INV_INICIAL][i];
-                fila [2] = resultado.tablaEventos[Simulacion.NRO_ALT_DEMANDA][i];
-                fila [3] = resultado.tablaEventos[Simulacion.DEMANDA][i];
-                fila [4] = resultado.tablaEventos[Simulacion.INV_FINAL][i];
-                fila [5] = resultado.tablaEventos[Simulacion.INV_PROMEDIO][i];
-                fila [6] = resultado.tablaEventos[Simulacion.FALTANTE][i];
-                fila [7] = resultado.tablaEventos[Simulacion.NRO_ORDEN][i];
-                fila [8] = resultado.tablaEventos[Simulacion.NRO_ALT_T_ENTREGA][i];
-                fila [9] = resultado.tablaEventos[Simulacion.T_ENTREGA][i];
-                fila [10] = resultado.tablaEventos[Simulacion.NRO_ALT_T_ESPERA][i];
-                fila [11] = resultado.tablaEventos[Simulacion.T_ESPERA][i];
 
-                modelotabFinal.addRow(fila);
-            }
+                arregloTablaTEs = new int[2][TablaTEs.getRowCount()];
+                for (int i=0; i<TablaTEs.getRowCount(); i++){
+                    arregloTablaTEs[0][i] = (int)TablaTEs.getValueAt(i, 0);
+                    arregloTablaTEs[1][i] = (int)TablaTEs.getValueAt(i, 2);
+        //        System.out.println("TEspera: "+arregloTablaTEs[0][i]+" "+arregloTablaTEs[1][i]);
+                }
 
-            CostFaltLbl.setText("Costo de faltante: " + decimales.format(resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera)));
-            CostTtlLbl.setText("Costo total: " + decimales.format(resultado.costoTotal));
-            CostInv.setText("Costo de inventario: " + decimales.format(resultado.costoTotalInventario));
-            CostOrdLbl.setText("Costo de orden: " + decimales.format(resultado.costoTotalOrden));
+                diasSimulacion = Integer.parseInt( SimDiasTxtField.getText());
 
-            time_end = System.currentTimeMillis();
-            TmEjecLbl.setText("Tiempo de ejecución: " + String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
-//            System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
+                // Ejecutar simulación completa, sino, ejecutar simulación de prueba
+                if(NumAle.isSelected()){
+                    Simulador simulador = new Simulador(
+                            ejecutarParalelo, arregloTablaDeman, arregloTablaTEn,
+                            arregloTablaTEs, diasSimulacion, Integer.parseInt(InvIncTxtField.getText()),
+                            new BigDecimal(CostInvTxtField.getText()), new BigDecimal(CostOrdTxtField.getText()), 
+                            new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()),
+                            jProgressBar1
+                    );
 
-            
-        }
+                    //Correr simulaciones
+                    resultado = simulador.iterar();
+                    if(ejecutarParalelo){
+                        resultados_paralelo = simulador.getResultados_paralelo();
+                        Object fila [] = new Object[3];
+                        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+                        for (ResultadoParcial r : resultados_paralelo ){
+                            fila [0] = r.cantidadPedido;
+                            fila [1] = r.puntoReorden;
+                            fila [2] = decimales.format(r.costoTotal);
+                            modelo.addRow(fila);
+                        }
+                    }
+                    else{
+
+                        resultados_serial = simulador.getResultados_serial();
+                        Object fila [] = new Object[3];
+                        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+
+                        for (ResultadoParcial resultados_serial1 : resultados_serial) {
+                            fila [0] = resultados_serial1.cantidadPedido;
+                            fila [1] = resultados_serial1.puntoReorden;
+                            fila [2] = decimales.format(resultados_serial1.costoTotal);
+                            modelo.addRow(fila);
+                        }
+
+                    }
+
+                    int totalIteraciones = simulador.getTotalSimulaciones();
+                    TotalSim.setText("Total de simulaciones realizadas: " + totalIteraciones);
+                    QminLbl.setText("Q mínima: " + simulador.getCantidadPedidoMin());
+                    QmaxLbl.setText("Q máxima: " + simulador.getCantidadPedidoMax());
+                    RminLbl.setText("R mínima: " + simulador.getPuntoReordenMin());
+                    RmaxLbl.setText("R máxima: " + simulador.getPuntoReordenMax());
+                    QLbl.setText("Q*: " + String.valueOf(resultado.cantidadPedido));
+                    RLbl.setText("R: " + String.valueOf(resultado.puntoReorden));
+
+                }else{
+                    jProgressBar1.setMaximum(100);
+                    caso = new Simulacion(arregloTablaDeman, arregloTablaTEn, arregloTablaTEs, new BigDecimal(CostInvTxtField.getText()), 
+                            new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
+                            Integer.parseInt(InvIncTxtField.getText()), puntoReorden, cantidadPedido, diasSimulacion,
+                            nrosAleatoriosDemanda, nrosAleatoriosTiempoEntrega, nrosAleatoriosTiempoEspera, false
+                    );
+
+                    QLbl.setText("Q*: " + String.valueOf(cantidadPedido));
+                    RLbl.setText("R: " + String.valueOf(puntoReorden));
+
+                    resultado = (Resultado) caso.simular();
+                    jProgressBar1.setValue(100);
+                }
+
+                if(resultado!=null){
+
+                    DefaultTableModel modelotabFinal = (DefaultTableModel) TablaFinal.getModel();
+                    Object fila [] = new Object[12];
+                    for(int i = 0 ; i< diasSimulacion; i++){
+                        fila [0] = resultado.tablaEventos[Simulacion.DIA][i];
+                        fila [1] = resultado.tablaEventos[Simulacion.INV_INICIAL][i];
+                        fila [2] = resultado.tablaEventos[Simulacion.NRO_ALT_DEMANDA][i];
+                        fila [3] = resultado.tablaEventos[Simulacion.DEMANDA][i];
+                        fila [4] = resultado.tablaEventos[Simulacion.INV_FINAL][i];
+                        fila [5] = resultado.tablaEventos[Simulacion.INV_PROMEDIO][i];
+                        fila [6] = resultado.tablaEventos[Simulacion.FALTANTE][i];
+                        fila [7] = resultado.tablaEventos[Simulacion.NRO_ORDEN][i];
+                        fila [8] = resultado.tablaEventos[Simulacion.NRO_ALT_T_ENTREGA][i];
+                        fila [9] = resultado.tablaEventos[Simulacion.T_ENTREGA][i];
+                        fila [10] = resultado.tablaEventos[Simulacion.NRO_ALT_T_ESPERA][i];
+                        fila [11] = resultado.tablaEventos[Simulacion.T_ESPERA][i];
+
+                        modelotabFinal.addRow(fila);
+                    }
+
+                    CostFaltLbl.setText("Costo de faltante: " + decimales.format(resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera)));
+                    CostTtlLbl.setText("Costo total: " + decimales.format(resultado.costoTotal));
+                    CostInv.setText("Costo de inventario: " + decimales.format(resultado.costoTotalInventario));
+                    CostOrdLbl.setText("Costo de orden: " + decimales.format(resultado.costoTotalOrden));
+
+                    time_end = System.currentTimeMillis();
+                    TmEjecLbl.setText("Tiempo de ejecución: " + String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
+        //            System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
+
+
+                }
         
             }
         };
