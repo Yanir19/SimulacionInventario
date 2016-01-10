@@ -167,7 +167,7 @@ public class Simulador {
         System.out.println("puntoReordenMin; " + puntoReordenMin);
         System.out.println("puntoReordenMax; " + puntoReordenMax);*/
         
-        totalIteraciones = (puntoReordenMax-puntoReordenMin)*(cantidadPedidoMax-cantidadPedidoMin);
+        totalIteraciones = ((puntoReordenMax-puntoReordenMin)+1)*((cantidadPedidoMax-cantidadPedidoMin)+1);
 
         if(ejecutarParalelo){
             // Simulacione sen paralelo
@@ -203,7 +203,7 @@ public class Simulador {
 
         }else{
             resultados_serial = new ResultadoParcial[totalIteraciones];
-
+            
             // Hacer simulaciones con todas las combinaciones de Q y PR entre los rangos obtenidos
             for(int i=cantidadPedidoMin; i<= cantidadPedidoMax ; i++){
                 for(int j=puntoReordenMin; j<= puntoReordenMax ; j++){
