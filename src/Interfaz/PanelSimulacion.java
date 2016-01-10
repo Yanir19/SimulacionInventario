@@ -14,19 +14,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -1523,8 +1519,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
          if(guarda !=null)
          {
-            archivo.write(new FileOutputStream(new File(JFileChooser.APPROVE_OPTION + guarda.toString() + ".xls")));
-            Desktop.getDesktop().open(new File(JFileChooser.APPROVE_OPTION + guarda.toString() + ".xls"));
+            archivo.write(new FileOutputStream(new File(guarda.toString() + ".xls")));
+            Desktop.getDesktop().open(new File(guarda.toString() + ".xls"));
  /*         /*guardamos el archivo y le damos el formato directamente,
            * si queremos que se guarde en formato doc lo definimos como .doc
            FileWriter  save = new FileWriter(guarda + ".xls");
