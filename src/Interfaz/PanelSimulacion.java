@@ -5,23 +5,39 @@
  */
 package Interfaz;
 
-import Logica.ResultadoParcial;
 import Logica.Resultado;
+import Logica.ResultadoParcial;
 import Logica.Simulacion;
 import Logica.Simulador;
+import java.awt.Desktop;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -41,13 +57,22 @@ public class PanelSimulacion extends javax.swing.JFrame {
     int[] nrosAleatoriosTiempoEntrega ;
     int[] nrosAleatoriosTiempoEspera;
     
+    private ResultadoParcial[] resultados_serial;
+    private List<ResultadoParcial> resultados_paralelo;
+    
     DefaultTableModel modelotab1; 
     DefaultTableModel modelotab2;
     DefaultTableModel modelotab3; 
     DefaultTableModel modelotab; 
+    
     public PanelSimulacion() {
         initComponents();
-       layoutTablas();
+        layoutTablas();
+        verificar_modo_prueba();
+        Image icon = new ImageIcon(getClass().getResource("/Archivos Externos/Red-Cargo-Boxes_35543.png")).getImage();
+        setIconImage(icon);
+        setVisible(true);
+        
     }
 
     public void capturar_informacion (){
@@ -177,7 +202,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
                                 }
                                 TmEn [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
                                 linea  = " " + linea.substring(linea.indexOf(',')+1);
-                               // System.out.println("nueva > " + linea);
                                 count ++;
                             }   
 
@@ -204,7 +228,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
                             }
                             TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(',')));
                             linea  = " " + linea.substring(linea.indexOf(',')+1);
-                         //   System.out.println("nueva > " + linea);
                             count ++;
                         }   
                             TmEs [count] = Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
@@ -225,19 +248,25 @@ public class PanelSimulacion extends javax.swing.JFrame {
                        break;
                        
                        case 9:
+                            
                             try{
                                 QTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                             }catch(Exception e){
                                 JOptionPane.showMessageDialog(null, "Error al introducir la Q*. " + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
                             }    
+                            
+                            
                        break;
                        
                        case 10:
+                           
                             try{
                                 RTxtField.setText(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /")));
                             }catch(Exception e){
                                 JOptionPane.showMessageDialog(null, "Error al introducir la R." + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
-                            }    
+                            }   
+                            
+                            
                        break;
                        
                        case 11:
@@ -288,6 +317,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
         jPopupMenu2 = new javax.swing.JPopupMenu();
         buttonGroup2 = new javax.swing.ButtonGroup();
         buttonGroup1 = new javax.swing.ButtonGroup();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         PanelSim = new javax.swing.JTabbedPane();
         SetPanel = new javax.swing.JPanel();
         PanelDemanda = new javax.swing.JPanel();
@@ -356,10 +387,29 @@ public class PanelSimulacion extends javax.swing.JFrame {
         QmaxLbl = new javax.swing.JLabel();
         RminLbl = new javax.swing.JLabel();
         RmaxLbl = new javax.swing.JLabel();
+        MostTabSim = new javax.swing.JCheckBox();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        TotalSim = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.CardLayout());
@@ -425,14 +475,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProbDemSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1203, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1191, Short.MAX_VALUE))
                 .addContainerGap())
         );
         PanelDemandaLayout.setVerticalGroup(
             PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDemandaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelDemandaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DemLbl)
@@ -482,7 +532,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             .addGroup(PanelTmEnLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1203, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1191, Short.MAX_VALUE)
                     .addGroup(PanelTmEnLayout.createSequentialGroup()
                         .addComponent(DelTEnBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -502,7 +552,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEnLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TmEnLbl)
@@ -565,14 +615,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
                         .addComponent(ProbTmEsLbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ProbTmEsSpin, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 812, Short.MAX_VALUE)))
+                        .addGap(0, 800, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         PanelTmEsLayout.setVerticalGroup(
             PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelTmEsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(PanelTmEsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TmEsLbl)
@@ -632,9 +682,19 @@ public class PanelSimulacion extends javax.swing.JFrame {
         buttonGroup2.add(NumAleArc);
         NumAleArc.setSelected(true);
         NumAleArc.setText("Utilizar números aleatorios del archivo");
+        NumAleArc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NumAleArcActionPerformed(evt);
+            }
+        });
 
         buttonGroup2.add(NumAle);
         NumAle.setText("Generar números aleatorios");
+        NumAle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NumAleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -736,7 +796,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 .addGroup(PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(465, Short.MAX_VALUE))
+                .addContainerGap(453, Short.MAX_VALUE))
         );
         PanelCostoLayout.setVerticalGroup(
             PanelCostoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -769,7 +829,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
                     .addComponent(CostSEspTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(RTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(PanelCostoLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -841,17 +901,41 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
         RmaxLbl.setText("R máximo:");
 
+        MostTabSim.setSelected(true);
+        MostTabSim.setText("Mostrar tabla de simulación.");
+        MostTabSim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MostTabSimActionPerformed(evt);
+            }
+        });
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Q*", "R", "Costo total"
+            }
+        ));
+        jScrollPane6.setViewportView(jTable2);
+
+        TotalSim.setText("Total de simulaciones realizadas:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(MostTabSim)
                             .addComponent(CostFaltLbl)
                             .addComponent(TmEjecLbl)
+                            .addComponent(CostOrdLbl)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(QmaxLbl)
@@ -862,45 +946,53 @@ public class PanelSimulacion extends javax.swing.JFrame {
                                     .addComponent(RmaxLbl)
                                     .addComponent(RminLbl)
                                     .addComponent(RLbl)))
-                            .addComponent(CostOrdLbl)
                             .addComponent(CostInv)
-                            .addComponent(CostTtlLbl))
-                        .addContainerGap(1022, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(RunBtn)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(CostTtlLbl)
+                            .addComponent(RunBtn)
+                            .addComponent(TotalSim))
+                        .addGap(0, 530, Short.MAX_VALUE))
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(RunBtn)
-                .addGap(18, 18, 18)
-                .addComponent(CostFaltLbl)
-                .addGap(18, 18, 18)
-                .addComponent(CostOrdLbl)
-                .addGap(18, 18, 18)
-                .addComponent(CostInv)
-                .addGap(18, 18, 18)
-                .addComponent(CostTtlLbl)
-                .addGap(18, 18, 18)
-                .addComponent(TmEjecLbl)
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(QminLbl)
+                        .addComponent(RunBtn)
                         .addGap(18, 18, 18)
-                        .addComponent(QmaxLbl)
-                        .addGap(32, 32, 32))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(RminLbl)
+                        .addComponent(CostFaltLbl)
                         .addGap(18, 18, 18)
-                        .addComponent(RmaxLbl)
+                        .addComponent(CostOrdLbl)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(RLbl)
-                            .addComponent(QLbl))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(CostInv)
+                        .addGap(18, 18, 18)
+                        .addComponent(CostTtlLbl)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(QminLbl)
+                                .addGap(18, 18, 18)
+                                .addComponent(QmaxLbl))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(RminLbl)
+                                .addGap(18, 18, 18)
+                                .addComponent(RmaxLbl)
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(RLbl)
+                                    .addComponent(QLbl))))
+                        .addGap(18, 18, 18)
+                        .addComponent(TotalSim)
+                        .addGap(18, 18, 18)
+                        .addComponent(TmEjecLbl)
+                        .addGap(18, 18, 18)
+                        .addComponent(MostTabSim)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel6.add(jPanel1);
@@ -919,6 +1011,15 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem2.setText("Exportar a excel");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
         jMenuBar1.add(jMenu2);
@@ -953,11 +1054,9 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private void AcepDemBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcepDemBtnActionPerformed
         DefaultTableModel modelotabDem = (DefaultTableModel) TablaDeman.getModel();
         int acumulado =  generarAcumulada(modelotabDem, TablaDeman, (int) ProbDemSpin.getValue());
-        
         if (acumulado >0 ){
             modelotabDem.addRow(new Object[]{DemSpin.getValue(), ProbDemSpin.getValue(), acumulado});
         }
-        
         DemSpin.setValue(0);
         ProbDemSpin.setValue(0);
     }//GEN-LAST:event_AcepDemBtnActionPerformed
@@ -998,8 +1097,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
         int diasSimulacion;
         long time_start, time_end;
         Simulacion caso;
-        Resultado resultado;
-        
+        Resultado resultado;       
+        DecimalFormat decimales = new DecimalFormat("0.000");  
         // Iniciar contador de tiempo
         time_start = System.currentTimeMillis();
         
@@ -1007,6 +1106,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
         ejecutarParalelo = !MonoRBtn.isSelected();
         
         limpiar_tabla((DefaultTableModel) TablaFinal.getModel(), TablaFinal.getModel().getRowCount());
+        limpiar_tabla((DefaultTableModel) jTable2.getModel(), jTable2.getModel().getRowCount());
         Integer cantidadPedido = Integer.parseInt(QTxtField.getText());
         Integer puntoReorden = Integer.parseInt(RTxtField.getText());
         
@@ -1015,21 +1115,18 @@ public class PanelSimulacion extends javax.swing.JFrame {
         for (int i=0; i<TablaDeman.getRowCount(); i++){
             arregloTablaDeman[0][i] = (int)TablaDeman.getValueAt(i, 0);
             arregloTablaDeman[1][i] = (int)TablaDeman.getValueAt(i, 2);
-            System.out.println("Demanda: "+arregloTablaDeman[0][i]+" "+arregloTablaDeman[1][i]);
         }
 
         arregloTablaTEn = new int[2][TablaTEn.getRowCount()];
         for (int i=0; i<TablaTEn.getRowCount(); i++){
             arregloTablaTEn[0][i] = (int)TablaTEn.getValueAt(i, 0);
             arregloTablaTEn[1][i] = (int)TablaTEn.getValueAt(i, 2);
-            System.out.println("TEntrega: "+arregloTablaTEn[0][i]+" "+arregloTablaTEn[1][i]);
         }
 
         arregloTablaTEs = new int[2][TablaTEs.getRowCount()];
         for (int i=0; i<TablaTEs.getRowCount(); i++){
             arregloTablaTEs[0][i] = (int)TablaTEs.getValueAt(i, 0);
             arregloTablaTEs[1][i] = (int)TablaTEs.getValueAt(i, 2);
-            System.out.println("TEspera: "+arregloTablaTEs[0][i]+" "+arregloTablaTEs[1][i]);
         }
         
         diasSimulacion = Integer.parseInt( this.SimDiasTxtField.getText());
@@ -1045,9 +1142,34 @@ public class PanelSimulacion extends javax.swing.JFrame {
             
             //Correr simulaciones
             resultado = simulador.iterar();
-            
+            if(ejecutarParalelo){
+                resultados_paralelo = simulador.getResultados_paralelo();
+                Object fila [] = new Object[3];
+                DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+                for (ResultadoParcial r : resultados_paralelo ){
+                    fila [0] = r.cantidadPedido;
+                    fila [1] = r.puntoReorden;
+                    fila [2] = decimales.format(r.costoTotal);
+                    modelo.addRow(fila);
+                }
+            }
+            else{
+                
+                resultados_serial = simulador.getResultados_serial();
+                Object fila [] = new Object[3];
+                DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+                
+                for (int i =0; i<resultados_serial.length; i++ ){
+                    fila [0] = resultados_serial[i].cantidadPedido;
+                    fila [1] = resultados_serial[i].puntoReorden;
+                    fila [2] = decimales.format(resultados_serial[i].costoTotal);
+                    modelo.addRow(fila);
+                }
+                
+            }
+                
             int totalIteraciones = simulador.getTotalSimulaciones();
-            
+            TotalSim.setText("Total de simulaciones realizadas: " + totalIteraciones);
             QminLbl.setText("Q mínima: " + simulador.getCantidadPedidoMin());
             QmaxLbl.setText("Q máxima: " + simulador.getCantidadPedidoMax());
             RminLbl.setText("R mínima: " + simulador.getPuntoReordenMin());
@@ -1089,15 +1211,15 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 modelotabFinal.addRow(fila);
             }
 
-            CostFaltLbl.setText("Costo de faltante: " + resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera).toString());
-            CostTtlLbl.setText("Costo total: " + resultado.costoTotal.toString());
-            CostInv.setText("Costo de inventario: " + resultado.costoTotalInventario.toString());
-            CostOrdLbl.setText("Costo de orden: " + resultado.costoTotalOrden.toString());
+            CostFaltLbl.setText("Costo de faltante: " + decimales.format(resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera)).toString());
+            CostTtlLbl.setText("Costo total: " + decimales.format(resultado.costoTotal).toString());
+            CostInv.setText("Costo de inventario: " + decimales.format(resultado.costoTotalInventario).toString());
+            CostOrdLbl.setText("Costo de orden: " + decimales.format(resultado.costoTotalOrden).toString());
 
             time_end = System.currentTimeMillis();
-            TmEjecLbl.setText("Tiempo de ejecución: " + String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
-            System.out.println("Tiempo de simulación: "+ ( time_end - time_start ) +" milisegundos");
+            TmEjecLbl.setText("Tiempo de ejecución: " + String.valueOf(( ( time_end ) - time_start )) + " milisegundos.");
 
+            
         }
         
         
@@ -1116,6 +1238,128 @@ public class PanelSimulacion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_MultiRBtnActionPerformed
 
+    private void NumAleArcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumAleArcActionPerformed
+        verificar_modo_prueba();
+    }//GEN-LAST:event_NumAleArcActionPerformed
+
+    private void NumAleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumAleActionPerformed
+        verificar_modo_prueba();
+    }//GEN-LAST:event_NumAleActionPerformed
+
+    private void MostTabSimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostTabSimActionPerformed
+        if(MostTabSim.isSelected()){
+            TablaFinal.setVisible(true);
+        }else{
+            TablaFinal.setVisible(false);
+        }
+    }//GEN-LAST:event_MostTabSimActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        Thread t = new Thread (){
+            public void run(){
+                HSSFWorkbook workbook = new HSSFWorkbook();
+                HSSFSheet hoja = workbook.createSheet("Tabla de simualación");
+                
+                HSSFRow fila = hoja.createRow(0);
+                fila.createCell(0).setCellValue("Día");
+                fila.createCell(1).setCellValue("Inv Inicial.");
+                fila.createCell(2).setCellValue("Nro. Aleatorio para la demanda");
+                fila.createCell(3).setCellValue("Demanda");
+                fila.createCell(4).setCellValue("Inv Final");
+                fila.createCell(5).setCellValue("Inv Promedio");
+                fila.createCell(6).setCellValue("Faltante");
+                fila.createCell(7).setCellValue("Nro Orden.");
+                fila.createCell(8).setCellValue("Nro aleatorio del tiempo de entrega");
+                fila.createCell(9).setCellValue("Tiempo de entrega");
+                fila.createCell(10).setCellValue("Nro aleatorio del tiempo de espera");
+                fila.createCell(11).setCellValue("Tiempo de espera");
+                
+                HSSFRow filas;
+                Rectangle rect;
+                jProgressBar1.setMaximum(TablaFinal.getRowCount()  + jTable2.getRowCount()  );
+                
+                
+                for (int i = 0 ; i < TablaFinal.getRowCount(); i++){
+                    rect = TablaFinal.getCellRect(i, 0, true);
+                    try{
+                        TablaFinal.scrollRectToVisible(rect);
+                    }catch(java.lang.ClassCastException e){}
+                    TablaFinal.setRowSelectionInterval(i, i);
+                    jProgressBar1.setValue(i+1);
+                    
+                    filas = hoja.createRow((i+1));
+                    filas.createCell(0).setCellValue(TablaFinal.getValueAt(i, 0).toString());
+                    filas.createCell(1).setCellValue(TablaFinal.getValueAt(i, 1).toString());
+                    filas.createCell(2).setCellValue(TablaFinal.getValueAt(i, 2).toString());
+                    filas.createCell(3).setCellValue(TablaFinal.getValueAt(i, 3).toString());
+                    filas.createCell(4).setCellValue(TablaFinal.getValueAt(i, 4).toString());
+                    filas.createCell(5).setCellValue(TablaFinal.getValueAt(i, 5).toString());
+                    filas.createCell(6).setCellValue(TablaFinal.getValueAt(i, 6).toString());
+                    filas.createCell(7).setCellValue(TablaFinal.getValueAt(i, 7).toString());
+                    filas.createCell(8).setCellValue(TablaFinal.getValueAt(i, 8).toString());
+                    filas.createCell(9).setCellValue(TablaFinal.getValueAt(i, 9).toString());
+                    filas.createCell(10).setCellValue(TablaFinal.getValueAt(i, 10).toString());
+                    filas.createCell(11).setCellValue(TablaFinal.getValueAt(i, 11).toString());
+                }
+                
+                int f = TablaFinal.getRowCount();
+                
+                filas = hoja.createRow((f+1));
+                filas = hoja.createRow((f+2));
+                filas.createCell(0).setCellValue("Costo de faltante: ");
+                
+                String numero = CostFaltLbl.getText();
+                System.out.println(numero.substring(numero.indexOf("Costo de faltante:")));
+                filas.createCell(1).setCellValue(CostFaltLbl.getText().substring(CostFaltLbl.getText().indexOf(":") + 2));
+                
+                filas = hoja.createRow((f+3));
+                filas.createCell(0).setCellValue("Costo de orden: ");
+                filas.createCell(1).setCellValue(CostOrdLbl.getText().substring(CostOrdLbl.getText().indexOf(":") + 2));
+                
+                filas = hoja.createRow((f+4));
+                filas.createCell(0).setCellValue("Costo de inventario: ");
+                filas.createCell(1).setCellValue(CostInv.getText().substring(CostInv.getText().indexOf(":") + 2));
+                
+                filas = hoja.createRow((f+5));
+                filas.createCell(0).setCellValue("Costo total: ");
+                filas.createCell(1).setCellValue(CostTtlLbl.getText().substring(CostTtlLbl.getText().indexOf(":") + 2));
+                
+                
+                hoja = workbook.createSheet("Combinaciones de R y Q");
+                
+                fila = hoja.createRow(0);
+                fila.createCell(0).setCellValue("Q*");
+                fila.createCell(1).setCellValue("R");
+                fila.createCell(2).setCellValue("Costo total");
+                
+                jProgressBar1.setMaximum(TablaFinal.getRowCount() /* + jTable2.getRowCount() */ );
+                
+                
+                for (int i = 0 ; i < jTable2.getRowCount(); i++){
+                    rect = jTable2.getCellRect(i, 0, true);
+                    try{
+                        jTable2.scrollRectToVisible(rect);
+                    }catch(java.lang.ClassCastException e){}
+                    jTable2.setRowSelectionInterval(i, i);
+                    jProgressBar1.setValue(f+i);
+                    
+                    filas = hoja.createRow((i+1));
+                    filas.createCell(0).setCellValue(jTable2.getValueAt(i, 0).toString());
+                    filas.createCell(1).setCellValue(jTable2.getValueAt(i, 1).toString());
+                    filas.createCell(2).setCellValue(jTable2.getValueAt(i, 2).toString());
+                }
+                
+                jProgressBar1.setValue(0);
+                String ruta = System.getProperties().getProperty("user.dir");
+                    guardarArchivo(workbook);
+               
+            }
+        };
+        
+        t.start();
+            
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     
     
     public  void eliminarcolumna(JTable tabla){
@@ -1126,7 +1370,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
     
     public int generarAcumulada(DefaultTableModel modelo, JTable tabla, int probabilidad){
         
-        System.out.println("probabilidad " + probabilidad);
         
         if(tabla.getRowCount()>0){
             if( (int) tabla.getValueAt(tabla.getRowCount()-1, 1) + probabilidad <= 100 &&  (int) (probabilidad *1) <=  100)
@@ -1201,12 +1444,11 @@ public class PanelSimulacion extends javax.swing.JFrame {
         ArrayList <Integer> lista = new ArrayList <Integer> ();
         
         while (linea.indexOf(',')>0){
-            
             lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(','))));
             linea  = " " + linea.substring(linea.indexOf(',')+1);
-            System.out.println("linea >" + linea);
         }
-        System.out.println("ultima linea >" + linea);
+        
+        
         lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(" /"))));
         
         int [] arreglo = new int [lista.size()];
@@ -1218,34 +1460,76 @@ public class PanelSimulacion extends javax.swing.JFrame {
         switch (opc){
             case 1:
                 this.nrosAleatoriosDemanda = arreglo;
-                System.out.println("demanda: " );
-                for(int i= 0; i < lista.size() ; i++){
-                    System.out.println(this.nrosAleatoriosDemanda [i]);
-                }
                 break;
             case 2 :
                 this.nrosAleatoriosTiempoEntrega  = arreglo;
-                System.out.println("entrega: " );
-                for(int i= 0; i < lista.size() ; i++){
-                    System.out.println(this.nrosAleatoriosTiempoEntrega [i]);
-                }
                 break;
             case 3:
                 this.nrosAleatoriosTiempoEspera = arreglo;
-                System.out.println("espera: " );
-                for(int i= 0; i < lista.size() ; i++){
-                    System.out.println(this.nrosAleatoriosTiempoEspera [i]);
-                }
                 break;
         }
     }
-    
     
     private void limpiar_tabla (DefaultTableModel modelo , int count){
         for (int i = count - 1; i >= 0; i--) {
             modelo.removeRow(i);
         }
     }
+    
+    private void verificar_modo_prueba(){
+        if(NumAleArc.isSelected()){
+            QTxtField.setVisible(true);
+            jLabel6.setVisible(true);
+            QmaxLbl.setVisible(false);
+            QminLbl.setVisible(false);
+            RTxtField.setVisible(true);
+            jLabel7.setVisible(true);
+            RmaxLbl.setVisible(false);
+            RminLbl.setVisible(false);
+        }else{
+            QTxtField.setVisible(false);
+            jLabel6.setVisible(false);
+            QmaxLbl.setVisible(true);
+            QminLbl.setVisible(true);
+            RTxtField.setVisible(false);
+            jLabel7.setVisible(false);
+            RmaxLbl.setVisible(true);
+            RminLbl.setVisible(true);
+        }
+    } 
+    
+    
+    private void guardarArchivo(HSSFWorkbook archivo) {
+        try
+        {
+            String nombre="";
+            JFileChooser file=new JFileChooser();
+            file.showSaveDialog(this);
+            File guarda =file.getSelectedFile();
+
+         if(guarda !=null)
+         {
+            archivo.write(new FileOutputStream(new File(JFileChooser.APPROVE_OPTION + guarda.toString() + ".xls")));
+            Desktop.getDesktop().open(new File(JFileChooser.APPROVE_OPTION + guarda.toString() + ".xls"));
+ /*         /*guardamos el archivo y le damos el formato directamente,
+           * si queremos que se guarde en formato doc lo definimos como .doc
+           FileWriter  save = new FileWriter(guarda + ".xls");
+           save.write(JFileChooser.APPROVE_OPTION);
+           save.close();  */
+           JOptionPane.showMessageDialog(null,
+                "El archivo se a guardado Exitosamente",
+                    "Información",JOptionPane.INFORMATION_MESSAGE);
+           }
+        }
+         catch(IOException ex)
+         {
+          JOptionPane.showMessageDialog(null,
+               "Su archivo no se ha guardado",
+                  "Advertencia",JOptionPane.WARNING_MESSAGE);
+         }
+    }
+    
+
     
     /**
      * @param args the command line arguments
@@ -1299,6 +1583,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JSpinner DemSpin;
     private javax.swing.JTextField InvIncTxtField;
     private javax.swing.JRadioButton MonoRBtn;
+    private javax.swing.JCheckBox MostTabSim;
     private javax.swing.JRadioButton MultiRBtn;
     private javax.swing.JRadioButton NumAle;
     private javax.swing.JRadioButton NumAleArc;
@@ -1335,6 +1620,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JButton TmEsBtn;
     private javax.swing.JLabel TmEsLbl;
     private javax.swing.JSpinner TmEsSpin;
+    private javax.swing.JLabel TotalSim;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel jLabel1;
@@ -1349,15 +1635,21 @@ public class PanelSimulacion extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }

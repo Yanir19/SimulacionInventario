@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/gabo_/Documents/NetBeansProjects/SimulacionInventario/src/Archivos%20Externos/prueba_informe.txt</file>
-            <file>file:/C:/Users/gabo_/Documents/NetBeansProjects/SimulacionInventario/src/simulacioninventario/Caso.java</file>
-            <file>file:/C:/Users/gabo_/Documents/NetBeansProjects/SimulacionInventario/src/Archivos%20Externos/ejemplo_1.txt</file>
-            <file>file:/C:/Users/gabo_/Documents/NetBeansProjects/SimulacionInventario/src/Archivos%20Externos/ejemplo_2.txt</file>
-            <file>file:/C:/Users/gabo_/Documents/NetBeansProjects/SimulacionInventario/test/simulacioninventario/CasoTest.java</file>
-            <file>file:/C:/Users/gabo_/Documents/NetBeansProjects/SimulacionInventario/src/simulacioninventario/PanelSimulacion.java</file>
+            <file>file:/C:/Users/Yanir/Documents/NetBeansProjects/Medical/SimulacionInventario/src/Logica/ResultadoParcial.java</file>
+            <file>file:/C:/Users/Yanir/Documents/NetBeansProjects/Medical/SimulacionInventario/src/Interfaz/PanelSimulacion.java</file>
+            <file>file:/C:/Users/Yanir/Documents/NetBeansProjects/Medical/SimulacionInventario/src/Logica/Simulador.java</file>
         </group>
     </open-files>
 </project-private>

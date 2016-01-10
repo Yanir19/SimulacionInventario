@@ -24,6 +24,8 @@ public class Simulador {
     private final int[][] arregloTablaTEs;
     private final int diasSimulacion;
     private final int inventarioInicial;
+    private ResultadoParcial[] resultados_serial;
+    private List<ResultadoParcial> resultados_paralelo;
     
     private final BigDecimal costoInventario;
     private final BigDecimal costoOrdenar;
@@ -160,15 +162,15 @@ public class Simulador {
         if(ejecutarParalelo){
             // Simulacione sen paralelo
             List<ResultadoParcial> casosSimplificados = new ArrayList<>();
-            List<ResultadoParcial> resultados;
+            
 
-            for(int i=cantidadPedidoMin; i< cantidadPedidoMax ; i++){
-                for(int j=puntoReordenMin; j< puntoReordenMax ; j++){
+            for(int i=cantidadPedidoMin; i<= cantidadPedidoMax ; i++){
+                for(int j=puntoReordenMin; j<= puntoReordenMax ; j++){
                     casosSimplificados.add(new ResultadoParcial(i,j,new BigDecimal(0)));
                 }
             }
 
-            resultados = casosSimplificados
+            resultados_paralelo = casosSimplificados
                 .parallelStream()
                 .map(s -> {
                     Simulacion casoParalelo = new Simulacion(arregloTablaDeman, arregloTablaTEn, arregloTablaTEs, this.costoInventario, 
@@ -182,35 +184,35 @@ public class Simulador {
                 }).collect(Collectors.toList());
 
             // Buscar mejor caso
-            mejorResultadoSimplificado = resultados.get(0);
-            for(ResultadoParcial r : resultados){
+            mejorResultadoSimplificado = resultados_paralelo.get(0);
+            for(ResultadoParcial r : resultados_paralelo){
                 if( mejorResultadoSimplificado.costoTotal.compareTo( r.costoTotal ) > 0 ){
                     mejorResultadoSimplificado = r;
                 }
             }
 
         }else{
-            ResultadoParcial[] resultados = new ResultadoParcial[totalIteraciones];
+            resultados_serial = new ResultadoParcial[totalIteraciones];
 
             // Hacer simulaciones con todas las combinaciones de Q y PR entre los rangos obtenidos
-            for(int i=cantidadPedidoMin; i< cantidadPedidoMax ; i++){
-                for(int j=puntoReordenMin; j< puntoReordenMax ; j++){
+            for(int i=cantidadPedidoMin; i<= cantidadPedidoMax ; i++){
+                for(int j=puntoReordenMin; j<= puntoReordenMax ; j++){
                     caso = new Simulacion(arregloTablaDeman, arregloTablaTEn, arregloTablaTEs, this.costoInventario, 
                         this.costoOrdenar, this.costoFaltanteConEspera, this.costoFaltanteSinEspera, 
                         this.inventarioInicial, j, i, this.diasSimulacion,
                         false
                     );
                     resultado = (Resultado) caso.simular();
-                    resultados[contadorResultados] = new ResultadoParcial(i,j,resultado.costoTotal);
+                    resultados_serial[contadorResultados] = new ResultadoParcial(i,j,resultado.costoTotal);
                     contadorResultados++;
                 }
             }
 
             // Buscar mejor resultado
-            mejorResultadoSimplificado = resultados[0];
+            mejorResultadoSimplificado = resultados_serial[0];
             for(int i=1; i < totalIteraciones ; i++){
-                if( mejorResultadoSimplificado.costoTotal.compareTo( resultados[i].costoTotal ) > 0 ){
-                    mejorResultadoSimplificado = resultados[i];
+                if( mejorResultadoSimplificado.costoTotal.compareTo(resultados_serial[i].costoTotal ) > 0 ){
+                    mejorResultadoSimplificado = resultados_serial[i];
                     mejorCaso = i;
                 }
             }
@@ -235,7 +237,14 @@ public class Simulador {
         return resultado;
         
     }
-    
+
+    public ResultadoParcial[] getResultados_serial() {
+        return resultados_serial;
+    }
+
+    public List<ResultadoParcial> getResultados_paralelo() {
+        return resultados_paralelo;
+    }
     
     
     /*
