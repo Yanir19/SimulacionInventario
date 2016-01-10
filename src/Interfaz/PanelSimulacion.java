@@ -12,8 +12,8 @@ import Logica.Simulador;
 import java.awt.Desktop;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,12 +64,11 @@ public class PanelSimulacion extends javax.swing.JFrame {
         verificar_modo_prueba();
         Image icon = new ImageIcon(getClass().getResource("/Archivos Externos/Red-Cargo-Boxes_35543.png")).getImage();
         setIconImage(icon);
+        this.jProgressBar1.setStringPainted(true);
         setVisible(true);
-        
     }
 
     public void capturar_informacion (){
-    File archivo = null;
     FileReader fr = null;
     BufferedReader br = null;
     DefaultTableModel modelo;
@@ -107,7 +106,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
            // Lectura del fichero
            String linea;
-           int count= 0;
+           int count = 0;
            for (int i = 0; (linea=br.readLine())!=null ; i++){
                
                switch (i){
@@ -279,8 +278,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
            }
               
         }
-        catch(Exception e){
-            e.printStackTrace();
+        catch(IOException | HeadlessException e){
             JOptionPane.showMessageDialog(null, "Error al intentar abrir el archivo. " + "\n" + "Por favor revise el archivo." , "Error", JOptionPane.ERROR_MESSAGE );
                            
         }finally{
@@ -290,7 +288,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
                  fr.close();     
               }                  
            }catch (Exception e2){ 
-                e2.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error al cerrar el archivo." , "Error", JOptionPane.ERROR_MESSAGE );           
            }
         }
@@ -1083,6 +1080,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
     }//GEN-LAST:event_CostSEspTxtFieldActionPerformed
 
     private void RunBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunBtnActionPerformed
+        Thread t = new Thread (){
+            @Override
+            public void run(){
+        
         boolean ejecutarParalelo;
         int[][] arregloTablaDeman;
         int[][] arregloTablaTEn;
@@ -1125,15 +1126,16 @@ public class PanelSimulacion extends javax.swing.JFrame {
 //        System.out.println("TEspera: "+arregloTablaTEs[0][i]+" "+arregloTablaTEs[1][i]);
         }
         
-        diasSimulacion = Integer.parseInt( this.SimDiasTxtField.getText());
+        diasSimulacion = Integer.parseInt( SimDiasTxtField.getText());
         
         // Ejecutar simulación completa, sino, ejecutar simulación de prueba
-        if(this.NumAle.isSelected()){
+        if(NumAle.isSelected()){
             Simulador simulador = new Simulador(
                     ejecutarParalelo, arregloTablaDeman, arregloTablaTEn,
                     arregloTablaTEs, diasSimulacion, Integer.parseInt(InvIncTxtField.getText()),
                     new BigDecimal(CostInvTxtField.getText()), new BigDecimal(CostOrdTxtField.getText()), 
-                    new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText())
+                    new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()),
+                    jProgressBar1
             );
             
             //Correr simulaciones
@@ -1155,10 +1157,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 Object fila [] = new Object[3];
                 DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
                 
-                for (int i =0; i<resultados_serial.length; i++ ){
-                    fila [0] = resultados_serial[i].cantidadPedido;
-                    fila [1] = resultados_serial[i].puntoReorden;
-                    fila [2] = decimales.format(resultados_serial[i].costoTotal);
+                for (ResultadoParcial resultados_serial1 : resultados_serial) {
+                    fila [0] = resultados_serial1.cantidadPedido;
+                    fila [1] = resultados_serial1.puntoReorden;
+                    fila [2] = decimales.format(resultados_serial1.costoTotal);
                     modelo.addRow(fila);
                 }
                 
@@ -1174,6 +1176,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             RLbl.setText("R: " + String.valueOf(resultado.puntoReorden));
             
         }else{
+            jProgressBar1.setMaximum(100);
             caso = new Simulacion(arregloTablaDeman, arregloTablaTEn, arregloTablaTEs, new BigDecimal(CostInvTxtField.getText()), 
                     new BigDecimal(CostOrdTxtField.getText()), new BigDecimal(CostCEspTxtField.getText()), new BigDecimal(CostSEspTxtField.getText()), 
                     Integer.parseInt(InvIncTxtField.getText()), puntoReorden, cantidadPedido, diasSimulacion,
@@ -1184,6 +1187,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             RLbl.setText("R: " + String.valueOf(puntoReorden));
             
             resultado = (Resultado) caso.simular();
+            jProgressBar1.setValue(100);
         }
         
         if(resultado!=null){
@@ -1207,10 +1211,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 modelotabFinal.addRow(fila);
             }
 
-            CostFaltLbl.setText("Costo de faltante: " + decimales.format(resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera)).toString());
-            CostTtlLbl.setText("Costo total: " + decimales.format(resultado.costoTotal).toString());
-            CostInv.setText("Costo de inventario: " + decimales.format(resultado.costoTotalInventario).toString());
-            CostOrdLbl.setText("Costo de orden: " + decimales.format(resultado.costoTotalOrden).toString());
+            CostFaltLbl.setText("Costo de faltante: " + decimales.format(resultado.costoTotalConEspera.add(resultado.costoTotalSinEspera)));
+            CostTtlLbl.setText("Costo total: " + decimales.format(resultado.costoTotal));
+            CostInv.setText("Costo de inventario: " + decimales.format(resultado.costoTotalInventario));
+            CostOrdLbl.setText("Costo de orden: " + decimales.format(resultado.costoTotalOrden));
 
             time_end = System.currentTimeMillis();
             TmEjecLbl.setText("Tiempo de ejecución: " + String.valueOf((( time_end - time_start )/ 1000) % 60 ) + " segundos.");
@@ -1219,7 +1223,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
             
         }
         
+            }
+        };
         
+        t.start();  
         
     }//GEN-LAST:event_RunBtnActionPerformed
 
@@ -1253,7 +1260,14 @@ public class PanelSimulacion extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         Thread t = new Thread (){
+            @Override
             public void run(){
+                if( TablaFinal.getValueAt(0, 0) == null ){
+                    JOptionPane.showMessageDialog(null, "No hay simulación para exportar, por favor"
+                            + " ejecuta una simulación antes de exportar.", "Error", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                
                 HSSFWorkbook workbook = new HSSFWorkbook();
                 HSSFSheet hoja = workbook.createSheet("Tabla de simualación");
                 
@@ -1272,15 +1286,10 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 fila.createCell(11).setCellValue("Tiempo de espera");
                 
                 HSSFRow filas;
-                Rectangle rect;
                 jProgressBar1.setMaximum(TablaFinal.getRowCount()  + jTable2.getRowCount()  );
                 
                 
                 for (int i = 0 ; i < TablaFinal.getRowCount(); i++){
-                    rect = TablaFinal.getCellRect(i, 0, true);
-                    try{
-                        TablaFinal.scrollRectToVisible(rect);
-                    }catch(java.lang.ClassCastException e){}
                     TablaFinal.setRowSelectionInterval(i, i);
                     jProgressBar1.setValue(i+1);
                     
@@ -1333,10 +1342,6 @@ public class PanelSimulacion extends javax.swing.JFrame {
                 
                 
                 for (int i = 0 ; i < jTable2.getRowCount(); i++){
-                    rect = jTable2.getCellRect(i, 0, true);
-                    try{
-                        jTable2.scrollRectToVisible(rect);
-                    }catch(java.lang.ClassCastException e){}
                     jTable2.setRowSelectionInterval(i, i);
                     jProgressBar1.setValue(f+i);
                     
@@ -1353,8 +1358,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
             }
         };
         
-        t.start();
-            
+        t.start();   
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     
@@ -1439,7 +1443,7 @@ public class PanelSimulacion extends javax.swing.JFrame {
     
     public void setAleatorio (String linea, int opc){
         
-        ArrayList <Integer> lista = new ArrayList <Integer> ();
+        ArrayList <Integer> lista = new ArrayList <> ();
         
         while (linea.indexOf(',')>0){
             lista.add(Integer.parseInt(linea.substring(linea.indexOf(' ')+1, linea.indexOf(','))));
@@ -1569,10 +1573,8 @@ public class PanelSimulacion extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PanelSimulacion().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new PanelSimulacion().setVisible(true);
         });
     }
 

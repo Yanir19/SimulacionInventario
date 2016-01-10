@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -36,11 +37,14 @@ public class Simulador {
     private int cantidadPedidoMax = 0;
     private int puntoReordenMin = 0;
     private int puntoReordenMax = 0;
+    
+    private javax.swing.JProgressBar jProgressBar1;
 
     public Simulador(boolean ejecutarParalelo, int[][] arregloTablaDeman, int[][] arregloTablaTEn, 
             int[][] arregloTablaTEs, int diasSimulacion, int InventarioInicial, 
             BigDecimal costoInventario, BigDecimal costoOrdenar, 
-            BigDecimal costoFaltanteConEspera, BigDecimal costoFaltanteSinEspera
+            BigDecimal costoFaltanteConEspera, BigDecimal costoFaltanteSinEspera,
+            javax.swing.JProgressBar jProgressBar1
     ){
         
         this.ejecutarParalelo = ejecutarParalelo;
@@ -53,6 +57,7 @@ public class Simulador {
         this.costoOrdenar = costoOrdenar;
         this.costoFaltanteConEspera = costoFaltanteConEspera;
         this.costoFaltanteSinEspera = costoFaltanteSinEspera;
+        this.jProgressBar1 = jProgressBar1;
     }
     
     public static int getMinValue(int [][]tabla, Boolean returnZero, int initValue){
@@ -104,14 +109,15 @@ public class Simulador {
         return (puntoReordenMax-puntoReordenMin)*(cantidadPedidoMax-cantidadPedidoMin);
     }
     
-    public Resultado iterar(){        
+    public Resultado iterar(){
         int mejorCaso = 0;
         Simulacion caso;
         Resultado resultado;
         ResultadoParcial mejorResultadoSimplificado;
         int contadorResultados = 0;
-        BigDecimal escasezMenor = BigDecimal.ZERO;
-        BigDecimal escasezMayor = BigDecimal.ZERO;
+        BigDecimal escasezMenor;
+        BigDecimal escasezMayor;
+        AtomicInteger progress = new AtomicInteger();
         
         int minTEntrega = 1;
         int maxTEntrega = arregloTablaTEn[0][0];
@@ -180,6 +186,9 @@ public class Simulador {
                 }
             }
 
+            progress.set(0);
+            jProgressBar1.setMaximum(totalIteraciones);
+
             resultados_paralelo = casosSimplificados
                 .parallelStream()
                 .map(s -> {
@@ -188,6 +197,9 @@ public class Simulador {
                         this.inventarioInicial, s.puntoReorden, s.cantidadPedido,this.diasSimulacion,
                         false
                     );
+                    
+                    jProgressBar1.setValue(progress.addAndGet(1));
+                            
                     Resultado resultadoParalelo = casoParalelo.simular();
                     s.costoTotal = resultadoParalelo.costoTotal;
                     return s;
@@ -204,6 +216,9 @@ public class Simulador {
         }else{
             resultados_serial = new ResultadoParcial[totalIteraciones];
             
+            progress.set(0);
+            jProgressBar1.setMaximum(totalIteraciones);
+            
             // Hacer simulaciones con todas las combinaciones de Q y PR entre los rangos obtenidos
             for(int i=cantidadPedidoMin; i<= cantidadPedidoMax ; i++){
                 for(int j=puntoReordenMin; j<= puntoReordenMax ; j++){
@@ -214,6 +229,7 @@ public class Simulador {
                     );
                     resultado = (Resultado) caso.simular();
                     resultados_serial[contadorResultados] = new ResultadoParcial(i,j,resultado.costoTotal);
+                    jProgressBar1.setValue(contadorResultados);
                     contadorResultados++;
                 }
             }
